@@ -476,7 +476,7 @@ const map = L.map("map", { center: [12.3, -1.9], zoom: 7 });
 L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", {
   attribution: "© OpenStreetMap © CARTO",
   maxZoom: 12,
-});
+}).addTo(map);
 
 let choroplethLayer = null;
 let schoolsLayer    = null;
@@ -522,7 +522,6 @@ async function init() {
       filter: f => f.properties.year === currentYear,
       style: (f) => {
         const priority = f.properties.priority || 'unknown';
-        // Handle "lower_priority" -> "low" specifically
         const mappedPriority = (priority === 'lower_priority') ? 'low' : priority.replace('_priority', '');
         const color = TIER_COLORS[mappedPriority] || TIER_COLORS.unknown;
         return { color: "#1A1410", weight: 0.5, fillColor: color, fillOpacity: 0.6 };
@@ -559,13 +558,11 @@ async function init() {
           }
         });
       }
-    });
+    }).addTo(map);
 
     document.getElementById("toggleSchools").checked = false;
     document.getElementById("toggleHeatmap").checked = false;
 
-    // Do NOT add schoolsLayer or heatmapLayer to map here.
-    // They are rendered once for data, but only added on toggle.
     renderSchools(schoolsData);
     renderHeatmap();
 
@@ -585,7 +582,6 @@ async function init() {
 
     document.getElementById("loadingOverlay").classList.add("hidden");
 
-    // Add Year Slider Listener
     const slider = document.getElementById("yearSlider");
     const display = document.getElementById("yearDisplay");
 
@@ -595,141 +591,84 @@ async function init() {
       document.getElementById("backLink").href = `../index.html?year=${currentYear}`;
       document.getElementById("atRiskLink").href = `at_risk_summary.html?year=${currentYear}`;
 
-      // Update background boundaries
       if (choroplethLayer) {
         choroplethLayer.clearLayers();
         choroplethLayer.addData(geoRes.features.filter(f => f.properties.year === currentYear));
       }
 
-      // Update schools and heatmap
       renderSchools(schoolsData);
       renderHeatmap();
-
-      // Update stats
       updateGlobalStats();
     });
-    } catch (e) {
+  } catch (e) {
     console.error("Load failed", e);
-    }
-    }
+  }
+}
 
-    function updateGlobalStats() {
-      // Filter scores for current year
-      const activeScores = scoreData.filter(s => (s.at_risk_years || []).includes(currentYear));
-      document.getElementById("statSchoolsTotal").textContent = schoolsData.features.length.toLocaleString();
-      document.getElementById("statSchoolsAtRisk").textContent = activeScores.filter(s => s.v_score > 0.7).length.toLocaleString();
+function updateGlobalStats() {
+  const activeScores = scoreData.filter(s => (s.at_risk_years || []).includes(currentYear));
+  document.getElementById("statSchoolsTotal").textContent = schoolsData.features.length.toLocaleString();
+  document.getElementById("statSchoolsAtRisk").textContent = activeScores.filter(s => s.v_score > 0.7).length.toLocaleString();
+  const events = choroplethLayer.toGeoJSON().features.reduce((s, f) => s + (f.properties.events || 0), 0);
+  document.getElementById("statEvents").textContent = events.toLocaleString();
+}
 
-      // Calculate events for current year from choroplethLayer data
-      const events = choroplethLayer.toGeoJSON().features.reduce((s, f) => s + (f.properties.events || 0), 0);
-      document.getElementById("statEvents").textContent = events.toLocaleString();
-    }    function renderHeatmap() {
-    if (heatmapLayer) map.removeLayer(heatmapLayer);
-
-    // Use vulnerability score for heatmap intensity (0-1)
-    const heatPoints = scoreData
-    .filter(s => s.v_score > 0.05)
-    .map(s => [s.lat, s.lon, s.v_score]);
-
-    heatmapLayer = L.heatLayer(heatPoints, {
+function renderHeatmap() {
+  if (heatmapLayer) map.removeLayer(heatmapLayer);
+  const heatPoints = scoreData.filter(s => s.v_score > 0.05).map(s => [s.lat, s.lon, s.v_score]);
+  heatmapLayer = L.heatLayer(heatPoints, {
     radius: 20,
     blur: 15,
     maxZoom: 10,
-    gradient: {
-      0.2: "#A8C5A0",
-      0.5: "#F0C060",
-      0.8: "#E07B3B",
-      1.0: "#8B1A1A"
-    }
-    });
+    gradient: { 0.2: "#A8C5A0", 0.5: "#F0C060", 0.8: "#E07B3B", 1.0: "#8B1A1A" }
+  });
+  if (document.getElementById("toggleHeatmap").checked) heatmapLayer.addTo(map);
+}
 
-    if (document.getElementById("toggleHeatmap").checked) {
-    heatmapLayer.addTo(map);
-    }
-    }
-
-    function renderSchools(geo) {
-    if (schoolsLayer) map.removeLayer(schoolsLayer);
-
-    schoolsLayer = L.geoJSON(geo, {
+function renderSchools(geo) {
+  if (schoolsLayer) map.removeLayer(schoolsLayer);
+  schoolsLayer = L.geoJSON(geo, {
     pointToLayer: (f, latlng) => {
-      // Find score for this school
-      const schoolScore = scoreData.find(s => 
-          Math.abs(s.lat - latlng.lat) < 0.0001 && 
-          Math.abs(s.lon - latlng.lng) < 0.0001
-      );
-
-      let color = "#3498DB"; // Default blue
-      let radius = 4;
-      let isAtRisk = false;
-
+      const schoolScore = scoreData.find(s => Math.abs(s.lat - latlng.lat) < 0.0001 && Math.abs(s.lon - latlng.lng) < 0.0001);
+      let color = "#3498DB", radius = 4, isAtRisk = false;
       if (schoolScore) {
         isAtRisk = (schoolScore.at_risk_years || []).includes(currentYear);
         if (isAtRisk) {
-            radius = 5;
-            if (schoolScore.v_score > 0.7) color = TIER_COLORS.critical;
-            else if (schoolScore.v_score > 0.5) color = TIER_COLORS.high;
-            else color = TIER_COLORS.medium;
+          radius = 5;
+          if (schoolScore.v_score > 0.7) color = TIER_COLORS.critical;
+          else if (schoolScore.v_score > 0.5) color = TIER_COLORS.high;
+          else color = TIER_COLORS.medium;
         }
       }
-
-      const marker = L.circleMarker(latlng, {
-        radius: radius,
-        fillColor: color,
-        color: "#fff",
-        weight: 1,
-        opacity: 1,
-        fillOpacity: 0.8
-      });
-
-      const schoolName = f.properties.name || `Lat: ${latlng.lat.toFixed(4)}, Lon: ${latlng.lng.toFixed(4)}`;
-      marker.bindTooltip(schoolName);
-      
+      const marker = L.circleMarker(latlng, { radius, fillColor: color, color: "#fff", weight: 1, opacity: 1, fillOpacity: 0.8 });
+      marker.bindTooltip(f.properties.name || `Lat: ${latlng.lat.toFixed(4)}, Lon: ${latlng.lng.toFixed(4)}`);
       return marker;
     },
     onEachFeature: (f, layer) => {
       layer.on("click", () => showSchoolDetail(f.properties, layer.getLatLng()));
     }
-    });
+  });
+  if (document.getElementById("toggleSchools").checked) schoolsLayer.addTo(map);
 }
 
 function showSchoolDetail(props, latlng) {
   const score = scoreData.find(s => Math.abs(s.lat - latlng.lat) < 0.0001 && Math.abs(s.lon - latlng.lng) < 0.0001);
   if (!score) return;
-
-  const name = props.name || "Unnamed Institution";
-  const v_score = (score.v_score * 100).toFixed(0);
-  const trauma = score.trauma;
-  const province = score.province || "Unknown";
-  const years = score.at_risk_years || [];
-  const risk_summary = years.length > 0 
-    ? `at risk ${years.length} times since ${years[0]}` 
-    : "not currently at risk";
-
+  const name = props.name || "Unnamed Institution", v_score = (score.v_score * 100).toFixed(0), trauma = score.trauma, province = score.province || "Unknown", years = score.at_risk_years || [], risk_summary = years.length > 0 ? `at risk ${years.length} times since ${years[0]}` : "not currently at risk";
   document.getElementById("detailPanel").innerHTML = `
     <div class="panel-label">School detail</div>
     <div class="detail-name">${name}</div>
     <div class="panel-label" style="margin-top:4px;">${province} Province</div>
-    
     <div class="detail-metrics">
-      <div class="metric">
-        <div class="metric-val">${v_score}%</div>
-        <div class="metric-label">Risk Score</div>
-      </div>
-      <div class="metric">
-        <div class="metric-val">${trauma}</div>
-        <div class="metric-label">Events Near</div>
-      </div>
+      <div class="metric"><div class="metric-val">${v_score}%</div><div class="metric-label">Risk Score</div></div>
+      <div class="metric"><div class="metric-val">${trauma}</div><div class="metric-label">Events Near</div></div>
     </div>
-
     <div class="ai-box">
       <div class="ai-label">Risk Profile</div>
-      <div class="ai-text">
-        This facility is located in <strong>${province}</strong>. It has been <strong>${risk_summary}</strong> based on proximity to conflict events.
-      </div>
+      <div class="ai-text">This facility is located in <strong>${province}</strong>. It has been <strong>${risk_summary}</strong> based on proximity to conflict events.</div>
     </div>
   `;
 }
-
 init();
 </script>
 </body>
