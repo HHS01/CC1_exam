@@ -395,19 +395,19 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
     <div class="stats" style="justify-content: center; gap: 40px;">
       <a href="../index.html" id="backLink" class="stat" style="text-decoration:none; cursor:pointer; text-align: center;">
         <div class="stat-num" id="statEvents">—</div>
-        <div class="stat-label" style="text-decoration:underline;">Events</div>
+        <div class="stat-label" style="text-decoration:underline;">Total Events</div>
       </a>
       <div class="stat" style="text-align: center;">
         <div class="stat-num" id="statSchoolsTotal">—</div>
-        <div class="stat-label">Schools</div>
+        <div class="stat-label">Total Schools</div>
       </div>
       <div class="stat" style="text-align: center;">
         <div class="stat-num" id="statSchoolsAtRisk">—</div>
         <div class="stat-label">Schools at Risk</div>
       </div>
       <div class="stat" style="text-align: center;">
-        <div class="stat-num" id="statChildrenAtRisk">—</div>
-        <div class="stat-label">Children in risk zones</div>
+        <div class="stat-num" id="statSchoolsPer1k">—</div>
+        <div class="stat-label">Schools / 1k children</div>
       </div>
     </div>
   </header>
@@ -687,10 +687,12 @@ function updateGlobalStats() {
   const events = geoFeatures.reduce((s, f) => s + (f.properties.events || 0), 0);
   document.getElementById("statEvents").textContent = events.toLocaleString();
 
-  // Children in High Risk Zones (Critical + High provinces)
-  const riskZones = geoFeatures.filter(f => ["critical", "high_priority"].includes((f.properties.priority || "").toLowerCase()));
-  const childrenAtRisk = riskZones.reduce((s, f) => s + (f.properties.school_age_pop || 0), 0);
-  document.getElementById("statChildrenAtRisk").textContent = (childrenAtRisk / 1e6).toFixed(1) + "M";
+  // Calculate average schools per 1k children across all provinces
+  const validProvinces = geoFeatures.filter(f => f.properties.schools_per_1000 > 0);
+  const avgSchoolsPer1k = validProvinces.length > 0 
+    ? (validProvinces.reduce((s, f) => s + f.properties.schools_per_1000, 0) / validProvinces.length).toFixed(1)
+    : "—";
+  document.getElementById("statSchoolsPer1k").textContent = avgSchoolsPer1k;
 }
 
 function resetSelection() {
