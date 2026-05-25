@@ -544,6 +544,10 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
           <div class="stat-label" style="text-decoration:underline;">Schools at risk</div>
         </a>
         <div class="stat" style="text-align: center;">
+          <div class="stat-num" id="statSchoolsPer1k">—</div>
+          <div class="stat-label">Schools / 1k children</div>
+        </div>
+        <div class="stat" style="text-align: center;">
           <div class="stat-num" id="statCritical">—</div>
           <div class="stat-label">Critical provinces</div>
         </div>
@@ -738,6 +742,28 @@ async function loadAll() {
   }
 }
 
+function resetSelection() {
+  if (selectedLayer) {
+    choropleth.resetStyle(selectedLayer);
+    selectedLayer = null;
+  }
+  currentProvince = null;
+  updateNavLinks();
+  resetDetailPanel();
+  
+  // Clear province from URL
+  const newUrl = new URL(window.location);
+  newUrl.searchParams.delete('province');
+  window.history.replaceState({}, '', newUrl);
+}
+
+map.on('click', e => {
+  // If we click the map itself (not a feature)
+  if (e.originalEvent && e.originalEvent.target.id === "map") {
+    resetSelection();
+  }
+});
+
 // ═══════════════════════════════════════════════════════
 // CHOROPLETH
 // ═══════════════════════════════════════════════════════
@@ -814,8 +840,15 @@ function updateHeaderStats(features) {
   const yearData = trendsData.find(d => d.year === currentYear);
   const schoolsAtRisk = yearData ? (yearData.high_risk_schools || 0) : 0;
 
+  // Calculate average schools per 1k children across all provinces
+  const validProvinces = features.filter(f => f.properties.schools_per_1000 > 0);
+  const avgSchoolsPer1k = validProvinces.length > 0 
+    ? (validProvinces.reduce((s, f) => s + f.properties.schools_per_1000, 0) / validProvinces.length).toFixed(1)
+    : "—";
+
   document.getElementById("statCritical").textContent = critical;
   document.getElementById("statSchoolsAtRisk").textContent = schoolsAtRisk.toLocaleString();
+  document.getElementById("statSchoolsPer1k").textContent = avgSchoolsPer1k;
   document.getElementById("statEvents").textContent = events.toLocaleString();
   document.getElementById("statFatalities").textContent = fatalities.toLocaleString();
 }

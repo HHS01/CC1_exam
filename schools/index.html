@@ -400,10 +400,18 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
         <div class="stat-num" id="statSchoolsTotal">—</div>
         <div class="stat-label">Schools</div>
       </div>
-      <a href="at_risk_summary.html" id="atRiskLink" class="stat" style="text-decoration:none; cursor:pointer; text-align: center;">
+      <div class="stat" style="text-align: center;">
+        <div class="stat-num" id="statSchoolsPer1k">—</div>
+        <div class="stat-label">Schools / 1k children</div>
+      </div>
+      <div class="stat" style="text-align: center;">
         <div class="stat-num" id="statSchoolsAtRisk">—</div>
-        <div class="stat-label" style="text-decoration:underline;">Schools at Risk</div>
-      </a>
+        <div class="stat-label">Schools at Risk</div>
+      </div>
+      <div class="stat" style="text-align: center;">
+        <div class="stat-num" id="statAvgRisk">—</div>
+        <div class="stat-label">Avg Site Risk</div>
+      </div>
     </div>
   </header>
 
@@ -630,9 +638,50 @@ function updateGlobalStats() {
   const activeScores = scoreData.filter(s => (s.at_risk_years || []).includes(currentYear));
   document.getElementById("statSchoolsTotal").textContent = schoolsData.features.length.toLocaleString();
   document.getElementById("statSchoolsAtRisk").textContent = activeScores.filter(s => s.v_score > 0.7).length.toLocaleString();
-  const events = choroplethLayer.toGeoJSON().features.reduce((s, f) => s + (f.properties.events || 0), 0);
+  
+  const geoFeatures = choroplethLayer.toGeoJSON().features;
+  const events = geoFeatures.reduce((s, f) => s + (f.properties.events || 0), 0);
   document.getElementById("statEvents").textContent = events.toLocaleString();
+
+  // 1. Avg Schools per 1k children (National)
+  const validProvinces = geoFeatures.filter(f => f.properties.schools_per_1000 > 0);
+  const avgSchoolsPer1k = validProvinces.length > 0 
+    ? (validProvinces.reduce((s, f) => s + f.properties.schools_per_1000, 0) / validProvinces.length).toFixed(1)
+    : "—";
+  document.getElementById("statSchoolsPer1k").textContent = avgSchoolsPer1k;
+
+  // 2. Avg Site Risk Score (mean v_score of all schools)
+  const avgRisk = activeScores.length > 0
+    ? (activeScores.reduce((s, sch) => s + (sch.v_score || 0), 0) / activeScores.length * 100).toFixed(0)
+    : 0;
+  document.getElementById("statAvgRisk").textContent = avgRisk + "%";
 }
+
+function resetSelection() {
+  if (selectedLayer) {
+    choroplethLayer.resetStyle(selectedLayer);
+    selectedLayer = null;
+  }
+  currentProvince = null;
+  updateNavLinks();
+  
+  document.getElementById("detailPanel").innerHTML = `
+    <div class="panel-label">School detail</div>
+    <p class="detail-empty">
+      Zoom in and select a school point to see specific site-level risk metrics.
+    </p>
+  `;
+  
+  const newUrl = new URL(window.location);
+  newUrl.searchParams.delete('province');
+  window.history.replaceState({}, '', newUrl);
+}
+
+map.on('click', e => {
+  if (e.originalEvent && e.originalEvent.target.id === "map") {
+    resetSelection();
+  }
+});
 
 function renderHeatmap() {
   if (heatmapLayer) map.removeLayer(heatmapLayer);
