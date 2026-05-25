@@ -313,31 +313,38 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
   margin-top: 3px;
 }
 
-/* Score bar */
-.score-bar-wrap {
-  margin-bottom: 16px;
+/* ─── Triple Bar Risk UI ─── */
+.score-section { margin-top: 10px; }
+
+/* Primary EVI Bar */
+.primary-bar-wrap { margin-bottom: 20px; }
+.primary-label { 
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  text-transform: uppercase; color: var(--ink);
+  display: flex; justify-content: space-between; margin-bottom: 6px;
 }
-.score-bar-label {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-muted);
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 5px;
+.primary-track { height: 10px; background: var(--surface2); border-radius: 5px; overflow: hidden; }
+.primary-fill { height: 100%; border-radius: 5px; transition: width 0.6s ease; }
+
+/* Driver Bars (The "Causes") */
+.drivers-header {
+  font-family: var(--mono); font-size: 9px; text-transform: uppercase;
+  color: var(--ink-muted); letter-spacing: 0.1em;
+  border-top: 1px solid var(--border); padding-top: 12px; margin-bottom: 12px;
 }
-.score-bar-track {
-  height: 6px;
-  background: var(--surface2);
-  border-radius: 3px;
-  overflow: hidden;
+.driver-bar-wrap { margin-bottom: 12px; }
+.driver-label {
+  font-family: var(--sans); font-size: 11px; font-weight: 400;
+  color: var(--ink); display: flex; justify-content: space-between; margin-bottom: 4px;
 }
-.score-bar-fill {
-  height: 100%;
-  border-radius: 3px;
-  transition: width 0.4s ease;
-}
+.driver-label span:last-child { font-family: var(--mono); font-size: 10px; color: var(--ink-muted); }
+.driver-track { height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+.driver-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
+
+.fill-security { background: #C0392B; }
+.fill-structural { background: #4A4A4A; }
+
+.bar-desc { font-size: 8px; color: var(--ink-muted); margin-top: 4px; line-height: 1.2; opacity: 0.8; }
 
 /* AI narrative */
 .ai-box {
@@ -775,9 +782,10 @@ function updateHeaderStats(features) {
   const critical = features.filter(f => ["critical"].includes((f.properties.priority || "").toLowerCase())).length;
   const events = features.reduce((s, f) => s + (f.properties.events || 0), 0);
   const fatalities = features.reduce((s, f) => s + (f.properties.fatalities || 0), 0);
-  const schoolsAtRisk = features
-    .filter(f => ["critical"].includes((f.properties.priority || "").toLowerCase()))
-    .reduce((s, f) => s + (f.properties.school_count || 0), 0);
+  
+  // Use unified high-risk count (v_score > 0.7) from trendsData
+  const yearData = trendsData.find(d => d.year === currentYear);
+  const schoolsAtRisk = yearData ? (yearData.high_risk_schools || 0) : 0;
 
   document.getElementById("statCritical").textContent = critical;
   document.getElementById("statSchoolsAtRisk").textContent = schoolsAtRisk.toLocaleString();
@@ -800,19 +808,13 @@ function showProvinceDetail(props) {
   const score   = props.score ?? null;
   const events  = props.events ?? 0;
   const fatal   = props.fatalities ?? 0;
-  const schools = props.school_count ?? 0;
   const name    = props.admin2 || "Unknown";
   const tierLabel = tier.replace("_priority","").replace("_","-");
 
   // NEW Metrics from our hybrid index
   const riskType = props.risk_type || "N/A";
-  const densityFragility = props.density_fragility ?? 0.5;
-  const schoolsPer1k = props.schools_per_1000 ?? 0;
-
-  // Calculate percentage of schools at risk in this province
-  const schoolsAtRisk = props.schools_at_risk || 0;
-  const schoolPercentage = schools > 0 ? (schoolsAtRisk / schools) * 100 : 0;
-  const tierColor = TIER_COLORS[tier] || TIER_COLORS.unknown;
+  const securityExposure = (props.conflict_score || 0) * 100;
+  const densityFragility = (props.density_fragility || 0.5) * 100;
 
   document.getElementById("detailPanel").innerHTML = `
     <div class="panel-label">Province detail</div>
@@ -823,14 +825,6 @@ function showProvinceDetail(props) {
     </div>
 
     <div class="detail-metrics">
-      <div class="metric" style="background: linear-gradient(90deg, ${tierColor}40 ${schoolPercentage}%, var(--surface2) ${schoolPercentage}%);">
-        <div class="metric-val">${schools.toLocaleString()}</div>
-        <div class="metric-label">Schools</div>
-      </div>
-      <div class="metric">
-        <div class="metric-val">${schoolsPer1k.toFixed(1)}</div>
-        <div class="metric-label">Schools / 1k children</div>
-      </div>
       <div class="metric">
         <div class="metric-val">${events.toLocaleString()}</div>
         <div class="metric-label">Events</div>
@@ -841,23 +835,45 @@ function showProvinceDetail(props) {
       </div>
     </div>
 
-    ${score !== null ? `
-    <div class="score-bar-wrap">
-      <div class="score-bar-label">
-        <span>Composite EVI Score</span>
-        <span>${(score * 100).toFixed(0)}/100</span>
+    <div class="score-section">
+      <!-- Primary EVI Bar -->
+      <div class="primary-bar-wrap">
+        <div class="primary-label">
+          <span>Vulnerability Index (EVI)</span>
+          <span>${(score * 100).toFixed(0)}/100</span>
+        </div>
+        <div class="primary-track">
+          <div class="primary-fill" style="width:${Math.round(score*100)}%;background:${TIER_COLORS[tier]}"></div>
+        </div>
+        <p class="bar-desc">Composite risk to school continuity.</p>
       </div>
-      <div class="score-bar-track"><div class="score-bar-fill" style="width:${Math.round(score*100)}%;background:${TIER_COLORS[tier]}"></div></div>
+
+      <div class="drivers-header">Vulnerability Drivers</div>
+
+      <!-- Security Exposure -->
+      <div class="driver-bar-wrap">
+        <div class="driver-label">
+          <span>Security Exposure</span>
+          <span>${securityExposure.toFixed(0)}/100</span>
+        </div>
+        <div class="driver-track">
+          <div class="driver-fill fill-security" style="width:${Math.round(securityExposure)}%;"></div>
+        </div>
+        <p class="bar-desc">Acute intensity of violence (Events & Fatalities).</p>
+      </div>
+
+      <!-- Structural Fragility -->
+      <div class="driver-bar-wrap">
+        <div class="driver-label">
+          <span>Structural Fragility</span>
+          <span>${densityFragility.toFixed(0)}/100</span>
+        </div>
+        <div class="driver-track">
+          <div class="driver-fill fill-structural" style="width:${Math.round(densityFragility)}%;"></div>
+        </div>
+        <p class="bar-desc">Infrastructure gap (Schools per 1k children).</p>
+      </div>
     </div>
-    
-    <div class="score-bar-wrap" style="margin-top: -8px;">
-      <div class="score-bar-label">
-        <span>Structural Fragility</span>
-        <span>${(densityFragility * 100).toFixed(0)}/100</span>
-      </div>
-      <div class="score-bar-track" style="height: 3px;"><div class="score-bar-fill" style="width:${Math.round(densityFragility*100)}%;background:var(--ink)"></div></div>
-      <p style="font-size: 8px; color: var(--ink-muted); margin-top: 4px;">Structural fragility measures population density against infrastructure availability.</p>
-    </div>` : ""}
 
     <div class="ai-box" id="aiBox">
       <div class="ai-label">AI Situation Briefing</div>
@@ -925,17 +941,24 @@ async function generateSituationBriefing(props) {
   // Using v1 endpoint for maximum stability
   const geminiUrl = `https://generativelanguage.googleapis.com/v1/models/${GEMINI_MODEL}:generateContent?key=${sessionKey}`;
 
+  const securityExposure = ((props.conflict_score || 0) * 100).toFixed(0);
+  const densityFragility = ((props.density_fragility || 0.5) * 100).toFixed(0);
+
   const prompt = `You are a humanitarian analyst providing a rationale for the Education Vulnerability Index (EVI).
 Province: ${name}, Burkina Faso. Year: ${year}. 
 EVI Score: ${score}/100. Priority Classification: ${tier}.
 
+Risk Driver Breakdown:
+- Security Exposure (Acute): ${securityExposure}/100.
+- Structural Fragility (Infrastructure): ${densityFragility}/100.
+
 Contextual Data:
 - Yearly Conflict: ${props.events || 0} events, ${props.fatalities || 0} fatalities.
-- 2-Year Persistence: ${events2yr} events, ${fatal2yr} fatalities.
-- National Education Indicators: ${props.oos_raw || 'N/A'} children out of school, ${props.persistence_raw || 'N/A'}% primary persistence rate.
+- 2-Year Totals: ${events2yr} events, ${fatal2yr} fatalities.
+- National Education Indicators: ${props.oos_raw || 'N/A'} children out of school.
 
-Write exactly 2 sentences explaining why this province is classified as ${tier} priority. 
-If 2-year persistence or a recent spike is high, mention it as a driver. Use the specific numerical values provided.`;
+Write exactly 2 sentences explaining the relationship between the Security and Structural drivers for this province. 
+Use the specific numerical values provided. Do not re-state the EVI score itself.`;
 
   try {
     const res = await fetch(geminiUrl, {

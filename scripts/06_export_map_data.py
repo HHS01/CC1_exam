@@ -112,14 +112,21 @@ def build_geojson(vuln: pd.DataFrame, boundaries: gpd.GeoDataFrame) -> dict:
     return {"type": "FeatureCollection", "features": features}
 
 
-def build_trends_json(trends: pd.DataFrame) -> list[dict]:
+def build_trends_json(trends: pd.DataFrame, school_risk_counts: dict) -> list[dict]:
     """Convert national trends DataFrame to a JSON array for the chart."""
     # Round all numeric columns and replace NaN with None for valid JSON (null)
     trends = trends.round(3).replace({np.nan: None})
-    return trends.to_dict(orient="records")
+    records = trends.to_dict(orient="records")
+    
+    # Add accurate school risk counts to each year
+    for rec in records:
+        yr = str(rec["year"])
+        rec["high_risk_schools"] = school_risk_counts.get(yr, 0)
+        
+    return records
 
 
-def build_insights(vuln: pd.DataFrame, trends: pd.DataFrame, iso3: str) -> dict:
+def build_insights(vuln: pd.DataFrame, trends: pd.DataFrame, iso3: str, school_risk_counts: dict) -> dict:
     """
     Compute headline stats for the summary panel.
     """
@@ -134,10 +141,8 @@ def build_insights(vuln: pd.DataFrame, trends: pd.DataFrame, iso3: str) -> dict:
     prior     = trends[trends["year"].between(latest_year - 5, latest_year - 3)]["total_events"].mean()
     trend_pct = round((recent - prior) / prior * 100, 1) if prior and prior > 0 else 0
 
-    # Schools at risk (Sum of school counts in critical provinces)
-    schools_at_risk = 0
-    if "school_count" in vuln_latest.columns:
-        schools_at_risk = int(critical["school_count"].sum())
+    # Unified Schools at risk count (v_score > 0.7)
+    schools_at_risk = school_risk_counts.get(str(latest_year), 0)
 
     return {
         "country":           iso3,
@@ -149,7 +154,7 @@ def build_insights(vuln: pd.DataFrame, trends: pd.DataFrame, iso3: str) -> dict:
         "top_3_critical":    critical.nlargest(3, "score")["Admin2"].tolist(),
         "total_events":      int(trends[trends["year"] == latest_year]["total_events"].sum()),
         "total_fatalities":  int(trends[trends["year"] == latest_year]["total_fatalities"].sum()),
-        "schools_at_risk":   schools_at_risk
+        "schools_at_risk":   int(schools_at_risk)
     }
 
 
@@ -165,6 +170,7 @@ if __name__ == "__main__":
     in_trends = OUT_DIR / f"{iso3}_national_trends.csv"
     in_admin2 = Path(f"data/raw/boundaries/{iso3}_admin2.geojson")
     in_schools = Path(f"data/clean/schools/schools_{iso3}.csv")
+    in_school_scores = OUT_DIR / "school_vulnerability_scores.json"
 
     if not in_vuln.exists():
         print(f"✗ Vulnerability file missing: {in_vuln}")
@@ -175,6 +181,19 @@ if __name__ == "__main__":
 
     vuln   = pd.read_csv(in_vuln)
     trends = pd.read_csv(in_trends)
+    
+    # Calculate accurate yearly school risk counts (v_score > 0.7)
+    school_risk_counts = {}
+    if in_school_scores.exists():
+        print(f"  → Calculating unified school-at-risk counts...")
+        with open(in_school_scores, "r") as f:
+            scores_data = json.load(f)
+        
+        # High risk threshold = 0.7 (matches summary report)
+        for s in scores_data:
+            if s.get("v_score", 0) > 0.7:
+                for yr in s.get("at_risk_years", []):
+                    school_risk_counts[str(yr)] = school_risk_counts.get(str(yr), 0) + 1
 
     school_counts = None
     if in_schools.exists() and in_admin2.exists():
@@ -252,14 +271,14 @@ if __name__ == "__main__":
         print(f"  ⚠ No Admin2 boundary file at {in_admin2} — skipping GeoJSON")
 
     # ── Trends JSON ───────────────────────────────────────────────────────────
-    trends_json = build_trends_json(trends)
+    trends_json = build_trends_json(trends, school_risk_counts)
     trends_path = OUT_DIR / "trends.json"
     with open(trends_path, "w") as f:
         json.dump(trends_json, f, separators=(",", ":"))
     print(f"  ✓ Trends ({len(trends_json)} years) → {trends_path}")
 
     # ── Insights JSON ─────────────────────────────────────────────────────────
-    insights = build_insights(vuln, trends, iso3)
+    insights = build_insights(vuln, trends, iso3, school_risk_counts)
     insights_path = OUT_DIR / "insights.json"
     with open(insights_path, "w") as f:
         json.dump(insights, f, indent=2)
