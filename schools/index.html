@@ -476,6 +476,17 @@ const TIER_COLORS = {
   unknown:  "#C8C0B0",
 };
 
+// Naming alignment for Burkina Faso (GeoJSON Name -> CSV Name)
+const BFA_NAME_MAP = {
+  "Kossin": "Kossi",
+  "Bassitenga": "Oubritenga",
+  "Sandbondtenga": "Sanmatenga",
+  "Djelgodji": "Soum",
+  "Gobnangou": "Tapoa",
+  "Seno": "Seno",
+  "Yagha": "Yagha"
+};
+
 const map = L.map("map", { center: [12.3, -1.9], zoom: 7 });
 
 L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", {

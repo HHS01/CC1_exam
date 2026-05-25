@@ -97,6 +97,7 @@ def build_geojson(vuln: pd.DataFrame, boundaries: gpd.GeoDataFrame) -> dict:
             "conflict_score": round(float(row["conflict_score"]), 3),
             "density_fragility": round(float(row["density_fragility"]), 3) if "density_fragility" in row and pd.notna(row["density_fragility"]) else 0.5,
             "schools_per_1000": round(float(row["schools_per_1000_children"]), 2) if "schools_per_1000_children" in row and pd.notna(row["schools_per_1000_children"]) else 0,
+            "school_age_pop": int(row["school_age_pop"]) if "school_age_pop" in row and pd.notna(row["school_age_pop"]) else 0,
             "score_basis":   str(row["score_basis"])
         }
         
