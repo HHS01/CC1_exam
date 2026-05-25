@@ -544,10 +544,6 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
           <div class="stat-label" style="text-decoration:underline;">Schools at risk</div>
         </a>
         <div class="stat" style="text-align: center;">
-          <div class="stat-num" id="statSchoolsPer1k">—</div>
-          <div class="stat-label">Schools / 1k children</div>
-        </div>
-        <div class="stat" style="text-align: center;">
           <div class="stat-num" id="statCritical">—</div>
           <div class="stat-label">Critical provinces</div>
         </div>
@@ -659,12 +655,10 @@ L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png
 // ═══════════════════════════════════════════════════════
 
 let allFeatures  = {};
-let schoolsData  = null;
 let trendsData   = [];
 let currentYear  = 2023;
 let currentProvince = null;
 let choropleth   = null;
-let schoolsLayer = null;
 let selectedLayer = null;
 let aiCache = (() => {
   try { return JSON.parse(localStorage.getItem(LS_CACHE_KEY) || "{}"); }
@@ -751,17 +745,13 @@ function resetSelection() {
   updateNavLinks();
   resetDetailPanel();
   
-  // Clear province from URL
   const newUrl = new URL(window.location);
   newUrl.searchParams.delete('province');
   window.history.replaceState({}, '', newUrl);
 }
 
 map.on('click', e => {
-  // If we click the map itself (not a feature)
-  if (e.originalEvent && e.originalEvent.target.id === "map") {
-    resetSelection();
-  }
+  resetSelection();
 });
 
 // ═══════════════════════════════════════════════════════
@@ -781,6 +771,7 @@ function renderChoropleth(year) {
         mouseover: e => { if (layer !== selectedLayer) e.target.setStyle({ weight: 2, fillOpacity: 0.95 }); },
         mouseout: e => { if (layer !== selectedLayer) choropleth.resetStyle(e.target); },
         click: e => {
+          L.DomEvent.stopPropagation(e);
           if (selectedLayer) choropleth.resetStyle(selectedLayer);
           selectedLayer = e.target;
           e.target.setStyle({ weight: 3, color: "#1A1410", fillOpacity: 1.0 });
@@ -788,7 +779,6 @@ function renderChoropleth(year) {
           updateNavLinks();
           showProvinceDetail(f.properties);
           
-          // Update URL without reload
           const newUrl = new URL(window.location);
           newUrl.searchParams.set('province', currentProvince);
           window.history.replaceState({}, '', newUrl);
@@ -832,23 +822,16 @@ function populateStats(insights) {
 }
 
 function updateHeaderStats(features) {
+  if (!features || !features.length) return;
   const critical = features.filter(f => ["critical"].includes((f.properties.priority || "").toLowerCase())).length;
   const events = features.reduce((s, f) => s + (f.properties.events || 0), 0);
   const fatalities = features.reduce((s, f) => s + (f.properties.fatalities || 0), 0);
   
-  // Use unified high-risk count (v_score > 0.7) from trendsData
-  const yearData = trendsData.find(d => d.year === currentYear);
+  const yearData = (trendsData || []).find(d => d.year === currentYear);
   const schoolsAtRisk = yearData ? (yearData.high_risk_schools || 0) : 0;
-
-  // Calculate average schools per 1k children across all provinces
-  const validProvinces = features.filter(f => f.properties.schools_per_1000 > 0);
-  const avgSchoolsPer1k = validProvinces.length > 0 
-    ? (validProvinces.reduce((s, f) => s + f.properties.schools_per_1000, 0) / validProvinces.length).toFixed(1)
-    : "—";
 
   document.getElementById("statCritical").textContent = critical;
   document.getElementById("statSchoolsAtRisk").textContent = schoolsAtRisk.toLocaleString();
-  document.getElementById("statSchoolsPer1k").textContent = avgSchoolsPer1k;
   document.getElementById("statEvents").textContent = events.toLocaleString();
   document.getElementById("statFatalities").textContent = fatalities.toLocaleString();
 }
@@ -871,7 +854,6 @@ function showProvinceDetail(props) {
   const name    = props.admin2 || "Unknown";
   const tierLabel = tier.replace("_priority","").replace("_","-");
 
-  // NEW Metrics from our hybrid index
   const riskType = props.risk_type || "N/A";
   const securityExposure = (props.conflict_score || 0) * 100;
   const densityFragility = (props.density_fragility || 0.5) * 100;
@@ -896,7 +878,6 @@ function showProvinceDetail(props) {
     </div>
 
     <div class="score-section">
-      <!-- Primary EVI Bar -->
       <div class="primary-bar-wrap">
         <div class="primary-label">
           <span>Vulnerability Index (EVI)</span>
@@ -910,7 +891,6 @@ function showProvinceDetail(props) {
 
       <div class="drivers-header">Vulnerability Drivers</div>
 
-      <!-- Security Exposure -->
       <div class="driver-bar-wrap">
         <div class="driver-label">
           <span>Security Exposure</span>
@@ -922,7 +902,6 @@ function showProvinceDetail(props) {
         <p class="bar-desc">Acute intensity of violence (Events & Fatalities).</p>
       </div>
 
-      <!-- Structural Fragility -->
       <div class="driver-bar-wrap">
         <div class="driver-label">
           <span>Structural Fragility</span>
@@ -943,7 +922,6 @@ function showProvinceDetail(props) {
   `;
   generateSituationBriefing(props);
   
-  // ── Update Trend Chart for this province ──────────────────────────────────
   const provinceName = props.admin2 || "Unknown";
   const provinceTrend = [];
   const yearsList = Object.keys(allFeatures).sort((a,b) => a-b);
@@ -977,7 +955,6 @@ async function generateSituationBriefing(props) {
   const textEl       = document.getElementById("aiText");
   const disclaimerEl = document.getElementById("aiDisclaimer");
   
-  // Try to get key from session input
   const sessionKey = (document.getElementById("sessionKey")?.value || "").trim();
 
   if (aiCache[cacheKey]) {
@@ -988,7 +965,6 @@ async function generateSituationBriefing(props) {
   }
 
   if (!sessionKey || sessionKey === "" || sessionKey.length < 10) {
-    // Professional fallback for guests without a key
     const oos = props.oos_raw ? props.oos_raw.toLocaleString() : "systemic";
     const rationale = `The ${tier} priority classification is driven by ${oos} children out of school and ${events2yr} conflict events recorded in the last two years. [Enter AI key in sidebar for detailed analysis]`;
     
@@ -998,7 +974,6 @@ async function generateSituationBriefing(props) {
     return;
   }
 
-  // Using v1 endpoint for maximum stability
   const geminiUrl = `https://generativelanguage.googleapis.com/v1/models/${GEMINI_MODEL}:generateContent?key=${sessionKey}`;
 
   const securityExposure = ((props.conflict_score || 0) * 100).toFixed(0);
@@ -1031,8 +1006,6 @@ Use the specific numerical values provided. Do not re-state the EVI score itself
     });
 
     if (!res.ok) {
-      if (res.status === 404) throw new Error(`Model not found or API endpoint invalid (HTTP 404). Check if ${GEMINI_MODEL} is enabled for your key.`);
-      if (res.status === 403) throw new Error("Invalid API Key or permission denied (HTTP 403).");
       throw new Error(`HTTP ${res.status}`);
     }
 
@@ -1063,7 +1036,7 @@ function drawTrend(data, title) {
   
   const ctx = canvas.getContext("2d");
   const W   = canvas.width  = canvas.offsetWidth;
-  const H   = canvas.height = 80; // Increased height slightly for better visibility
+  const H   = canvas.height = 80;
 
   const vals = data.map(d => d.total_events || 0);
   if (!vals.length) return;
@@ -1076,7 +1049,6 @@ function drawTrend(data, title) {
   const x = (i) => pad.l + (i / (data.length - 1)) * iW;
   const y = (v) => pad.t + (1 - (v / maxV)) * iH;
 
-  // Grid lines & Y-axis labels
   ctx.strokeStyle = "rgba(26,20,16,0.06)";
   ctx.setLineDash([2, 2]);
   ctx.font = "9px IBM Plex Mono, monospace";
@@ -1095,7 +1067,6 @@ function drawTrend(data, title) {
   });
   ctx.setLineDash([]);
 
-  // Area fill
   ctx.beginPath();
   ctx.moveTo(x(0), y(vals[0]));
   data.forEach((d, i) => ctx.lineTo(x(i), y(d.total_events || 0)));
@@ -1105,7 +1076,6 @@ function drawTrend(data, title) {
   ctx.fillStyle = "rgba(192,57,43,0.12)";
   ctx.fill();
 
-  // Line
   ctx.beginPath();
   ctx.moveTo(x(0), y(vals[0]));
   data.forEach((d, i) => ctx.lineTo(x(i), y(d.total_events || 0)));
@@ -1113,7 +1083,6 @@ function drawTrend(data, title) {
   ctx.lineWidth   = 1.5;
   ctx.stroke();
 
-  // Year labels
   ctx.fillStyle  = "rgba(107,98,89,0.7)";
   ctx.font       = "9px IBM Plex Mono, monospace";
   ctx.textAlign  = "center";
