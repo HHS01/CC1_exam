@@ -270,9 +270,24 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
 .tier-critical { background: var(--tier-critical); }
 .tier-unknown  { background: var(--tier-unknown);  color: var(--ink-muted); }
 
+/* Risk Type Badge */
+.risk-badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 2px;
+  margin-left: 6px;
+  background: var(--ink);
+  color: #F0C060;
+  vertical-align: middle;
+}
+
 .detail-metrics {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 8px;
   margin-bottom: 16px;
 }
@@ -506,14 +521,14 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
   <header class="header">
     <div class="header-left">
       <div class="kicker">
-        Burkina Faso · Schools Overlay Test · 2015–2026
+        Burkina Faso · Structural & Conflict Risk · 2015–2026
       </div>
       <h1 class="headline">
         Conflict is closing schools faster than<br>
         <em>they can be rebuilt</em>
       </h1>
       <p class="subhead">
-        EVI measures the threat of conflict to school access. Click any province for its profile and AI briefing.
+        EVI measures both acute security threats and structural infrastructure fragility. Click a province for a detailed risk profile.
       </p>
       </div>
       <div class="stats" style="justify-content: center; gap: 40px;">
@@ -789,6 +804,11 @@ function showProvinceDetail(props) {
   const name    = props.admin2 || "Unknown";
   const tierLabel = tier.replace("_priority","").replace("_","-");
 
+  // NEW Metrics from our hybrid index
+  const riskType = props.risk_type || "N/A";
+  const densityFragility = props.density_fragility ?? 0.5;
+  const schoolsPer1k = props.schools_per_1000 ?? 0;
+
   // Calculate percentage of schools at risk in this province
   const schoolsAtRisk = props.schools_at_risk || 0;
   const schoolPercentage = schools > 0 ? (schoolsAtRisk / schools) * 100 : 0;
@@ -797,12 +817,19 @@ function showProvinceDetail(props) {
   document.getElementById("detailPanel").innerHTML = `
     <div class="panel-label">Province detail</div>
     <div class="detail-name">${name}</div>
-    <span class="detail-tier tier-${tier.replace("_priority","")}">${tierLabel} priority</span>
+    <div style="margin-bottom: 14px;">
+      <span class="detail-tier tier-${tier.replace("_priority","")}">${tierLabel} priority</span>
+      <span class="risk-badge">${riskType}</span>
+    </div>
 
     <div class="detail-metrics">
       <div class="metric" style="background: linear-gradient(90deg, ${tierColor}40 ${schoolPercentage}%, var(--surface2) ${schoolPercentage}%);">
         <div class="metric-val">${schools.toLocaleString()}</div>
         <div class="metric-label">Schools</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">${schoolsPer1k.toFixed(1)}</div>
+        <div class="metric-label">Schools / 1k children</div>
       </div>
       <div class="metric">
         <div class="metric-val">${events.toLocaleString()}</div>
@@ -817,11 +844,19 @@ function showProvinceDetail(props) {
     ${score !== null ? `
     <div class="score-bar-wrap">
       <div class="score-bar-label">
-        <span>EVI Score</span>
+        <span>Composite EVI Score</span>
         <span>${(score * 100).toFixed(0)}/100</span>
       </div>
       <div class="score-bar-track"><div class="score-bar-fill" style="width:${Math.round(score*100)}%;background:${TIER_COLORS[tier]}"></div></div>
-      <p style="font-size: 9px; color: var(--ink-muted); margin-top: 4px;">EVI combines national educational baseline indicators with localized security threats.</p>
+    </div>
+    
+    <div class="score-bar-wrap" style="margin-top: -8px;">
+      <div class="score-bar-label">
+        <span>Structural Fragility</span>
+        <span>${(densityFragility * 100).toFixed(0)}/100</span>
+      </div>
+      <div class="score-bar-track" style="height: 3px;"><div class="score-bar-fill" style="width:${Math.round(densityFragility*100)}%;background:var(--ink)"></div></div>
+      <p style="font-size: 8px; color: var(--ink-muted); margin-top: 4px;">Structural fragility measures population density against infrastructure availability.</p>
     </div>` : ""}
 
     <div class="ai-box" id="aiBox">

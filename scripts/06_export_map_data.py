@@ -54,6 +54,20 @@ def build_geojson(vuln: pd.DataFrame, boundaries: gpd.GeoDataFrame) -> dict:
     vuln["Admin2_Mapped"] = vuln["Admin2"].map(BFA_NAME_MAP).fillna(vuln["Admin2"])
     vuln["Admin2_Mapped"] = vuln["Admin2_Mapped"].str.strip().str.title()
 
+    # --- Categorization Logic ---
+    # We use medians as thresholds to classify the nature of the risk
+    conf_median = vuln["conflict_score"].median()
+    frag_median = vuln["density_fragility"].median()
+
+    def get_risk_type(row):
+        is_high_conf = row["conflict_score"] > conf_median
+        is_high_frag = row["density_fragility"] > frag_median
+        
+        if is_high_conf and is_high_frag: return "Double Jeopardy"
+        if is_high_conf:                 return "Flashpoint"
+        if is_high_frag:                 return "Structurally Fragile"
+        return "Stable/Monitor"
+
     # Build GeoJSON manually
     features = []
     for _, row in vuln.iterrows():
@@ -66,11 +80,12 @@ def build_geojson(vuln: pd.DataFrame, boundaries: gpd.GeoDataFrame) -> dict:
             continue
 
         properties = {
-            "admin2":        row["Admin2"], # Keep original name for display
+            "admin2":        row["Admin2"], 
             "admin1":        row["Admin1"],
             "year":          int(row["year"]),
             "score":         round(float(row["score"]), 3),
             "priority":      str(row["priority"]),
+            "risk_type":     get_risk_type(row),
             "events":        int(row["events"]) if pd.notna(row["events"]) else 0,
             "fatalities":    int(row["fatalities"]) if pd.notna(row["fatalities"]) else 0,
             "events_2yr":    int(row["events_2yr"]) if "events_2yr" in row and pd.notna(row["events_2yr"]) else 0,
@@ -80,6 +95,8 @@ def build_geojson(vuln: pd.DataFrame, boundaries: gpd.GeoDataFrame) -> dict:
             "enrolment_raw":   round(float(row["enrolment_raw"]), 1) if "enrolment_raw" in row and pd.notna(row["enrolment_raw"]) else None,
             "edu_baseline":  round(float(row["edu_baseline"]), 3),
             "conflict_score": round(float(row["conflict_score"]), 3),
+            "density_fragility": round(float(row["density_fragility"]), 3) if "density_fragility" in row and pd.notna(row["density_fragility"]) else 0.5,
+            "schools_per_1000": round(float(row["schools_per_1000_children"]), 2) if "schools_per_1000_children" in row and pd.notna(row["schools_per_1000_children"]) else 0,
             "score_basis":   str(row["score_basis"])
         }
         
@@ -184,15 +201,25 @@ if __name__ == "__main__":
         # Spatial join to count schools per admin2
         print(f"  → Performing spatial join (schools ∩ boundaries)...")
         joined = gpd.sjoin(schools_gdf, boundaries[[name_col, "geometry"]], how="inner", predicate="within")
-        school_counts = joined.groupby(name_col).size().reset_index(name="school_count")
+        school_counts = joined.groupby(name_col).size().reset_index(name="school_count_new")
         school_counts = school_counts.rename(columns={name_col: "Admin2_Geo"})
         school_counts["Admin2_Geo"] = school_counts["Admin2_Geo"].str.strip().str.title()
         
         # Merge school counts into vuln early
         vuln["Admin2_Mapped"] = vuln["Admin2"].map(BFA_NAME_MAP).fillna(vuln["Admin2"])
         vuln["Admin2_Mapped"] = vuln["Admin2_Mapped"].str.strip().str.title()
+        
+        # Merge the new count from spatial join
         vuln = vuln.merge(school_counts, left_on="Admin2_Mapped", right_on="Admin2_Geo", how="left")
+        
+        # If school_count already exists (from hybrid index), we prioritize the spatial join result
+        if "school_count" in vuln.columns:
+            vuln["school_count"] = vuln["school_count_new"].fillna(vuln["school_count"])
+        else:
+            vuln["school_count"] = vuln["school_count_new"]
+            
         vuln["school_count"] = vuln["school_count"].fillna(0).astype(int)
+        vuln = vuln.drop(columns=["school_count_new", "Admin2_Geo"], errors="ignore")
 
         # Export schools.geojson (all points, minimal properties for performance)
         schools_out_path = OUT_DIR / "schools.geojson"
