@@ -402,6 +402,10 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
         <div class="stat-label">Schools</div>
       </div>
       <div class="stat" style="text-align: center;">
+        <div class="stat-num" id="statSchoolsAtRisk">—</div>
+        <div class="stat-label">Schools at Risk</div>
+      </div>
+      <div class="stat" style="text-align: center;">
         <div class="stat-num" id="statChildrenAtRisk">—</div>
         <div class="stat-label">Children in risk zones</div>
       </div>
@@ -664,7 +668,9 @@ async function init() {
 }
 
 function updateGlobalStats() {
+  const activeScores = scoreData.filter(s => (s.at_risk_years || []).includes(currentYear));
   document.getElementById("statSchoolsTotal").textContent = schoolsData.features.length.toLocaleString();
+  document.getElementById("statSchoolsAtRisk").textContent = activeScores.filter(s => s.v_score > 0.7).length.toLocaleString();
   
   const geoFeatures = choroplethLayer.toGeoJSON().features;
   const events = geoFeatures.reduce((s, f) => s + (f.properties.events || 0), 0);
