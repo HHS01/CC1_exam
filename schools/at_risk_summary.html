@@ -70,73 +70,86 @@ async function load() {
   // Header: name(0), amenity(1), lat(2), lon(3), conflict_score(4), fragility_uplift(5), final_score(6)
   const rows = vulnerabilityRaw.split('\n').slice(1);
   const vulnMap = {};
+  const nameMap = {}; // Fallback name-based match
+  
   rows.forEach(row => {
     const cols = parseCSVLine(row);
     if (cols.length >= 7) {
-        const lat = parseFloat(cols[2]).toFixed(4);
-        const lon = parseFloat(cols[3]).toFixed(4);
-        const key = `${lat},${lon}`;
-        vulnMap[key] = {
-            conflict: parseFloat(cols[4]).toFixed(3),
-            fragility: parseFloat(cols[5]).toFixed(3),
-            final: parseFloat(cols[6]).toFixed(3)
+        const rawName = (cols[0] || '').toLowerCase().trim();
+        // Use 3 decimal places for a more robust fuzzy match (~110m)
+        const lat = parseFloat(cols[2]).toFixed(3);
+        const lon = parseFloat(cols[3]).toFixed(3);
+        const data = {
+            conflict: parseFloat(cols[4]) || 0,
+            fragility: parseFloat(cols[5]) || 0,
+            final: parseFloat(cols[6]) || 0
         };
+        
+        vulnMap[`${lat},${lon}`] = data;
+        if (rawName) nameMap[rawName] = data;
     }
   });
 
   const tbody = document.querySelector("#schoolTable tbody");
   // Filter: Must be in at_risk_years for the year, v_score > 0.7 AND CSV final_score > 0.7 AND has trauma
   const filtered = scores.filter(s => {
-      const lat = s.lat.toFixed(4);
-      const lon = s.lon.toFixed(4);
+      const lat = s.lat.toFixed(3);
+      const lon = s.lon.toFixed(3);
       const key = `${lat},${lon}`;
-      const vData = vulnMap[key];
+      const nameKey = (s.name || '').toLowerCase().trim();
+      const vData = vulnMap[key] || nameMap[nameKey];
       
       const isAtRisk = (s.at_risk_years || []).includes(parseInt(year));
       const hasTrauma = (s.trauma || 0) > 0;
       const matchProv = province ? s.province === province : true;
-      const score = vData ? parseFloat(vData.final) : s.v_score;
+      
+      // If we don't have CSV data, we use the JSON's v_score
+      const score = vData ? vData.final : s.v_score;
       
       return isAtRisk && s.v_score > 0.7 && score > 0.7 && hasTrauma && matchProv;
   });
   
-  // Sort: Conflict Score (desc), then Fragility (desc), then Province (asc)
+  // Sort: Conflict Score (desc), then Final Score (desc), then Name (asc)
   filtered.sort((a, b) => {
-      const latA = a.lat.toFixed(4);
-      const lonA = a.lon.toFixed(4);
-      const latB = b.lat.toFixed(4);
-      const lonB = b.lon.toFixed(4);
-      const vA = vulnMap[`${latA},${lonA}`] || { conflict: 0, fragility: 0 };
-      const vB = vulnMap[`${latB},${lonB}`] || { conflict: 0, fragility: 0 };
+      const nameA = (a.name || '').toLowerCase().trim();
+      const nameB = (b.name || '').toLowerCase().trim();
+      const vA = vulnMap[`${a.lat.toFixed(3)},${a.lon.toFixed(3)}`] || nameMap[nameA] || { conflict: 0, final: a.v_score };
+      const vB = vulnMap[`${b.lat.toFixed(3)},${b.lon.toFixed(3)}`] || nameMap[nameB] || { conflict: 0, final: b.v_score };
 
-      const cA = parseFloat(vA.conflict) || 0;
-      const cB = parseFloat(vB.conflict) || 0;
+      const cA = vA.conflict;
+      const cB = vB.conflict;
       if (cB !== cA) return cB - cA;
 
-      const fA = parseFloat(vA.fragility) || 0;
-      const fB = parseFloat(vB.fragility) || 0;
+      const fA = vA.final;
+      const fB = vB.final;
       if (fB !== fA) return fB - fA;
 
-      return a.province.localeCompare(b.province);
+      return (a.name || '').localeCompare(b.name || '');
   });
   
   if (filtered.length === 0) {
       tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;">No at-risk schools in this region for ${year}</td></tr>`;
   } else {
       filtered.forEach((s, index) => {
-        const lat = s.lat.toFixed(4);
-        const lon = s.lon.toFixed(4);
+        const lat = s.lat.toFixed(3);
+        const lon = s.lon.toFixed(3);
         const key = `${lat},${lon}`;
-        const vData = vulnMap[key] || { conflict: 'N/A', fragility: 'N/A', final: (s.v_score || 0).toFixed(3) };
+        const nameKey = (s.name || '').toLowerCase().trim();
+        const vData = vulnMap[key] || nameMap[nameKey];
+        
+        const displayConflict = vData ? vData.conflict.toFixed(3) : '---';
+        const displayFragility = vData ? vData.fragility.toFixed(3) : '---';
+        const displayFinal = vData ? vData.final.toFixed(3) : (s.v_score || 0).toFixed(3);
+
         const row = `<tr>
             <td>${index + 1}</td>
             <td>${s.name || 'Unnamed'}</td>
             <td>${s.province}</td>
-            <td>${lat}</td>
-            <td>${lon}</td>
-            <td>${vData.conflict}</td>
-            <td>${vData.fragility}</td>
-            <td>${vData.final}</td>
+            <td>${s.lat.toFixed(4)}</td>
+            <td>${s.lon.toFixed(4)}</td>
+            <td>${displayConflict}</td>
+            <td>${displayFragility}</td>
+            <td>${displayFinal}</td>
         </tr>`;
         tbody.innerHTML += row;
       });
