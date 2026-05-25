@@ -95,7 +95,7 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
   flex-wrap: wrap;
 }
 
-.stat { text-align: right; }
+.stat { text-align: center; }
 .stat-num {
   font-family: var(--serif);
   font-size: clamp(22px, 3vw, 36px);
@@ -568,10 +568,12 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
 
       <!-- Year slider -->
       <div class="panel">
+        <!-- AI Key input disabled to free space
         <div class="key-input-wrap">
           <label class="key-input-label">Session AI Key (Never Saved)</label>
           <input type="password" id="sessionKey" class="key-input-field" placeholder="Paste Gemini Key here..." />
         </div>
+        -->
         <div class="panel-label">
           <span>Year</span>
           <span class="year-display" id="yearDisplay">2023</span>
@@ -656,6 +658,7 @@ let allFeatures  = {};
 let schoolsData  = null;
 let trendsData   = [];
 let currentYear  = 2023;
+let currentProvince = null;
 let choropleth   = null;
 let schoolsLayer = null;
 let selectedLayer = null;
@@ -669,6 +672,12 @@ function saveCache() {
   catch(e) { console.warn("Cache save failed:", e); }
 }
 
+function updateNavLinks() {
+  let url = `./schools/index.html?year=${currentYear}`;
+  if (currentProvince) url += `&province=${encodeURIComponent(currentProvince)}`;
+  document.getElementById("schoolsLink").href = url;
+}
+
 // ═══════════════════════════════════════════════════════
 // DATA LOADING
 // ═══════════════════════════════════════════════════════
@@ -676,6 +685,8 @@ function saveCache() {
 async function loadAll() {
   const urlParams = new URLSearchParams(window.location.search);
   const yearParam = urlParams.get('year');
+  currentProvince = urlParams.get('province');
+
   if (yearParam) {
     currentYear = parseInt(yearParam);
     document.getElementById("yearSlider").value = currentYear;
@@ -697,9 +708,9 @@ async function loadAll() {
       allFeatures[yr].push(f);
     });
 
-    const years = Object.keys(allFeatures).map(Number);
-    if (years.length === 1) {
-      const yr = years[0];
+    const yearsList = Object.keys(allFeatures).map(Number);
+    if (yearsList.length === 1) {
+      const yr = yearsList[0];
       for (let y = 2015; y <= 2026; y++) {
         if (!allFeatures[y]) allFeatures[y] = allFeatures[yr];
       }
@@ -709,7 +720,16 @@ async function loadAll() {
     drawTrend(trends);
     renderChoropleth(currentYear);
     
-    document.getElementById("schoolsLink").href = `./schools/index.html?year=${currentYear}`;
+    updateNavLinks();
+
+    // Auto-select province if in URL
+    if (currentProvince) {
+      const layers = choropleth.getLayers();
+      const match = layers.find(l => l.feature.properties.admin2 === currentProvince);
+      if (match) {
+        match.fire('click');
+      }
+    }
 
     document.getElementById("loadingOverlay").classList.add("hidden");
 
@@ -738,7 +758,14 @@ function renderChoropleth(year) {
           if (selectedLayer) choropleth.resetStyle(selectedLayer);
           selectedLayer = e.target;
           e.target.setStyle({ weight: 3, color: "#1A1410", fillOpacity: 1.0 });
+          currentProvince = f.properties.admin2;
+          updateNavLinks();
           showProvinceDetail(f.properties);
+          
+          // Update URL without reload
+          const newUrl = new URL(window.location);
+          newUrl.searchParams.set('province', currentProvince);
+          window.history.replaceState({}, '', newUrl);
         }
       });
     }
@@ -764,7 +791,7 @@ function styleFeature(f) {
 document.getElementById("yearSlider").addEventListener("input", e => {
   currentYear = parseInt(e.target.value);
   document.getElementById("yearDisplay").textContent = currentYear;
-  document.getElementById("schoolsLink").href = `./schools/index.html?year=${currentYear}`;
+  updateNavLinks();
   selectedLayer = null;
   renderChoropleth(currentYear);
   resetDetailPanel();
@@ -886,9 +913,9 @@ function showProvinceDetail(props) {
   // ── Update Trend Chart for this province ──────────────────────────────────
   const provinceName = props.admin2 || "Unknown";
   const provinceTrend = [];
-  const years = Object.keys(allFeatures).sort((a,b) => a-b);
+  const yearsList = Object.keys(allFeatures).sort((a,b) => a-b);
   
-  years.forEach(yr => {
+  yearsList.forEach(yr => {
     const feature = allFeatures[yr].find(f => f.properties.admin2 === props.admin2);
     if (feature) {
       provinceTrend.push({
