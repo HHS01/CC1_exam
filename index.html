@@ -149,7 +149,7 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
   color: var(--ink-muted);
   margin-bottom: 10px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 }
 
@@ -234,6 +234,7 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
   flex: 1;
   overflow-y: auto;
   padding: 18px 20px;
+  text-align: center;
 }
 
 .detail-empty {
@@ -539,10 +540,10 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
       </p>
       </div>
       <div class="stats" style="justify-content: center; gap: 40px;">
-        <a href="./schools/index.html" id="schoolsLink" class="stat" style="text-decoration:none; cursor:pointer; text-align: center;">
-          <div class="stat-num" id="statSchoolsAtRisk">—</div>
-          <div class="stat-label" style="text-decoration:underline;">Schools at risk</div>
-        </a>
+        <div class="stat" style="text-align: center;">
+          <div class="stat-num" id="statChildrenAtRisk">—</div>
+          <div class="stat-label">Children in risk zones</div>
+        </div>
         <div class="stat" style="text-align: center;">
           <div class="stat-num" id="statCritical">—</div>
           <div class="stat-label">Critical provinces</div>
@@ -816,7 +817,6 @@ document.getElementById("yearSlider").addEventListener("input", e => {
 function populateStats(insights) {
   if (!insights) return;
   document.getElementById("statCritical").textContent = insights.critical_regions || 0;
-  document.getElementById("statSchoolsAtRisk").textContent = (insights.schools_at_risk || 0).toLocaleString();
   document.getElementById("statEvents").textContent = (insights.total_events || 0).toLocaleString();
   document.getElementById("statFatalities").textContent = (insights.total_fatalities || 0).toLocaleString();
 }
@@ -827,11 +827,12 @@ function updateHeaderStats(features) {
   const events = features.reduce((s, f) => s + (f.properties.events || 0), 0);
   const fatalities = features.reduce((s, f) => s + (f.properties.fatalities || 0), 0);
   
-  const yearData = (trendsData || []).find(d => d.year === currentYear);
-  const schoolsAtRisk = yearData ? (yearData.high_risk_schools || 0) : 0;
+  // High Risk Zones = Critical + High provinces
+  const riskZones = features.filter(f => ["critical", "high_priority"].includes((f.properties.priority || "").toLowerCase()));
+  const childrenAtRisk = riskZones.reduce((s, f) => s + (f.properties.school_age_pop || 0), 0);
 
   document.getElementById("statCritical").textContent = critical;
-  document.getElementById("statSchoolsAtRisk").textContent = schoolsAtRisk.toLocaleString();
+  document.getElementById("statChildrenAtRisk").textContent = (childrenAtRisk / 1e6).toFixed(1) + "M";
   document.getElementById("statEvents").textContent = events.toLocaleString();
   document.getElementById("statFatalities").textContent = fatalities.toLocaleString();
 }

@@ -150,7 +150,7 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
   color: var(--ink-muted);
   margin-bottom: 10px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 }
 
@@ -208,6 +208,7 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
   flex: 1;
   overflow-y: auto;
   padding: 18px 20px;
+  text-align: center;
 }
 
 .detail-empty {
@@ -401,12 +402,8 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
         <div class="stat-label">Schools</div>
       </div>
       <div class="stat" style="text-align: center;">
-        <div class="stat-num" id="statSchoolsAtRisk">—</div>
-        <div class="stat-label">Schools at Risk</div>
-      </div>
-      <div class="stat" style="text-align: center;">
-        <div class="stat-num" id="statAvgRisk">—</div>
-        <div class="stat-label">Avg Site Risk</div>
+        <div class="stat-num" id="statChildrenAtRisk">—</div>
+        <div class="stat-label">Children in risk zones</div>
       </div>
     </div>
   </header>
@@ -619,6 +616,44 @@ async function init() {
         choroplethLayer.addData(geoRes.features.filter(f => f.properties.year === currentYear));
       }
 
+      // Persist selection across years
+      if (currentProvince) {
+        const layers = choroplethLayer.getLayers();
+        const match = layers.find(l => l.feature.properties.admin2 === currentProvince);
+        if (match) {
+            selectedLayer = match;
+            match.setStyle({ weight: 3, color: "#1A1410", fillOpacity: 0.8 });
+            // Re-trigger the sidebar update manually to avoid infinite recursion or event issues
+            const stats = provinceStats[currentYear] || {};
+            const provData = stats[match.feature.properties.admin2] || { count: 0 };
+            const schoolsPer1k = match.feature.properties.schools_per_1000 ?? 0;
+            
+            document.getElementById("detailPanel").innerHTML = `
+              <div class="panel-label">Province detail</div>
+              <div class="detail-name">${match.feature.properties.admin2}</div>
+              <div class="detail-metrics">
+                <div class="metric">
+                  <div class="metric-val">${match.feature.properties.school_count || 0}</div>
+                  <div class="metric-label">Total Schools</div>
+                </div>
+                <div class="metric">
+                  <div class="metric-val">${schoolsPer1k.toFixed(1)}</div>
+                  <div class="metric-label">Schools / 1k children</div>
+                </div>
+                ${provData.count > 0 ? `
+                <a href="at_risk_summary.html?year=${currentYear}&province=${encodeURIComponent(match.feature.properties.admin2)}" class="metric" style="text-decoration:none; cursor:pointer;">
+                  <div class="metric-val">${provData.count}</div>
+                  <div class="metric-label" style="text-decoration:underline;">At-Risk Schools</div>
+                </a>` : `
+                <div class="metric">
+                  <div class="metric-val">0</div>
+                  <div class="metric-label">At-Risk Schools</div>
+                </div>`}
+              </div>
+            `;
+        }
+      }
+
       renderSchools(schoolsData);
       renderHeatmap();
       updateGlobalStats();
@@ -629,19 +664,16 @@ async function init() {
 }
 
 function updateGlobalStats() {
-  const activeScores = scoreData.filter(s => (s.at_risk_years || []).includes(currentYear));
   document.getElementById("statSchoolsTotal").textContent = schoolsData.features.length.toLocaleString();
-  document.getElementById("statSchoolsAtRisk").textContent = activeScores.filter(s => s.v_score > 0.7).length.toLocaleString();
   
   const geoFeatures = choroplethLayer.toGeoJSON().features;
   const events = geoFeatures.reduce((s, f) => s + (f.properties.events || 0), 0);
   document.getElementById("statEvents").textContent = events.toLocaleString();
 
-  // Avg Site Risk Score (mean v_score of all schools)
-  const avgRisk = activeScores.length > 0
-    ? (activeScores.reduce((s, sch) => s + (sch.v_score || 0), 0) / activeScores.length * 100).toFixed(0)
-    : 0;
-  document.getElementById("statAvgRisk").textContent = avgRisk + "%";
+  // Children in High Risk Zones (Critical + High provinces)
+  const riskZones = geoFeatures.filter(f => ["critical", "high_priority"].includes((f.properties.priority || "").toLowerCase()));
+  const childrenAtRisk = riskZones.reduce((s, f) => s + (f.properties.school_age_pop || 0), 0);
+  document.getElementById("statChildrenAtRisk").textContent = (childrenAtRisk / 1e6).toFixed(1) + "M";
 }
 
 function resetSelection() {
