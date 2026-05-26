@@ -467,6 +467,7 @@ const GEOJSON_URL  = "../artifacts/data.geojson";
 const SCHOOLS_URL  = "../artifacts/schools.geojson";
 const SCORE_URL    = "../artifacts/school_vulnerability_scores.json";
 const PROV_STATS_URL = "../artifacts/province_at_risk_stats.json";
+const VULN_CSV_URL   = "../artifacts/schools/BFA_school_vulnerability.csv";
 
 const TIER_COLORS = {
   critical: "#8B1A1A",
@@ -500,6 +501,7 @@ let heatmapLayer    = null;
 let scoreData       = [];
 let schoolsData     = null;
 let provinceStats   = null;
+let vulnMap         = {}; // To store detailed conflict/fragility metrics
 let selectedLayer   = null;
 let currentYear     = 2024;
 let currentProvince = null;
@@ -525,16 +527,32 @@ async function init() {
   updateNavLinks();
 
   try {
-    const [geoRes, schoolsRes, scoreRes, provStatsRes] = await Promise.all([
+    const [geoRes, schoolsRes, scoreRes, provStatsRes, vulnCsvRes] = await Promise.all([
       fetch(GEOJSON_URL).then(r => r.json()),
       fetch(SCHOOLS_URL).then(r => r.json()),
       fetch(SCORE_URL).then(r => r.json()),
-      fetch(PROV_STATS_URL).then(r => r.json())
+      fetch(PROV_STATS_URL).then(r => r.json()),
+      fetch(VULN_CSV_URL).then(r => r.text())
     ]);
 
     scoreData = scoreRes;
     schoolsData = schoolsRes;
     provinceStats = provStatsRes;
+
+    // Parse Site Level Metrics
+    const rows = vulnCsvRes.split('\n').slice(1);
+    rows.forEach(row => {
+      const cols = row.split(',');
+      if (cols.length >= 7) {
+        const lat = parseFloat(cols[2]).toFixed(4);
+        const lon = parseFloat(cols[3]).toFixed(4);
+        vulnMap[`${lat},${lon}`] = {
+          conflict: parseFloat(cols[4]) || 0,
+          fragility: parseFloat(cols[5]) || 0,
+          final: parseFloat(cols[6]) || 0
+        };
+      }
+    });
 
     const nationalEvents = geoRes.features.filter(f => f.properties.year === currentYear).reduce((s, f) => s + (f.properties.events || 0), 0);
     
@@ -764,18 +782,37 @@ function renderSchools(geo) {
 function showSchoolDetail(props, latlng) {
   const score = scoreData.find(s => Math.abs(s.lat - latlng.lat) < 0.0001 && Math.abs(s.lon - latlng.lng) < 0.0001);
   if (!score) return;
+
+  const latKey = latlng.lat.toFixed(4);
+  const lonKey = latlng.lng.toFixed(4);
+  const detailed = vulnMap[`${latKey},${lonKey}`] || { conflict: 0, fragility: 0 };
+
   const name = props.name || "Unnamed Institution", v_score = (score.v_score * 100).toFixed(0), trauma = score.trauma, province = score.province || "Unknown", years = score.at_risk_years || [], risk_summary = years.length > 0 ? `at risk ${years.length} times since ${years[0]}` : "not currently at risk";
+  
   document.getElementById("detailPanel").innerHTML = `
     <div class="panel-label">School detail</div>
     <div class="detail-name">${name}</div>
     <div class="panel-label" style="margin-top:4px;">${province} Province</div>
     <div class="detail-metrics">
-      <div class="metric"><div class="metric-val">${v_score}%</div><div class="metric-label">Risk Score</div></div>
-      <div class="metric"><div class="metric-val">${trauma}</div><div class="metric-label">Events Near</div></div>
+      <div class="metric"><div class="metric-val">${v_score}%</div><div class="metric-label">Memory Risk</div></div>
+      <div class="metric"><div class="metric-val">${trauma}</div><div class="metric-label">Trauma Count</div></div>
     </div>
+    
+    <div class="panel-label" style="margin-top:10px; margin-bottom:6px">Site Level Metrics</div>
+    <div class="detail-metrics" style="grid-template-columns: 1fr 1fr; gap: 8px;">
+      <div class="metric" style="padding: 8px;">
+        <div class="metric-val" style="font-size: 16px;">${detailed.conflict.toFixed(2)}</div>
+        <div class="metric-label">Conflict</div>
+      </div>
+      <div class="metric" style="padding: 8px;">
+        <div class="metric-val" style="font-size: 16px;">${detailed.fragility.toFixed(2)}</div>
+        <div class="metric-label">Fragility</div>
+      </div>
+    </div>
+
     <div class="ai-box">
       <div class="ai-label">Risk Profile</div>
-      <div class="ai-text">This facility is located in <strong>${province}</strong>. It has been <strong>${risk_summary}</strong> based on proximity to conflict events.</div>
+      <div class="ai-text">This facility is in <strong>${province}</strong>. Memory risk: <strong>${v_score}%</strong>. Fresh conflict pressure: <strong>${(detailed.conflict * 100).toFixed(0)}%</strong>.</div>
     </div>
   `;
 }
