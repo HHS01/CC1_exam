@@ -1,89 +1,128 @@
-# Scripts Overview
+# Education Risk Pipeline: Technical Manual
 
-This folder contains the data acquisition and processing scripts for the analysis pipeline.
-
-## 01. ACLED Data Pipeline
-
-### [01_fetch_acled_hdx.py](./01_fetch_acled_hdx.py)
-Fetches the latest ACLED conflict data from the Humanitarian Data Exchange (HDX) API.
-- **Output**: `data/raw/acled/acled_YYYY-MM-DD.xlsx`
-- **Features**: Includes automated integrity checks to ensure the Excel archive is valid.
-
-### [01_1_split_acled.py](./01_1_split_acled.py)
-Processes the ACLED Excel file, splitting each sheet into individual CSV files.
-- **Output**: `data/raw/acled/split/*.csv`
-- **Features**: 
-    - Generates a `manifest.json` mapping countries to their respective CSV files.
-    - Creates Markdown summaries of unique countries for each sheet.
-
-### [01_2_hrp_country.py](./01_2_hrp_country.py)
-Filters and groups ACLED data into country-specific files.
-- **Input**: Uses the `manifest.json` and CSVs from step 01_1.
-- **Usage**: 
-    - `python3 scripts/01_2_hrp_country.py --country "Burkina Faso"` (Targeted extraction)
-    - `python3 scripts/01_2_hrp_country.py` (Full split of all countries)
-- **Output**: `data/raw/acled/countries/{SheetName}_countries/{Country}.csv`
+This project provides a robust, 24-step data pipeline to compute the Education Vulnerability Index (EVI). It is fully generalized to support any ISO3 country code.
 
 ---
 
-## 02. Infrastructure Data (Schools)
+## 🛠 Setup & Prerequisites
 
-### [02_fetch_schools_hdx.py](./02_fetch_schools_hdx.py)
-Downloads HOTOSM education facility point data for multiple countries from HDX.
-- **Output**: 
-    - `data/raw/schools_hdx/{ISO3}_schools.geojson`
-    - `data/raw/schools_hdx/schools_all.geojson` (Merged dataset)
-    - `data/raw/schools_hdx/schools_all.csv` (Flat CSV with coordinates)
-- **Features**: Uses dynamic HDX API discovery and fuzzy matching to resolve stale download links automatically.
-
-### [02_fetch_schools.py](./02_fetch_schools.py)
-(Legacy) Original version of the school fetcher using hardcoded UUIDs. Superseded by the HDX API version.
+### Environment
+- **Python 3.9+** is required.
+- **Dependencies**: Install all required libraries via pip:
+  ```bash
+  pip install -r requirements.txt
+  ```
+- **API Keys**: No API keys are required for the standard fetchers. The pipeline uses public data APIs (HDX, WorldBank, UNESCO, WorldPop). Geocoding uses the Nominatim API which requires only a valid User-Agent (already configured).
+- **Disk Space**: The full pipeline for a single country requires ~500MB - 1GB of disk space, primarily due to global conflict archives and high-resolution population rasters.
 
 ---
 
-## 03. Education Indicators
+## 🚀 Master Orchestrator: `run_all.py`
 
-### [03_fetch_opri.py](./03_fetch_opri.py)
-Streams the UNESCO UIS OPRI (Education Operational Risk Indicators) bulk dataset and filters for key metrics.
-- **Output**: `data/raw/opri/opri_{ISO3}.csv` (one file per country)
-- **Features**: Processes enrolment rates, out-of-school rates, and survival rates for the period 2000–2023.
+The `run_all.py` script sequences 24 steps across four phases. **The `#` column in the tables below corresponds directly to the numbers used in `--skip` and `--only` flags.**
 
----
+### Usage Examples
+```bash
+# Run for a specific country (e.g., Mali)
+python scripts/run_all.py --iso3 MLI
 
-## 04. Geographic Boundaries
+# Resume after a fetch failure (skip steps 1-8)
+python scripts/run_all.py --iso3 NER --skip 1 2 3 4 5 6 7 8
 
-### [04_fetch_boundaries.py](./04_fetch_boundaries.py)
-Downloads Administrative Level 1 and 2 boundaries (GeoJSON) from OCHA HDX.
-- **Output**: `data/raw/boundaries/{ISO3}_admin1.geojson` and `admin2.geojson`
-- **Usage**: `python3 scripts/04_fetch_boundaries.py BFA MLI NER` (Accepts ISO3 codes as arguments)
-
----
-
-## 05. Analysis & Export
-
-### [05_build_analysis.py](./05_build_analysis.py)
-Merges conflict, education, and school data to perform spatial and statistical analysis.
-
-### [06_export_map_data.py](./06_export_map_data.py)
-Finalizes the data for visualization, exporting cleaned and formatted layers for the interactive map.
+# Run ONLY the final export and UI update
+python scripts/run_all.py --iso3 BFA --only 22 23 24
+```
 
 ---
 
-## Utilities
+## 🛠 Pipeline Catalog
 
-### [geocode_admin.py](./geocode_admin.py)
-A robust geocoder that resolves latitude and longitude for administrative names (Country, Admin1, Admin2) using the Nominatim (OpenStreetMap) API.
-- **Input**: `.csv` or `.xlsx` files containing administrative name columns.
-- **Output**: A new geocoded file (default: `*_geocoded.csv`) with added `latitude` and `longitude` columns.
-- **Features**: 
-    - **Deduplication**: Only unique location combinations are queried to save time and API quota.
-    - **Fallback Logic**: Tries Admin2+Admin1+Country → Admin2+Country → Admin1+Country to maximize resolution.
-    - **Caching**: Saves results to a JSON cache file so identical locations are never queried twice.
-    - **Rate Limiting**: Automatically respects API terms of service (1 request per second).
+### Phase 1: Data Acquisition (Fetch)
+| # | Script | Description | Primary Output |
+|---|---|---|---|
+| 1 | `01_fetch_acled_hdx.py` | Global ACLED conflict events (⚠️ ~100MB) | `data/raw/acled/acled_*.xlsx` |
+| 2 | `01_3_fetch_granular_conflicts.py` | UCDP point-level conflict data | `data/raw/conflicts/{ISO3}_granular.csv` |
+| 3 | `02_fetch_schools_hdx.py` | Official school datasets from HDX | `data/raw/schools_hdx/{ISO3}_schools.geojson` |
+| 4 | `02_fetch_schools.py` | Fallback OSM school locations | `data/raw/schools/schools_osm.geojson` |
+| 5 | `03_fetch_education.py` | Subnational DHS & WB indicators | `data/raw/education/dhs_subnational_{ISO3}.csv` |
+| 6 | `03_1_fetch_opri.py` | National UNESCO OPRI indicators | `data/raw/opri/opri_{ISO3}.csv` |
+| 7 | `04_fetch_boundaries.py` | OCHA Administrative boundaries | `data/raw/boundaries/{ISO3}_admin2.geojson` |
+| 8 | `04_1_fetch_worldpop.py` | Population density rasters (⚠️ 50MB-2GB+) | `data/clean/{ISO3}_pop_density/*.json` |
 
 ---
 
-## Orchestration
+## 📦 Managing Large Downloads
 
-### [run_all.py](./run_all.py)
-The master script that orchestrates the execution of the entire pipeline in the correct order.
+Some steps involve significant data transfers. You can manage this by running scripts individually with granular flags:
+
+### Granular WorldPop Fetching
+Instead of fetching all years (2000-2020), fetch only the years needed for your analysis (e.g., recent years):
+```bash
+# Fetch only the latest year (2020)
+python scripts/04_1_fetch_worldpop.py --iso3 BFA --years latest
+
+# Fetch specific recent years
+python scripts/04_1_fetch_worldpop.py --iso3 MLI --years 2018,2019,2020
+```
+
+### Automatic Cleanup
+Use the `--clean` flag on Step 8 to delete the heavy `.tif` files after they have been processed into lightweight JSON heatmaps:
+```bash
+python scripts/04_1_fetch_worldpop.py --iso3 BFA --years all --clean
+```
+
+---
+
+## 🛠 Pipeline Catalog (continued)
+
+### Phase 2: Processing & Cleaning
+| # | Script | Input | Key Action |
+|---|---|---|---|
+| 9 | `01_1_split_acled.py` | Global XLSX | Splits global file into country-sheet CSVs |
+| 10 | `01_2_hrp_country.py` | Split CSVs | Extracts `{Country}.csv` + Geocoding |
+| 11 | `02_2_merge_schools.py` | HDX + OSM | Merges multiple school sources |
+| 12 | `02_x_clean_school.py` | Merged Schools | Spatial deduplication (50m buffer) |
+| 13 | `03_x_merge_education.py` | DHS/WB/OPRI | Creates `data/clean/education/master_education.csv` |
+| 14 | `04_x_align_admin_names.py` | ACLED + Boundaries | Creates `artifacts/admin_mapping.json` |
+| 15 | `04_y_validate_data_integrity.py` | Processed Data | **Quality Gate**: Aborts on critical missing data |
+
+### Phase 3: Analysis & Scoring
+| # | Script | Output | Feature |
+|---|---|---|---|
+| 16 | `05_build_analysis.py` | `artifacts/{ISO3}_vulnerability.csv` | Baseline score + National trends |
+| 17 | `05_1_calculate_hybrid_vulnerability.py`| `artifacts/{ISO3}_hybrid_index.csv` | Factors in population & schools |
+| 18 | `06_1_calculate_school_proximity.py` | `artifacts/proximity_risk_stats.json` | Min-distance to active conflict |
+| 19 | `06_2_school_fragility.py` | `artifacts/school_vulnerability_scores.json`| Individual school risk ranking |
+| 20 | `06_3_calculate_density_gap.py` | `artifacts/province_school_fragility.csv` | School availability vs population |
+| 21 | `06_4_aggregate_at_risk_schools.py` | `artifacts/province_at_risk_stats.json` | Time-series counts for dashboard |
+
+### Phase 4: Export & Finalization
+| # | Script | Output | Purpose |
+|---|---|---|---|
+| 22 | `06_export_map_data.py` | `artifacts/data.geojson` | Choropleth layers + Insights |
+| 23 | `06_x_export_conflicts_geojson.py` | `artifacts/conflicts.geojson` | Combined ACLED + UCDP layer |
+| 24 | `07_update_dashboard.py` | `index.html` | **UI Sync**: Updates country names/paths |
+
+---
+
+## 🔗 Key Data Dependencies
+
+- **Step 14 (`admin_mapping.json`)** is consumed by steps 17, 21, and 22 to ensure names match between datasets and the map.
+- **Step 13 (`master_education.csv`)** is the primary source for all education-related risk drivers in Phase 3.
+- **Step 19 (`school_vulnerability_scores.json`)** is required for the aggregate statistics in Step 21.
+
+---
+
+## 🛡 Failsafe & Thresholds
+
+### 1. The "Critical Chain" (Steps 1-15)
+If any step in the Fetch or Processing phases fails, the pipeline **aborts**. This is intentional: you cannot perform a valid analysis on corrupted or missing boundary/conflict data.
+
+### 2. Graceful Degradation in Scoring
+The `05_build_analysis` script handles missing education indicators:
+- **Minimum Floor**: If at least 1 indicator is found, a score is produced.
+- **Basis Flag**: The output CSV includes a `score_basis` column (e.g., `1/3_indicators`) so analysts can judge the confidence of the score.
+- **Missing All**: If 0 indicators are found for a country, the step will fail.
+
+### 3. Source Fallback
+`06_x` checks for UCDP data. If unavailable, it skips the granular layer and builds the map using ACLED only, rather than crashing.

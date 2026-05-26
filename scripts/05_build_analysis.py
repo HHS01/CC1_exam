@@ -28,17 +28,30 @@ from pathlib import Path
 
 # ── Config ────────────────────────────────────────────────────────────────────
 ISO3       = os.environ.get("PIPELINE_ISO3", "BFA")
+COUNTRY    = os.environ.get("PIPELINE_COUNTRY", "Burkina Faso")
 START_YEAR = 2015
 END_YEAR   = 2026
 
-# Map ISO3 to the clean ACLED country names
-COUNTRY_MAP = {
-    "BFA": "Burkina_Faso",
-    "MLI": "Mali",
-    "NER": "Niger"
-}
+# Sanitize country name for file matching (replace spaces with underscores)
+country_safe = COUNTRY.replace(" ", "_")
 
-IN_ACLED = Path(f"data/clean/acled/HRP_2_countries/{COUNTRY_MAP.get(ISO3, 'Burkina_Faso')}.csv")
+def find_acled_file(country: str) -> Path:
+    """Search for the country's ACLED CSV in any data/clean/acled/* subdirectory."""
+    base_dir = Path("data/clean/acled")
+    if not base_dir.exists():
+        return Path(f"data/clean/acled/HRP_2_countries/{country}.csv") # Fallback
+    
+    # Priority 1: Geocoded version
+    for path in base_dir.glob(f"**/{country}_geocoded.csv"):
+        return path
+    
+    # Priority 2: Standard version
+    for path in base_dir.glob(f"**/{country}.csv"):
+        return path
+    
+    return base_dir / f"HRP_2_countries/{country}.csv" # Default path
+
+IN_ACLED = find_acled_file(country_safe)
 IN_EDU   = Path("data/clean/education/master_education.csv")
 OUT_DIR  = Path("artifacts")
 OUT_DIR.mkdir(parents=True, exist_ok=True)

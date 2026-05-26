@@ -19,6 +19,14 @@ HDX_API_URL = f"https://data.humdata.org/api/3/action/package_show?id={DATASET_I
 
 def download_latest_hdx():
     print(f"Fetching latest HDX dataset: {DATASET_ID}")
+    
+    # ── Large Download Warning ────────────────────────────────────────────────
+    print("\n" + "!"*60)
+    print("⚠️  WARNING: LARGE DOWNLOAD")
+    print("The global ACLED conflict archive is typically 50MB-100MB.")
+    print("This may take a moment depending on your connection.")
+    print("!"*60 + "\n")
+
     response = requests.get(HDX_API_URL).json()
     
     if not response.get("success"):

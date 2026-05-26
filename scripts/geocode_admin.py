@@ -73,7 +73,7 @@ import requests
 NOMINATIM_URL  = "https://nominatim.openstreetmap.org/search"
 USER_AGENT     = "geocode-admin-research/2.0 (open-source field research tool)"
 REQUEST_DELAY  = 1.1        # seconds between API calls (Nominatim ToS)
-DEFAULT_CACHE  = "geocode_cache.json"
+DEFAULT_CACHE  = "utils/geocode_cache.json"
 CONSECUTIVE_ERROR_LIMIT = 5 # Stop execution if this many errors occur in a row
 
 # Column name aliases (lowercase) for auto-detection
