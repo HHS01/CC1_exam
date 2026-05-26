@@ -828,10 +828,10 @@ function renderConflicts() {
       const events = f.properties.events || 0;
       const fatalities = f.properties.fatalities || 0;
 
-      // COOLER TRIANGLE STYLING
-      let color = "#F0C060"; 
-      if (events >= p90Events && events > 1) color = "#8B1A1A"; 
-      else if (events >= p75Events) color = "#E07B3B";
+      // COOLER PURPLE TRIANGLE STYLING
+      let color = "#D2B4DE"; // Low Intensity
+      if (events >= p90Events && events > 1) color = "#633974"; // High Intensity
+      else if (events >= p75Events) color = "#AF7AC5"; // Medium Intensity
 
       let size = currentProvince ? 12 : 16; // Slightly bigger for hotspots
       if (fatalities >= p90Fatals) size += 10;
