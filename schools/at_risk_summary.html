@@ -33,8 +33,7 @@
     <th>Province</th>
     <th>Memory Risk (Proximity)</th>
     <th>Annual Pressure (Province)</th>
-    <th>Fragility uplift</th>
-    <th>Combined Score</th>
+    <th>Risk Index</th>
   </tr></thead>
   <tbody></tbody>
 </table>
@@ -169,7 +168,6 @@ async function load() {
             <td>${s.province}</td>
             <td style="font-family:monospace; color:#2E86C1;">${(s.v_score * 100).toFixed(0)}%</td>
             <td style="color:#C0392B; font-family:monospace;">${displayConflict}</td>
-            <td style="font-family:monospace; color:#6B6259;">${displayFragility}</td>
             <td style="font-weight:bold; font-family:monospace;">${displayFinal}</td>
         </tr>`;
         tbody.innerHTML += row;
