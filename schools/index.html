@@ -443,10 +443,7 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
         <div class="panel-label" style="margin-top:16px;margin-bottom:8px">Infrastructure Layers</div>
         <div style="display:flex; flex-direction:column; gap:8px;">
            <label style="display:flex; align-items:center; gap:8px; font-size:11px; color:var(--ink-muted); cursor:pointer;">
-             <input type="checkbox" id="toggleHeatmap"> <span>Vulnerability Heatmap</span>
-           </label>
-           <label style="display:flex; align-items:center; gap:8px; font-size:11px; color:var(--ink-muted); cursor:pointer;">
-             <input type="checkbox" id="toggleSchools"> <span>Individual School Points</span>
+             <input type="checkbox" id="toggleSchools" checked> <span>Individual School Points</span>
            </label>
         </div>
       </div>
@@ -461,14 +458,13 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
 
       <!-- Chart Panel -->
       <div class="panel" style="border-top: 1px solid var(--border); background: var(--surface2);">
-        <div class="panel-label" id="chartTitle">National Risk Trajectory</div>
+        <div class="panel-label" id="chartTitle">Crisis Trend</div>
         <div style="height: 140px; position: relative;">
           <canvas id="riskChart"></canvas>
         </div>
-        <div class="legend-grid" style="margin-top: 10px; font-size: 9px;">
-          <div class="legend-item"><div class="legend-dot" style="background:var(--tier-critical)"></div>Critical</div>
-          <div class="legend-item"><div class="dot" style="background:var(--tier-high); width:12px; height:12px; border-radius:2px;"></div>High</div>
-          <div class="legend-item"><div class="legend-dot" style="background:var(--tier-low)"></div>Stable</div>
+        <div class="legend-grid" style="margin-top: 10px; font-size: 9px; grid-template-columns: 1fr 1fr;">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--tier-critical)"></div>Critical Risk</div>
+          <div class="legend-item"><div class="dot" style="background:var(--tier-high); width:12px; height:12px; border-radius:2px;"></div>High Risk</div>
         </div>
       </div>
 
@@ -512,7 +508,6 @@ L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png
 
 let choroplethLayer = null;
 let schoolsLayer    = null;
-let heatmapLayer    = null;
 let scoreData       = [];
 let schoolsData     = null;
 let provinceStats   = null;
@@ -641,15 +636,12 @@ async function init() {
       }
     }).addTo(map);
 
-    document.getElementById("toggleSchools").checked = false;
-    document.getElementById("toggleHeatmap").checked = false;
+    document.getElementById("toggleSchools").checked = true;
 
     // Add event listeners for toggles
     document.getElementById("toggleSchools").addEventListener("change", () => renderSchools(schoolsData));
-    document.getElementById("toggleHeatmap").addEventListener("change", renderHeatmap);
 
     renderSchools(schoolsData);
-    renderHeatmap();
     updateGlobalStats();
 
     // Auto-select province if in URL
@@ -715,7 +707,6 @@ async function init() {
       }
 
       renderSchools(schoolsData);
-      renderHeatmap();
       updateGlobalStats();
       updateRiskChart(currentProvince || "National");
     });
@@ -766,18 +757,6 @@ map.on('click', e => {
   resetSelection();
 });
 
-function renderHeatmap() {
-  if (heatmapLayer) map.removeLayer(heatmapLayer);
-  const heatPoints = scoreData.filter(s => s.v_score > 0.05).map(s => [s.lat, s.lon, s.v_score]);
-  heatmapLayer = L.heatLayer(heatPoints, {
-    radius: 20,
-    blur: 15,
-    maxZoom: 10,
-    gradient: { 0.2: "#A8C5A0", 0.5: "#F0C060", 0.8: "#E07B3B", 1.0: "#8B1A1A" }
-  });
-  if (document.getElementById("toggleHeatmap").checked) heatmapLayer.addTo(map);
-}
-
 function updateRiskChart(provinceName) {
   const ctx = document.getElementById('riskChart').getContext('2d');
   const data = riskTrajectory[provinceName] || riskTrajectory["National"];
@@ -820,30 +799,21 @@ function updateRiskChart(provinceName) {
       labels: years,
       datasets: [
         {
-          label: 'Critical',
+          label: 'Critical Risk',
           data: critical,
           borderColor: TIER_COLORS.critical,
-          backgroundColor: TIER_COLORS.critical + '99',
-          fill: true,
-          tension: 0.4,
+          backgroundColor: 'transparent',
+          borderWidth: 2,
+          tension: 0.3,
           pointRadius: 0
         },
         {
-          label: 'High',
+          label: 'High Risk',
           data: high,
           borderColor: TIER_COLORS.high,
-          backgroundColor: TIER_COLORS.high + '99',
-          fill: true,
-          tension: 0.4,
-          pointRadius: 0
-        },
-        {
-          label: 'Stable',
-          data: stable,
-          borderColor: TIER_COLORS.low,
-          backgroundColor: TIER_COLORS.low + '99',
-          fill: true,
-          tension: 0.4,
+          backgroundColor: 'transparent',
+          borderWidth: 2,
+          tension: 0.3,
           pointRadius: 0
         }
       ]
@@ -863,7 +833,12 @@ function updateRiskChart(provinceName) {
       },
       scales: {
         x: { display: true, ticks: { font: { size: 8, family: 'IBM Plex Mono' } }, grid: { display: false } },
-        y: { stacked: true, display: false }
+        y: { 
+            display: true, 
+            beginAtZero: true,
+            ticks: { font: { size: 8, family: 'IBM Plex Mono' }, maxTicksLimit: 5 },
+            grid: { color: 'rgba(26,20,16,0.05)' }
+        }
       }
     }
   });
