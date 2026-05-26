@@ -459,12 +459,11 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
       <!-- Chart Panel -->
       <div class="panel" style="border-top: 1px solid var(--border); background: var(--surface2);">
         <div class="panel-label" id="chartTitle">Crisis Trend</div>
-        <div style="height: 140px; position: relative;">
+        <div style="height: 80px; position: relative;">
           <canvas id="riskChart"></canvas>
         </div>
-        <div class="legend-grid" style="margin-top: 10px; font-size: 9px; grid-template-columns: 1fr 1fr;">
-          <div class="legend-item"><div class="legend-dot" style="background:var(--tier-critical)"></div>Critical Risk</div>
-          <div class="legend-item"><div class="dot" style="background:var(--tier-high); width:12px; height:12px; border-radius:2px;"></div>High Risk</div>
+        <div class="legend-grid" style="margin-top: 10px; font-size: 9px; grid-template-columns: 1fr;">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--tier-critical)"></div>Critical Risk Trend</div>
         </div>
       </div>
 
@@ -763,10 +762,8 @@ function updateRiskChart(provinceName) {
   const years = Object.keys(data).sort();
   
   const critical = years.map(y => data[y].critical);
-  const high = years.map(y => data[y].high);
-  const stable = years.map(y => data[y].stable);
 
-  document.getElementById("chartTitle").textContent = `${provinceName} Risk Trajectory`;
+  document.getElementById("chartTitle").textContent = `${provinceName} Crisis Trend`;
 
   if (riskChart) riskChart.destroy();
 
@@ -802,15 +799,6 @@ function updateRiskChart(provinceName) {
           label: 'Critical Risk',
           data: critical,
           borderColor: TIER_COLORS.critical,
-          backgroundColor: 'transparent',
-          borderWidth: 2,
-          tension: 0.3,
-          pointRadius: 0
-        },
-        {
-          label: 'High Risk',
-          data: high,
-          borderColor: TIER_COLORS.high,
           backgroundColor: 'transparent',
           borderWidth: 2,
           tension: 0.3,

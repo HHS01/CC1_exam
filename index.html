@@ -809,9 +809,21 @@ document.getElementById("yearSlider").addEventListener("input", e => {
   currentYear = parseInt(e.target.value);
   document.getElementById("yearDisplay").textContent = currentYear;
   updateNavLinks();
-  selectedLayer = null;
   renderChoropleth(currentYear);
-  resetDetailPanel();
+
+  if (currentProvince) {
+    const layers = choropleth.getLayers();
+    const match = layers.find(l => l.feature.properties.admin2 === currentProvince);
+    if (match) {
+      selectedLayer = match;
+      match.setStyle({ weight: 3, color: "#1A1410", fillOpacity: 1.0 });
+      showProvinceDetail(match.feature.properties);
+    } else {
+      resetSelection();
+    }
+  } else {
+    resetDetailPanel();
+  }
 });
 
 function populateStats(insights) {
