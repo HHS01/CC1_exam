@@ -766,6 +766,9 @@ function resetSelection() {
   resetDetailPanel();
   renderConflicts(); // Back to province hotspots
   
+  // Restore national view
+  map.setView([12.3, -1.9], 7);
+
   const newUrl = new URL(window.location);
   newUrl.searchParams.delete('province');
   window.history.replaceState({}, '', newUrl);
@@ -833,7 +836,10 @@ function renderConflicts() {
       const icon = L.divIcon({
         className: 'conflict-marker',
         html: `<svg width="${size}" height="${size}" viewBox="0 0 100 100">
-                 <polygon points="50,5 95,95 5,95" fill="${color}" stroke="#fff" stroke-width="6"/>
+                 <!-- Main Triangle -->
+                 <polygon points="50,5 95,95 5,95" fill="${color}" stroke="#fff" stroke-width="4"/>
+                 <!-- Secondary Base Line (Double line effect) -->
+                 <polyline points="25,82 75,82" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
                </svg>`,
         iconSize: [size, size],
         iconAnchor: [size/2, size/2]
