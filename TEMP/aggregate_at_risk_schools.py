@@ -12,11 +12,21 @@ def aggregate_at_risk_schools():
     with open(score_path, 'r', encoding='utf-8') as f:
         scores = json.load(f)
 
+    # Load Dynamic Mapping if available (to convert Official names back to ACLED names)
+    mapping_path = Path("artifacts/admin_mapping.json")
+    official_to_acled = {}
+    if mapping_path.exists():
+        with open(mapping_path, 'r', encoding='utf-8') as f:
+            official_to_acled = json.load(f).get("official_to_acled", {})
+
     # Structure: { year: { province: { count: int, schools: [{name, lat, lon}] } } }
     aggregated = {}
 
     for s in scores:
-        province = s.get("province", "Unknown")
+        province_raw = s.get("province", "Unknown")
+        # Align naming
+        province = official_to_acled.get(province_raw, province_raw)
+        
         v_score = s.get("v_score", 0)
         trauma = s.get("trauma", 0)
         at_risk_years = s.get("at_risk_years", [])
