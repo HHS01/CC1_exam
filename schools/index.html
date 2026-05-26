@@ -332,8 +332,24 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
 }
 #loadingOverlay.hidden { opacity: 0; pointer-events: none; }
 
+/* Faint Province Labels */
+.faint-province-label {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #1A1410 !important;
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 8px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  pointer-events: none !important;
+  opacity: 0.25 !important;
+  text-align: center;
+}
+
 /* ── Leaflet overrides ───────────────────────────────── */
 .leaflet-container { background: #D8D0C0 !important; }
+.leaflet-control-attribution { font-size: 9px !important; }
 
 /* ── CTA Button ─────────────────────────────────────── */
 .cta-button {
@@ -420,12 +436,12 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
     <div id="map"></div>
 
     <!-- Sidebar -->
-    <aside class="sidebar">
+    aside class="sidebar">
 
       <!-- Year slider -->
       <div class="panel">
         <div class="panel-label">
-          <span>Simulation Year</span>
+          <span>Year</span>
           <span class="year-display" id="yearDisplay">2024</span>
         </div>
         <input type="range" id="yearSlider" min="2015" max="2026" value="2024" step="1"/>
@@ -587,6 +603,14 @@ async function init() {
         return { color: "#1A1410", weight: 0.5, fillColor: color, fillOpacity: 0.6 };
       },
       onEachFeature: (f, layer) => {
+        // Province labels
+        layer.bindTooltip(f.properties.admin2, {
+          permanent: true,
+          direction: 'center',
+          className: 'faint-province-label',
+          opacity: 0.3
+        });
+
         layer.on({
           click: e => {
             L.DomEvent.stopPropagation(e); // Prevent map background click from resetting selection
@@ -884,22 +908,22 @@ function renderSchools(geo) {
     pointToLayer: (f, latlng) => {
       const schoolScore = scoreData.find(s => Math.abs(s.lat - latlng.lat) < 0.0001 && Math.abs(s.lon - latlng.lng) < 0.0001);
       
-      let color = "#FF00FF", radius = 3, isAtRisk = false, tier = "Stable", trauma = 0;
+      let color = "#D2B4DE", radius = 3, isAtRisk = false, tier = "Stable", trauma = 0;
       
       if (schoolScore) {
         trauma = schoolScore.trauma || 0;
         isAtRisk = (schoolScore.at_risk_years || []).includes(currentYear);
         if (isAtRisk) {
           if (schoolScore.v_score > 0.7) {
-            color = "#633974"; // Deep Purple (Critical)
+            color = TIER_COLORS.critical; // #8B1A1A
             radius = 8;
             tier = "Critical Risk";
           } else if (schoolScore.v_score > 0.4) {
-            color = "#AF7AC5"; // Medium Purple (High)
+            color = TIER_COLORS.high; // #E07B3B
             radius = 6;
             tier = "High Risk";
           } else {
-            color = "#D2B4DE"; // Light Purple (Moderate)
+            color = TIER_COLORS.medium; // #F0C060
             radius = 5;
             tier = "Moderate Risk";
           }
@@ -919,8 +943,9 @@ function renderSchools(geo) {
       const tooltipContent = `
         <div style="font-family:IBM Plex Sans, sans-serif; font-size:11px; line-height:1.4;">
           <strong>${prefix}${f.properties.name || 'Unnamed Institution'}</strong><br/>
-          <span style="color:${color}; font-weight:bold; font-size:10px; text-transform:uppercase;">${tier}</span><br/>
-          <span style="color:#6B6259;">Nearby Events: ${trauma}</span>
+          <div style="font-size:9px; color:#6B6259; font-family:IBM Plex Mono;">${latlng.lat.toFixed(4)}, ${latlng.lng.toFixed(4)}</div>
+          <span style="color:${color}; font-weight:bold; font-size:10px; text-transform:uppercase;">${tier}</span>
+          ${trauma > 0 ? `<br/><span style="color:#6B6259;">Nearby Events: ${trauma}</span>` : ''}
         </div>
       `;
       marker.bindTooltip(tooltipContent, { sticky: true });
@@ -950,7 +975,7 @@ function showSchoolDetail(props, latlng) {
     <div class="panel-label" style="margin-top:4px;">${province} Province</div>
     <div class="detail-metrics">
       <div class="metric"><div class="metric-val">${v_score}%</div><div class="metric-label">Memory Risk</div></div>
-      <div class="metric"><div class="metric-val">${trauma}</div><div class="metric-label">Trauma Count</div></div>
+      <div class="metric"><div class="metric-val">${trauma} Years</div><div class="metric-label">Conflict History</div></div>
     </div>
     
     <div class="panel-label" style="margin-top:10px; margin-bottom:6px">Site Level Metrics</div>

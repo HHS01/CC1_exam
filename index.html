@@ -732,10 +732,7 @@ async function loadAll() {
       const layers = choropleth.getLayers();
       const match = layers.find(l => l.feature.properties.admin2 === currentProvince);
       if (match) {
-        selectedLayer = match;
-        match.setStyle({ weight: 3, color: "#1A1410", fillOpacity: 1.0 });
-        showProvinceDetail(match.feature.properties);
-        renderConflicts();
+        match.fire('click');
       }
     }
 
