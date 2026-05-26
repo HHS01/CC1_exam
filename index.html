@@ -764,6 +764,7 @@ function resetSelection() {
   currentProvince = null;
   updateNavLinks();
   resetDetailPanel();
+  renderConflicts(); // Back to province hotspots
   
   const newUrl = new URL(window.location);
   newUrl.searchParams.delete('province');
@@ -782,14 +783,12 @@ function renderConflicts() {
   if (conflictsLayer) map.removeLayer(conflictsLayer);
   if (!document.getElementById("toggleConflicts").checked) return;
 
-  const currentZoom = map.getZoom();
   const yearConflicts = conflictsData.features.filter(f => f.properties.year === currentYear);
   if (!yearConflicts.length) return;
 
-  // --- Dynamic Thresholds (Relative to this year's data) ---
+  // Dynamic Thresholds for the current year
   const allEvents = yearConflicts.map(f => f.properties.events || 0).sort((a,b) => a-b);
   const allFatals = yearConflicts.map(f => f.properties.fatalities || 0).sort((a,b) => a-b);
-  
   const p75Events = allEvents[Math.floor(allEvents.length * 0.75)] || 1;
   const p90Events = allEvents[Math.floor(allEvents.length * 0.90)] || 2;
   const p75Fatals = allFatals[Math.floor(allFatals.length * 0.75)] || 1;
@@ -797,81 +796,64 @@ function renderConflicts() {
 
   let displayFeatures = [];
 
-  if (currentZoom < 8) {
-    // Grouped View: Show only the "Primary Impact Site" for each province
+  if (currentProvince) {
+    // DRILL DOWN: Show all individual incidents for the selected province
+    displayFeatures = yearConflicts.filter(f => f.properties.admin2 === currentProvince);
+  } else {
+    // BIRD'S EYE: Show only 1 primary hotspot per province
     const groups = {};
     yearConflicts.forEach(f => {
       const prov = f.properties.admin2;
-      if (!groups[prov]) {
-        groups[prov] = f;
-      } else {
-        const currentBest = groups[prov].properties;
+      if (!groups[prov]) groups[prov] = f;
+      else {
+        const cur = groups[prov].properties;
         const potential = f.properties;
-        // Priority: Most events, then most fatalities
-        if (potential.events > currentBest.events || (potential.events === currentBest.events && potential.fatalities > currentBest.fatalities)) {
+        if (potential.events > cur.events || (potential.events === cur.events && potential.fatalities > cur.fatalities)) {
           groups[prov] = f;
         }
       }
     });
     displayFeatures = Object.values(groups);
-  } else {
-    // Detailed View: Show all individual pins
-    displayFeatures = yearConflicts;
   }
-
-  const maxEvents = allEvents[allEvents.length - 1] || 0;
-  const minEvents = allEvents[0] || 0;
-  const maxFatals = allFatals[allFatals.length - 1] || 0;
-  const minFatals = allFatals[0] || 0;
 
   conflictsLayer = L.geoJSON({ type: "FeatureCollection", features: displayFeatures }, {
     pointToLayer: (f, latlng) => {
       const events = f.properties.events || 0;
       const fatalities = f.properties.fatalities || 0;
 
-      // Relative Color (Intensity) based on Events
-      let color = "#F0C060"; // Default
-      if (maxEvents > minEvents) {
-        if (events >= p90Events && events > 1) color = "#8B1A1A"; 
-        else if (events >= p75Events) color = "#E07B3B";
-      }
+      // COOLER TRIANGLE STYLING
+      let color = "#F0C060"; 
+      if (events >= p90Events && events > 1) color = "#8B1A1A"; 
+      else if (events >= p75Events) color = "#E07B3B";
 
-      // Relative Size (Impact) based on Fatalities
-      let size = 10;
-      if (maxFatals > minFatals) {
-        if (fatalities >= p90Fatals && p90Fatals > p75Fatals) size = 24;
-        else if (fatalities >= p75Fatals) size = 16;
-        else if (fatalities > 0) size = 12;
-      } else if (maxFatals > 0) {
-        size = 12; // Standard size if all are equal but > 0
-      }
+      let size = currentProvince ? 12 : 16; // Slightly bigger for hotspots
+      if (fatalities >= p90Fatals) size += 10;
+      else if (fatalities >= p75Fatals) size += 5;
 
       const icon = L.divIcon({
         className: 'conflict-marker',
-        html: `
-          <svg width="${size}" height="${size}" viewBox="0 0 100 100" style="display:block;">
-            <polygon points="50,5 95,95 5,95" fill="${color}" stroke="#fff" stroke-width="5"/>
-          </svg>`,
+        html: `<svg width="${size}" height="${size}" viewBox="0 0 100 100">
+                 <polygon points="50,5 95,95 5,95" fill="${color}" stroke="#fff" stroke-width="6"/>
+               </svg>`,
         iconSize: [size, size],
         iconAnchor: [size/2, size/2]
       });
 
       const marker = L.marker(latlng, { icon });
+      const type = currentProvince ? "Incident" : "Province Hotspot";
       
-      const title = currentZoom < 8 ? "Province Hotspot" : "Conflict Incident";
-      const popupContent = `
-        <div style="font-family:IBM Plex Sans, sans-serif; font-size:12px; line-height:1.4; min-width:140px;">
-          <div style="text-transform:uppercase; font-size:9px; font-family:IBM Plex Mono, monospace; color:#8B1A1A; margin-bottom:4px; font-weight:bold; letter-spacing:0.05em;">${title}</div>
+      marker.bindPopup(`
+        <div style="font-family:IBM Plex Sans; font-size:12px; min-width:140px;">
+          <div style="text-transform:uppercase; font-size:9px; font-family:IBM Plex Mono; color:#8B1A1A; font-weight:bold;">${type}</div>
           <strong style="font-size:14px;">${f.properties.admin2}</strong><br/>
-          <span style="color:#6B6259;">${f.properties.month || 'Summary'} ${f.properties.year}</span>
+          <span style="color:#6B6259;">${f.properties.month || 'Yearly'} ${f.properties.year}</span>
           <hr style="border:0; border-top:1px solid #eee; margin:8px 0;"/>
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-            <div><div style="font-size:16px; font-weight:bold;">${events}</div><div style="font-size:9px; text-transform:uppercase; color:#6B6259;">Events</div></div>
-            <div><div style="font-size:16px; font-weight:bold;">${fatalities}</div><div style="font-size:9px; text-transform:uppercase; color:#6B6259;">Fatalities</div></div>
+            <div><div style="font-size:16px; font-weight:bold;">${events}</div><div style="font-size:9px; text-transform:uppercase;">Events</div></div>
+            <div><div style="font-size:16px; font-weight:bold;">${fatalities}</div><div style="font-size:9px; text-transform:uppercase;">Fatalities</div></div>
           </div>
         </div>
-      `;
-      marker.bindPopup(popupContent);
+      `);
       return marker;
     }
   });
@@ -897,8 +879,13 @@ function renderChoropleth(year) {
           selectedLayer = e.target;
           e.target.setStyle({ weight: 3, color: "#1A1410", fillOpacity: 1.0 });
           currentProvince = f.properties.admin2;
+          
+          // Auto-zoom to province (Drill Down)
+          map.fitBounds(e.target.getBounds(), { padding: [20, 20], maxZoom: 10 });
+          
           updateNavLinks();
           showProvinceDetail(f.properties);
+          renderConflicts(); // Refresh markers for drill-down
           
           const newUrl = new URL(window.location);
           newUrl.searchParams.set('province', currentProvince);
