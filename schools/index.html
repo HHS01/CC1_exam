@@ -639,6 +639,9 @@ async function init() {
 
     // Add event listeners for toggles
     document.getElementById("toggleSchools").addEventListener("change", () => renderSchools(schoolsData));
+    map.on('zoomend', () => {
+      if (document.getElementById("toggleSchools").checked) renderSchools(schoolsData);
+    });
 
     renderSchools(schoolsData);
     updateGlobalStats();
@@ -839,28 +842,89 @@ function updateRiskChart(provinceName) {
 
 function renderSchools(geo) {
   if (schoolsLayer) map.removeLayer(schoolsLayer);
-  schoolsLayer = L.geoJSON(geo, {
+  if (!document.getElementById("toggleSchools").checked) return;
+
+  const currentZoom = map.getZoom();
+  
+  // 1. Determine which points to show
+  let displayFeatures = [];
+  
+  if (currentZoom < 8) {
+    // Grouped View: Show only the "Highest Risk School" per province (Red Flag System)
+    const hotspots = {};
+    geo.features.forEach(f => {
+      // Coords matching
+      const lat = f.geometry.coordinates[1];
+      const lon = f.geometry.coordinates[0];
+      const s = scoreData.find(s => Math.abs(s.lat - lat) < 0.0001 && Math.abs(s.lon - lon) < 0.0001);
+      if (!s) return;
+      
+      const prov = s.province || "Unknown";
+      const isAtRisk = (s.at_risk_years || []).includes(currentYear);
+      const riskScore = isAtRisk ? s.v_score : 0;
+
+      if (!hotspots[prov] || riskScore > hotspots[prov].score) {
+        hotspots[prov] = { feature: f, score: riskScore, trauma: s.trauma };
+      }
+    });
+    displayFeatures = Object.values(hotspots).map(h => h.feature);
+  } else {
+    // Detailed View: Show all individual pins
+    displayFeatures = geo.features;
+  }
+
+  schoolsLayer = L.geoJSON({ type: "FeatureCollection", features: displayFeatures }, {
     pointToLayer: (f, latlng) => {
       const schoolScore = scoreData.find(s => Math.abs(s.lat - latlng.lat) < 0.0001 && Math.abs(s.lon - latlng.lng) < 0.0001);
-      let color = "#3498DB", radius = 4, isAtRisk = false;
+      
+      let color = "#3498DB", radius = 3, isAtRisk = false, tier = "Stable", trauma = 0;
+      
       if (schoolScore) {
+        trauma = schoolScore.trauma || 0;
         isAtRisk = (schoolScore.at_risk_years || []).includes(currentYear);
         if (isAtRisk) {
-          radius = 5;
-          if (schoolScore.v_score > 0.7) color = TIER_COLORS.critical;
-          else if (schoolScore.v_score > 0.5) color = TIER_COLORS.high;
-          else color = TIER_COLORS.medium;
+          if (schoolScore.v_score > 0.7) {
+            color = TIER_COLORS.critical;
+            radius = 8;
+            tier = "Critical Risk";
+          } else if (schoolScore.v_score > 0.4) {
+            color = TIER_COLORS.high;
+            radius = 6;
+            tier = "High Risk";
+          } else {
+            color = TIER_COLORS.medium;
+            radius = 5;
+            tier = "Moderate Risk";
+          }
         }
       }
-      const marker = L.circleMarker(latlng, { radius, fillColor: color, color: "#fff", weight: 1, opacity: 1, fillOpacity: 0.8 });
-      marker.bindTooltip(f.properties.name || `Lat: ${latlng.lat.toFixed(4)}, Lon: ${latlng.lng.toFixed(4)}`);
+
+      const marker = L.circleMarker(latlng, { 
+        radius, 
+        fillColor: color, 
+        color: "#fff", 
+        weight: 1, 
+        opacity: 1, 
+        fillOpacity: 0.9 
+      });
+      
+      const prefix = currentZoom < 8 ? "PROVINCE HOTSPOT: " : "";
+      const tooltipContent = `
+        <div style="font-family:IBM Plex Sans, sans-serif; font-size:11px; line-height:1.4;">
+          <strong>${prefix}${f.properties.name || 'Unnamed Institution'}</strong><br/>
+          <span style="color:${color}; font-weight:bold; font-size:10px; text-transform:uppercase;">${tier}</span><br/>
+          <span style="color:#6B6259;">Nearby Events: ${trauma}</span>
+        </div>
+      `;
+      marker.bindTooltip(tooltipContent, { sticky: true });
       return marker;
     },
     onEachFeature: (f, layer) => {
       layer.on("click", () => showSchoolDetail(f.properties, layer.getLatLng()));
     }
   });
-  if (document.getElementById("toggleSchools").checked) schoolsLayer.addTo(map);
+  
+  schoolsLayer.addTo(map);
 }
 
 function showSchoolDetail(props, latlng) {
