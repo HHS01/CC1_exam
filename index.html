@@ -153,33 +153,6 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
   align-items: center;
 }
 
-/* API Key Input Styling */
-.key-input-wrap {
-  margin-bottom: 16px;
-  padding: 12px;
-  background: rgba(139,26,26,0.05);
-  border-radius: 6px;
-  border: 1px dashed var(--accent);
-}
-.key-input-label {
-  font-family: var(--mono);
-  font-size: 9px;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 6px;
-  display: block;
-}
-.key-input-field {
-  width: 100%;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  padding: 6px 8px;
-  font-family: var(--mono);
-  font-size: 10px;
-  border-radius: 3px;
-  color: var(--ink);
-}
-
 .year-display {
   font-family: var(--serif);
   font-size: 22px;
@@ -265,7 +238,7 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
   margin-bottom: 14px;
   color: #fff;
 }
-.tier-low      { background: var(--tier-low);      color: #1a3a16; }
+.tier-low, .tier-lower { background: var(--tier-low); color: #1a1410 !important; }
 .tier-medium   { background: var(--tier-medium);   color: #3a2a00; }
 .tier-high     { background: var(--tier-high); }
 .tier-critical { background: var(--tier-critical); }
@@ -584,12 +557,6 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
 
       <!-- Year slider -->
       <div class="panel">
-        <!-- AI Key input disabled to free space
-        <div class="key-input-wrap">
-          <label class="key-input-label">Session AI Key (Never Saved)</label>
-          <input type="password" id="sessionKey" class="key-input-field" placeholder="Paste Gemini Key here..." />
-        </div>
-        -->
         <div class="panel-label">
           <span>Year</span>
           <span class="year-display" id="yearDisplay">2023</span>
@@ -765,7 +732,10 @@ async function loadAll() {
       const layers = choropleth.getLayers();
       const match = layers.find(l => l.feature.properties.admin2 === currentProvince);
       if (match) {
-        match.fire('click');
+        selectedLayer = match;
+        match.setStyle({ weight: 3, color: "#1A1410", fillOpacity: 1.0 });
+        showProvinceDetail(match.feature.properties);
+        renderConflicts();
       }
     }
 
@@ -799,7 +769,7 @@ map.on('click', e => {
 });
 
 // ═══════════════════════════════════════════════════════
-// CHOROPLETH
+// CONFLICT PINS
 // ═══════════════════════════════════════════════════════
 
 function renderConflicts() {
@@ -810,24 +780,11 @@ function renderConflicts() {
   const yearConflicts = conflictsData.features.filter(f => f.properties.year === currentYear);
   if (!yearConflicts.length) return;
 
-  const acledToOfficial = adminMapping ? adminMapping.acled_to_official : {};
-
-  // --- Dynamic Thresholds ---
-  const allEvents = yearConflicts.map(f => f.properties.events || 0).sort((a,b) => a-b);
-  const allFatals = yearConflicts.map(f => f.properties.fatalities || 0).sort((a,b) => a-b);
-  const p75Events = allEvents[Math.floor(allEvents.length * 0.75)] || 1;
-  const p90Events = allEvents[Math.floor(allEvents.length * 0.90)] || 2;
-  const maxFatalsYear = allFatals[allFatals.length - 1] || 1;
-
   let displayFeatures = [];
 
   if (currentProvince) {
-    // DRILL DOWN: Show all individual incidents for the selected province
-    displayFeatures = yearConflicts.filter(f => {
-      const acledName = f.properties.admin2;
-      const officialName = acledToOfficial[acledName] || acledName;
-      return officialName === currentProvince;
-    });
+    // DRILL DOWN: Pins are already normalized to ACLED names in the export script
+    displayFeatures = yearConflicts.filter(f => f.properties.admin2 === currentProvince);
   } else if (currentZoom >= 8) {
     // AUTO-REVEAL: Show all individual incidents when zoomed in
     displayFeatures = yearConflicts;
@@ -835,19 +792,24 @@ function renderConflicts() {
     // BIRD'S EYE: Show only 1 primary hotspot per province
     const groups = {};
     yearConflicts.forEach(f => {
-      const acledName = f.properties.admin2;
-      const officialName = acledToOfficial[acledName] || acledName;
-      if (!groups[officialName]) groups[officialName] = f;
+      const name = f.properties.admin2;
+      if (!groups[name]) groups[name] = f;
       else {
-        const cur = groups[officialName].properties;
+        const cur = groups[name].properties;
         const pot = f.properties;
         if (pot.events > cur.events || (pot.events === cur.events && pot.fatalities > cur.fatalities)) {
-          groups[officialName] = f;
+          groups[name] = f;
         }
       }
     });
     displayFeatures = Object.values(groups);
   }
+
+  const allFatals = yearConflicts.map(c => c.properties.fatalities || 0).sort((a,b) => a-b);
+  const maxFatalsYear = allFatals[allFatals.length - 1] || 1;
+  const allEvents = yearConflicts.map(c => c.properties.events || 0).sort((a,b) => a-b);
+  const p75Events = allEvents[Math.floor(allEvents.length * 0.75)] || 1;
+  const p90Events = allEvents[Math.floor(allEvents.length * 0.90)] || 2;
 
   conflictsLayer = L.geoJSON({ type: "FeatureCollection", features: displayFeatures }, {
     pointToLayer: (f, latlng) => {
@@ -859,17 +821,14 @@ function renderConflicts() {
       if (events >= p90Events && events > 1) color = "#633974"; 
       else if (events >= p75Events) color = "#AF7AC5";
 
-      // PROPORTIONATE SIZE based on Fatalities (Relative to Year's Maximum)
-      const baseSize = (currentProvince || currentZoom >= 8) ? 12 : 16;
+      const baseSize = (currentProvince || currentZoom >= 8) ? 10 : 16;
       const scaleFactor = Math.min(fatalities / maxFatalsYear, 1.0);
       let size = baseSize + (scaleFactor * 25);
 
       const icon = L.divIcon({
         className: 'conflict-marker',
         html: `<svg width="${size}" height="${size}" viewBox="0 0 100 100">
-                 <!-- Main Triangle -->
                  <polygon points="50,5 95,95 5,95" fill="${color}" stroke="#fff" stroke-width="4"/>
-                 <!-- Secondary Base Line (Double line effect) -->
                  <polyline points="25,82 75,82" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
                </svg>`,
         iconSize: [size, size],
@@ -877,27 +836,30 @@ function renderConflicts() {
       });
 
       const marker = L.marker(latlng, { icon });
-      const type = (currentProvince || currentZoom >= 8) ? "Incident" : "Province Hotspot";
-      const disclaimer = f.properties.is_granular ? "" : '<div style="font-size:8px; color:#999; margin-top:6px; border-top:1px solid #eee; padding-top:4px;">* Aggregated provincial data</div>';
+      const type = (currentProvince || currentZoom >= 8) ? "Incident" : "Hotspot";
+      const isGranular = f.properties.is_granular;
       
       marker.bindPopup(`
-        <div style="font-family:IBM Plex Sans; font-size:12px; min-width:80px;">
-          <div style="text-transform:uppercase; font-size:9px; font-family:IBM Plex Mono; color:#633974; font-weight:bold;">${type}</div>
-          <strong style="font-size:14px;">${f.properties.admin2}</strong><br/>
+        <div style="font-family:IBM Plex Sans; font-size:11px; min-width:70px; text-align:center;">
+          <div style="text-transform:uppercase; font-size:8px; font-family:IBM Plex Mono; color:#633974; font-weight:bold; margin-bottom:2px;">${type}</div>
+          <strong style="font-size:12px;">${f.properties.admin2}</strong><br/>
           <span style="color:#6B6259;">${f.properties.month} / ${f.properties.year}</span>
           <hr style="border:0; border-top:1px solid #eee; margin:8px 0;"/>
-          <div style="display:flex; align-items:center; gap:10px;">
-            <div><div style="font-size:16px; font-weight:bold;">${fatalities}</div><div style="font-size:9px; text-transform:uppercase; color:#6B6259;">Total Fatalities</div></div>
-          </div>
-          ${disclaimer}
+          <div><div style="font-size:14px; font-weight:bold;">${fatalities}</div><div style="font-size:8px; text-transform:uppercase; color:#6B6259;">Fatalities</div></div>
+          ${!isGranular ? '<div style="font-size:7px; color:#999; margin-top:4px;">* Aggregated</div>' : ''}
         </div>
-      `);
+      `, { closeButton: false });
+
       return marker;
     }
   });
 
   conflictsLayer.addTo(map);
 }
+
+// ═══════════════════════════════════════════════════════
+// CHOROPLETH
+// ═══════════════════════════════════════════════════════
 
 function renderChoropleth(year) {
   if (choropleth) map.removeLayer(choropleth);
@@ -1074,7 +1036,7 @@ function showProvinceDetail(props) {
   const securityExposure = (props.conflict_score || 0) * 100;
   const densityFragility = (props.density_fragility || 0.5) * 100;
 
-  // Count markers for this province in this year
+  // Calculate true markers count for this province in this year
   const yearConflicts = (conflictsData?.features || []).filter(c => c.properties.year === currentYear);
   const acledToOfficial = adminMapping ? adminMapping.acled_to_official : {};
   const provConflicts = yearConflicts.filter(c => {
@@ -1096,7 +1058,7 @@ function showProvinceDetail(props) {
       <div class="metric">
         <div class="metric-val">${events.toLocaleString()}</div>
         <div class="metric-label">Events (ACLED)</div>
-        <div style="font-size:8px; color:var(--ink-muted); margin-top:2px;">${markerCount} Markers (UCDP)</div>
+        <div style="font-size:8px; color:var(--ink-muted); margin-top:2px;">${markerCount} Mapped (UCDP)</div>
       </div>
       <div class="metric">
         <div class="metric-val">${fatal.toLocaleString()}</div>
@@ -1311,7 +1273,8 @@ function drawTrend(data, title) {
   ctx.stroke();
 
   ctx.fillStyle  = "rgba(107,98,89,0.7)";
-  font       = "9px IBM Plex Mono, monospace";
+  const font       = "9px IBM Plex Mono, monospace";
+  ctx.font = font;
   ctx.textAlign  = "center";
   [0, Math.floor(data.length/2), data.length-1].forEach(i => {
     if (data[i]) ctx.fillText(data[i].year, x(i), H - 4);
