@@ -756,6 +756,7 @@ async function loadAll() {
 
     document.getElementById("toggleConflicts").addEventListener("change", renderConflicts);
     map.on('zoomend', () => {
+      renderChoropleth(currentYear); // Refresh labels on zoom
       if (document.getElementById("toggleConflicts").checked) renderConflicts();
     });
 
@@ -805,33 +806,43 @@ function renderConflicts() {
   if (conflictsLayer) map.removeLayer(conflictsLayer);
   if (!document.getElementById("toggleConflicts").checked) return;
 
+  const currentZoom = map.getZoom();
   const yearConflicts = conflictsData.features.filter(f => f.properties.year === currentYear);
   if (!yearConflicts.length) return;
 
-  // Dynamic Thresholds for the current year
+  const acledToOfficial = adminMapping ? adminMapping.acled_to_official : {};
+
+  // --- Dynamic Thresholds ---
   const allEvents = yearConflicts.map(f => f.properties.events || 0).sort((a,b) => a-b);
   const allFatals = yearConflicts.map(f => f.properties.fatalities || 0).sort((a,b) => a-b);
   const p75Events = allEvents[Math.floor(allEvents.length * 0.75)] || 1;
   const p90Events = allEvents[Math.floor(allEvents.length * 0.90)] || 2;
-  const p75Fatals = allFatals[Math.floor(allFatals.length * 0.75)] || 1;
-  const p90Fatals = allFatals[Math.floor(allFatals.length * 0.90)] || 5;
+  const maxFatalsYear = allFatals[allFatals.length - 1] || 1;
 
   let displayFeatures = [];
 
   if (currentProvince) {
     // DRILL DOWN: Show all individual incidents for the selected province
-    displayFeatures = yearConflicts.filter(f => f.properties.admin2 === currentProvince);
+    displayFeatures = yearConflicts.filter(f => {
+      const acledName = f.properties.admin2;
+      const officialName = acledToOfficial[acledName] || acledName;
+      return officialName === currentProvince;
+    });
+  } else if (currentZoom >= 8) {
+    // AUTO-REVEAL: Show all individual incidents when zoomed in
+    displayFeatures = yearConflicts;
   } else {
     // BIRD'S EYE: Show only 1 primary hotspot per province
     const groups = {};
     yearConflicts.forEach(f => {
-      const prov = f.properties.admin2;
-      if (!groups[prov]) groups[prov] = f;
+      const acledName = f.properties.admin2;
+      const officialName = acledToOfficial[acledName] || acledName;
+      if (!groups[officialName]) groups[officialName] = f;
       else {
-        const cur = groups[prov].properties;
-        const potential = f.properties;
-        if (potential.events > cur.events || (potential.events === cur.events && potential.fatalities > cur.fatalities)) {
-          groups[prov] = f;
+        const cur = groups[officialName].properties;
+        const pot = f.properties;
+        if (pot.events > cur.events || (pot.events === cur.events && pot.fatalities > cur.fatalities)) {
+          groups[officialName] = f;
         }
       }
     });
@@ -844,13 +855,14 @@ function renderConflicts() {
       const fatalities = f.properties.fatalities || 0;
 
       // COOLER PURPLE TRIANGLE STYLING
-      let color = "#D2B4DE"; // Low Intensity
-      if (events >= p90Events && events > 1) color = "#633974"; // High Intensity
-      else if (events >= p75Events) color = "#AF7AC5"; // Medium Intensity
+      let color = "#D2B4DE"; 
+      if (events >= p90Events && events > 1) color = "#633974"; 
+      else if (events >= p75Events) color = "#AF7AC5";
 
-      let size = currentProvince ? 12 : 16; // Slightly bigger for hotspots
-      if (fatalities >= p90Fatals) size += 10;
-      else if (fatalities >= p75Fatals) size += 5;
+      // PROPORTIONATE SIZE based on Fatalities (Relative to Year's Maximum)
+      const baseSize = (currentProvince || currentZoom >= 8) ? 12 : 16;
+      const scaleFactor = Math.min(fatalities / maxFatalsYear, 1.0);
+      let size = baseSize + (scaleFactor * 25);
 
       const icon = L.divIcon({
         className: 'conflict-marker',
@@ -865,18 +877,14 @@ function renderConflicts() {
       });
 
       const marker = L.marker(latlng, { icon });
-      const type = currentProvince ? "Incident" : "Province Hotspot";
-      
-      const disclaimer = f.properties.is_granular ? "" : `
-        <div style="font-size:8px; color:#999; margin-top:6px; border-top:1px solid #eee; padding-top:4px;">
-          * Aggregated provincial data (coordinates approximate)
-        </div>`;
+      const type = (currentProvince || currentZoom >= 8) ? "Incident" : "Province Hotspot";
+      const disclaimer = f.properties.is_granular ? "" : '<div style="font-size:8px; color:#999; margin-top:6px; border-top:1px solid #eee; padding-top:4px;">* Aggregated provincial data</div>';
       
       marker.bindPopup(`
-        <div style="font-family:IBM Plex Sans; font-size:12px; min-width:140px;">
+        <div style="font-family:IBM Plex Sans; font-size:12px; min-width:110px;">
           <div style="text-transform:uppercase; font-size:9px; font-family:IBM Plex Mono; color:#633974; font-weight:bold;">${type}</div>
           <strong style="font-size:14px;">${f.properties.admin2}</strong><br/>
-          <span style="color:#6B6259;">${f.properties.month} / ${f.properties.year}</span>
+          <span style="color:#6B6259;">${f.properties.month} ${f.properties.year}</span>
           <hr style="border:0; border-top:1px solid #eee; margin:8px 0;"/>
           <div style="display:flex; align-items:center; gap:10px;">
             <div><div style="font-size:16px; font-weight:bold;">${fatalities}</div><div style="font-size:9px; text-transform:uppercase; color:#6B6259;">Total Fatalities</div></div>
@@ -884,7 +892,6 @@ function renderConflicts() {
           ${disclaimer}
         </div>
       `);
-
       return marker;
     }
   });
@@ -899,6 +906,9 @@ function renderChoropleth(year) {
   let features = allFeatures[year] || allFeatures[2015] || [];
   if (!features.length) return;
 
+  const currentZoom = map.getZoom();
+  const showLabels = currentZoom >= 8;
+
   // If before 2015, force all provinces to 'neutral/low' priority visually
   const isHistorical = year < 2015;
 
@@ -912,13 +922,15 @@ function renderChoropleth(year) {
         return style;
     },
     onEachFeature: (f, layer) => {
-      // Add faint province labels
-      layer.bindTooltip(f.properties.admin2, {
-        permanent: true,
-        direction: 'center',
-        className: 'faint-province-label',
-        opacity: 0.4
-      });
+      // Province labels (only visible when zoomed in)
+      if (showLabels) {
+          layer.bindTooltip(f.properties.admin2, {
+            permanent: true,
+            direction: 'center',
+            className: 'faint-province-label',
+            opacity: 0.3
+          });
+      }
 
       // For historical years, calculate events dynamically from granular data
       let displayProps = { ...f.properties };
@@ -1062,7 +1074,7 @@ function showProvinceDetail(props) {
   const securityExposure = (props.conflict_score || 0) * 100;
   const densityFragility = (props.density_fragility || 0.5) * 100;
 
-  // Calculate pins for this province in this year
+  // Calculate true event sum for this province in this year from granular pins
   const yearConflicts = (conflictsData?.features || []).filter(c => c.properties.year === currentYear);
   const acledToOfficial = adminMapping ? adminMapping.acled_to_official : {};
   const provConflicts = yearConflicts.filter(c => {
@@ -1070,7 +1082,8 @@ function showProvinceDetail(props) {
     const officialName = acledToOfficial[acledName] || acledName;
     return officialName === props.admin2;
   });
-  const pins = provConflicts.length;
+  // Sum of events inside the matched markers
+  const mappedEvents = provConflicts.reduce((s, c) => s + (c.properties.events || 0), 0);
 
   document.getElementById("detailPanel").innerHTML = `
     <div class="panel-label">Province detail</div>
@@ -1083,12 +1096,12 @@ function showProvinceDetail(props) {
     <div class="detail-metrics">
       <div class="metric">
         <div class="metric-val">${events.toLocaleString()}</div>
-        <div class="metric-label">Events (Official)</div>
-        <div style="font-size:8px; color:var(--ink-muted); margin-top:2px;">${pins} Precision Pins</div>
+        <div class="metric-label">Events (ACLED)</div>
+        <div style="font-size:8px; color:var(--ink-muted); margin-top:2px;">${mappedEvents} Mapped (UCDP)</div>
       </div>
       <div class="metric">
         <div class="metric-val">${fatal.toLocaleString()}</div>
-        <div class="metric-label">Fatalities</div>
+        <div class="metric-label">Total Fatalities</div>
       </div>
     </div>
 
@@ -1299,7 +1312,7 @@ function drawTrend(data, title) {
   ctx.stroke();
 
   ctx.fillStyle  = "rgba(107,98,89,0.7)";
-  ctx.font       = "9px IBM Plex Mono, monospace";
+  font       = "9px IBM Plex Mono, monospace";
   ctx.textAlign  = "center";
   [0, Math.floor(data.length/2), data.length-1].forEach(i => {
     if (data[i]) ctx.fillText(data[i].year, x(i), H - 4);
