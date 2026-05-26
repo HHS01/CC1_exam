@@ -38,11 +38,16 @@ def export_conflicts_geojson():
             name = str(row['adm_2']).replace(' province', '').replace(' region', '').strip().title()
             name = mapping.get(name, name)
             
+            # Numeric Month (e.g. '05')
+            month = "00"
+            if '-' in str(row['date_start']):
+                month = str(row['date_start']).split('-')[1]
+
             features.append({
                 "type": "Feature",
                 "properties": {
                     "year": int(row['year']),
-                    "month": str(row['date_start']).split('-')[1] if '-' in str(row['date_start']) else "Unknown",
+                    "month": month,
                     "admin2": name,
                     "events": 1,
                     "fatalities": int(row['best']) if pd.notna(row['best']) else 0,
@@ -62,13 +67,19 @@ def export_conflicts_geojson():
     # Only keep rows with actual events
     df_a = df_a[df_a['Events'] > 0]
     
+    # Month Map for ACLED names to numbers
+    MONTH_MAP = {
+        'January': '01', 'February': '02', 'March': '03', 'April': '04',
+        'May': '05', 'June': '06', 'July': '07', 'August': '08',
+        'September': '09', 'October': '10', 'November': '11', 'December': '12'
+    }
+
     for _, row in df_a.iterrows():
-        # ACLED names are already matched to dashboard
         features.append({
             "type": "Feature",
             "properties": {
                 "year": int(row['Year']),
-                "month": str(row['Month']),
+                "month": MONTH_MAP.get(str(row['Month']), '00'),
                 "admin2": str(row['Admin2']),
                 "events": int(row['Events']),
                 "fatalities": int(row['Fatalities']),
