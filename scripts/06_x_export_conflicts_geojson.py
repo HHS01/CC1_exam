@@ -37,9 +37,9 @@ def export_conflicts_geojson():
     else:
         df['admin2_final'] = df['adm_2_clean']
 
-    # 3. Create Features (2000 - 2026)
+    # 3. Create Features (2015 - 2026)
     # UCDP columns: year, date_start, latitude, longitude, best (fatalities)
-    df = df[(df['year'] >= 2000) & (df['year'] <= 2026)]
+    df = df[(df['year'] >= 2015) & (df['year'] <= 2026)]
     
     features = []
     for _, row in df.iterrows():
