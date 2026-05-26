@@ -931,8 +931,11 @@ function renderChoropleth(year) {
           
           const featureName = f.properties.admin2;
           
-          // If already selected, do nothing or zoom in further
-          if (currentProvince === featureName) return;
+          // If already selected, just ensure zoom
+          if (currentProvince === featureName) {
+            map.fitBounds(e.target.getBounds(), { padding: [20, 20], maxZoom: 10 });
+            return;
+          }
 
           if (selectedLayer && choropleth.hasLayer(selectedLayer)) {
             choropleth.resetStyle(selectedLayer);

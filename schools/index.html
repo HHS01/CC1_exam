@@ -452,7 +452,8 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
           <div class="legend-item"><div class="legend-dot" style="background:var(--tier-critical)"></div>Critical</div>
           <div class="legend-item"><div class="legend-dot" style="background:var(--tier-high)"></div>High Risk</div>
           <div class="legend-item"><div class="legend-dot" style="background:var(--tier-medium)"></div>Moderate</div>
-          <div class="legend-item"><div class="legend-dot" style="background:var(--tier-low)"></div>Stable</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--tier-low); opacity: 0.5; border: 1px solid var(--ink-muted);"></div>Stable (Prov)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#D2B4DE"></div>Stable (Sch)</div>
         </div>
 
         <!-- Layer Toggles -->
@@ -623,7 +624,12 @@ async function init() {
             L.DomEvent.stopPropagation(e); // Prevent map background click from resetting selection
             
             const featureName = f.properties.admin2;
-            if (currentProvince === featureName) return;
+            
+            // If already selected, just ensure zoom
+            if (currentProvince === featureName) {
+                map.fitBounds(e.target.getBounds(), { padding: [20, 20], maxZoom: 10 });
+                return;
+            }
 
             if (selectedLayer && choroplethLayer.hasLayer(selectedLayer)) {
               choroplethLayer.resetStyle(selectedLayer);
