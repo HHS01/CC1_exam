@@ -878,9 +878,19 @@ function renderChoropleth(year) {
             style.fillColor = TIER_COLORS.low;
             style.fillOpacity = 0.3;
         }
+        // Preserve selection highlight
+        if (currentProvince && f.properties.admin2 === currentProvince) {
+            style.weight = 3;
+            style.color = "#1A1410";
+            style.fillOpacity = 1.0;
+        }
         return style;
     },
     onEachFeature: (f, layer) => {
+      // Re-assign selectedLayer if this is the currently selected province
+      if (currentProvince && f.properties.admin2 === currentProvince) {
+          selectedLayer = layer;
+      }
       // Province labels (only visible when zoomed in)
       if (showLabels) {
           layer.bindTooltip(f.properties.admin2, {
@@ -918,10 +928,19 @@ function renderChoropleth(year) {
         mouseout: e => { if (layer !== selectedLayer) choropleth.resetStyle(e.target); },
         click: e => {
           L.DomEvent.stopPropagation(e);
-          if (selectedLayer) choropleth.resetStyle(selectedLayer);
+          
+          const featureName = f.properties.admin2;
+          
+          // If already selected, do nothing or zoom in further
+          if (currentProvince === featureName) return;
+
+          if (selectedLayer && choropleth.hasLayer(selectedLayer)) {
+            choropleth.resetStyle(selectedLayer);
+          }
+          
+          currentProvince = featureName;
           selectedLayer = e.target;
           e.target.setStyle({ weight: 3, color: "#1A1410", fillOpacity: 1.0 });
-          currentProvince = f.properties.admin2;
           
           map.fitBounds(e.target.getBounds(), { padding: [20, 20], maxZoom: 10 });
           

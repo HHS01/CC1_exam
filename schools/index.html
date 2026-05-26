@@ -600,7 +600,14 @@ async function init() {
         const priority = f.properties.priority || 'unknown';
         const mappedPriority = (priority === 'lower_priority') ? 'low' : priority.replace('_priority', '');
         const color = TIER_COLORS[mappedPriority] || TIER_COLORS.unknown;
-        return { color: "#1A1410", weight: 0.5, fillColor: color, fillOpacity: 0.6 };
+        const style = { color: "#1A1410", weight: 0.5, fillColor: color, fillOpacity: 0.6 };
+        
+        // Preserve selection highlight
+        if (currentProvince && f.properties.admin2 === currentProvince) {
+          style.weight = 3;
+          style.fillOpacity = 0.8;
+        }
+        return style;
       },
       onEachFeature: (f, layer) => {
         // Province labels
@@ -614,11 +621,17 @@ async function init() {
         layer.on({
           click: e => {
             L.DomEvent.stopPropagation(e); // Prevent map background click from resetting selection
-            if (selectedLayer) choroplethLayer.resetStyle(selectedLayer);
+            
+            const featureName = f.properties.admin2;
+            if (currentProvince === featureName) return;
+
+            if (selectedLayer && choroplethLayer.hasLayer(selectedLayer)) {
+              choroplethLayer.resetStyle(selectedLayer);
+            }
+            
+            currentProvince = featureName;
             selectedLayer = e.target;
             e.target.setStyle({ weight: 3, color: "#1A1410", fillOpacity: 0.8 });
-            
-            currentProvince = f.properties.admin2;
             
             // Zoom to province
             map.fitBounds(e.target.getBounds(), { padding: [20, 20], maxZoom: 10 });
@@ -952,7 +965,10 @@ function renderSchools(geo) {
       return marker;
     },
     onEachFeature: (f, layer) => {
-      layer.on("click", () => showSchoolDetail(f.properties, layer.getLatLng()));
+      layer.on("click", (e) => {
+        L.DomEvent.stopPropagation(e);
+        showSchoolDetail(f.properties, layer.getLatLng());
+      });
     }
   });
   
