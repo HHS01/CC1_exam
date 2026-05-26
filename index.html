@@ -579,7 +579,7 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
           <span>Year</span>
           <span class="year-display" id="yearDisplay">2023</span>
         </div>
-        <input type="range" id="yearSlider" min="2015" max="2026" value="2023" step="1"/>
+        <input type="range" id="yearSlider" min="2000" max="2026" value="2023" step="1"/>
 
         <!-- Legend -->
         <div class="panel-label" style="margin-top:14px;margin-bottom:6px">Priority tier</div>
@@ -632,6 +632,7 @@ const GEOJSON_URL  = "./artifacts/data.geojson";
 const TRENDS_URL   = "./artifacts/trends.json";
 const INSIGHTS_URL = "./artifacts/insights.json";
 const CONFLICTS_URL = "./artifacts/conflicts.geojson";
+const ADMIN_MAPPING_URL = "./artifacts/admin_mapping.json";
 
 const TIER_COLORS = {
   critical:       "#8B1A1A",
@@ -667,6 +668,7 @@ L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png
 let allFeatures  = {};
 let trendsData   = [];
 let conflictsData = null;
+let adminMapping = null;
 let currentYear  = 2023;
 let currentProvince = null;
 let choropleth   = null;
@@ -704,15 +706,17 @@ async function loadAll() {
   }
 
   try {
-    const [geojson, trends, insights, conflicts] = await Promise.all([
+    const [geojson, trends, insights, conflicts, mapping] = await Promise.all([
       fetch(GEOJSON_URL).then(r => r.json()),
       fetch(TRENDS_URL).then(r => r.json()),
       fetch(INSIGHTS_URL).then(r => r.json()),
       fetch(CONFLICTS_URL).then(r => r.json()),
+      fetch(ADMIN_MAPPING_URL).then(r => r.json()).catch(() => null),
     ]);
 
     trendsData = trends;
     conflictsData = conflicts;
+    adminMapping = mapping;
 
     geojson.features.forEach(f => {
       const yr = f.properties.year || currentYear;
@@ -870,12 +874,45 @@ function renderConflicts() {
 function renderChoropleth(year) {
   if (choropleth) map.removeLayer(choropleth);
 
-  const features = allFeatures[year] || [];
+  // If we don't have features for this year (pre-2015), use 2015 as a neutral baseline
+  let features = allFeatures[year] || allFeatures[2015] || [];
   if (!features.length) return;
 
+  // If before 2015, force all provinces to 'neutral/low' priority visually
+  const isHistorical = year < 2015;
+
   choropleth = L.geoJSON({ type: "FeatureCollection", features }, {
-    style: f => styleFeature(f),
+    style: f => {
+        const style = styleFeature(f);
+        if (isHistorical) {
+            style.fillColor = TIER_COLORS.low;
+            style.fillOpacity = 0.3;
+        }
+        return style;
+    },
     onEachFeature: (f, layer) => {
+      // For historical years, calculate events dynamically from granular data
+      let displayProps = { ...f.properties };
+      if (isHistorical) {
+          displayProps.priority = "low";
+          displayProps.score = 0;
+          displayProps.events = 0;
+          displayProps.fatalities = 0;
+          displayProps.year = year;
+          
+          const yearConflicts = (conflictsData?.features || []).filter(c => c.properties.year === year);
+          const acledToOfficial = adminMapping ? adminMapping.acled_to_official : {};
+          
+          const provConflicts = yearConflicts.filter(c => {
+              const acledName = c.properties.admin2;
+              const officialName = acledToOfficial[acledName] || acledName;
+              return officialName === f.properties.admin2;
+          });
+          
+          displayProps.events = provConflicts.length;
+          displayProps.fatalities = provConflicts.reduce((s, c) => s + (c.properties.fatalities || 0), 0);
+      }
+
       layer.on({
         mouseover: e => { if (layer !== selectedLayer) e.target.setStyle({ weight: 2, fillOpacity: 0.95 }); },
         mouseout: e => { if (layer !== selectedLayer) choropleth.resetStyle(e.target); },
@@ -886,12 +923,11 @@ function renderChoropleth(year) {
           e.target.setStyle({ weight: 3, color: "#1A1410", fillOpacity: 1.0 });
           currentProvince = f.properties.admin2;
           
-          // Auto-zoom to province (Drill Down)
           map.fitBounds(e.target.getBounds(), { padding: [20, 20], maxZoom: 10 });
           
           updateNavLinks();
-          showProvinceDetail(f.properties);
-          renderConflicts(); // Refresh markers for drill-down
+          showProvinceDetail(displayProps);
+          renderConflicts();
           
           const newUrl = new URL(window.location);
           newUrl.searchParams.set('province', currentProvince);
@@ -901,7 +937,7 @@ function renderChoropleth(year) {
     }
   }).addTo(map);
 
-  updateHeaderStats(features);
+  updateHeaderStats(year, features);
 }
 
 function styleFeature(f) {
@@ -946,14 +982,27 @@ function populateStats(insights) {
   document.getElementById("statEvents").textContent = (insights.total_events || 0).toLocaleString();
 }
 
-function updateHeaderStats(features) {
-  if (!features || !features.length) return;
-  const critical = features.filter(f => ["critical"].includes((f.properties.priority || "").toLowerCase())).length;
-  const events = features.reduce((s, f) => s + (f.properties.events || 0), 0);
-  const fatalities = features.reduce((s, f) => s + (f.properties.fatalities || 0), 0);
+function updateHeaderStats(year, features) {
+  if (!features) return;
+  const isHistorical = year < 2015;
   
-  // 1. Schools at Risk (v_score > 0.7)
-  const yearData = (trendsData || []).find(d => d.year === currentYear);
+  let critical = 0;
+  let events = 0;
+  let fatalities = 0;
+
+  if (isHistorical) {
+      // Aggregate from granular conflicts
+      const yearConflicts = (conflictsData?.features || []).filter(c => c.properties.year === year);
+      events = yearConflicts.length;
+      fatalities = yearConflicts.reduce((s, c) => s + (c.properties.fatalities || 0), 0);
+  } else {
+      critical = features.filter(f => ["critical"].includes((f.properties.priority || "").toLowerCase())).length;
+      events = features.reduce((s, f) => s + (f.properties.events || 0), 0);
+      fatalities = features.reduce((s, f) => s + (f.properties.fatalities || 0), 0);
+  }
+  
+  // Schools at Risk (v_score > 0.7)
+  const yearData = (trendsData || []).find(d => d.year === year);
   const schoolsAtRisk = yearData ? (yearData.high_risk_schools || 0) : 0;
 
   document.getElementById("statCritical").textContent = critical;
