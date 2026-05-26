@@ -852,6 +852,11 @@ function renderConflicts() {
       const marker = L.marker(latlng, { icon });
       const type = currentProvince ? "Incident" : "Province Hotspot";
       
+      const disclaimer = f.properties.is_granular ? "" : `
+        <div style="font-size:8px; color:#999; margin-top:6px; border-top:1px solid #eee; padding-top:4px;">
+          * Aggregated provincial data (coordinates approximate)
+        </div>`;
+      
       marker.bindPopup(`
         <div style="font-family:IBM Plex Sans; font-size:12px; min-width:140px;">
           <div style="text-transform:uppercase; font-size:9px; font-family:IBM Plex Mono; color:#8B1A1A; font-weight:bold;">${type}</div>
@@ -862,6 +867,7 @@ function renderConflicts() {
             <div><div style="font-size:16px; font-weight:bold;">${events}</div><div style="font-size:9px; text-transform:uppercase;">Events</div></div>
             <div><div style="font-size:16px; font-weight:bold;">${fatalities}</div><div style="font-size:9px; text-transform:uppercase;">Fatalities</div></div>
           </div>
+          ${disclaimer}
         </div>
       `);
       return marker;

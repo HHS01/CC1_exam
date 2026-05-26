@@ -8,65 +8,78 @@ from pathlib import Path
 ISO3 = os.environ.get("PIPELINE_ISO3", "BFA")
 
 def export_conflicts_geojson():
-    print(f"🚀 Exporting GRANULAR conflict events GeoJSON for {ISO3}...")
+    print(f"🚀 Exporting HYBRID conflict events GeoJSON for {ISO3}...")
     
-    in_path = Path(f"data/raw/conflicts/{ISO3}_granular_conflicts.csv")
+    ucdp_path = Path(f"data/raw/conflicts/{ISO3}_granular_conflicts.csv")
+    acled_path = Path(f"data/clean/acled/HRP_2_countries/Burkina_Faso_geocoded.csv")
     out_path = Path("artifacts/conflicts.geojson")
     mapping_path = Path("artifacts/admin_mapping.json")
 
-    if not in_path.exists():
-        print(f"✗ Granular conflict file not found: {in_path}")
+    if not acled_path.exists():
+        print(f"✗ ACLED file not found: {acled_path}")
         return
 
-    df = pd.read_csv(in_path)
-
-    # 1. Clean Names (UCDP specific cleaning)
-    # Remove ' region', ' province', ' Province', etc.
-    # UCDP columns: adm_1, adm_2
-    df['adm_2_clean'] = df['adm_2'].fillna(df['adm_1']).fillna("Unknown")
-    df['adm_2_clean'] = df['adm_2_clean'].str.replace(r'\s+province$', '', case=False, regex=True)
-    df['adm_2_clean'] = df['adm_2_clean'].str.replace(r'\s+region$', '', case=False, regex=True)
-    df['adm_2_clean'] = df['adm_2_clean'].str.strip().str.title()
-
-    # 2. Apply Dynamic Mapping (Official -> ACLED/Dashboard names)
+    # 1. Load Admin Mapping
+    mapping = {}
     if mapping_path.exists():
         with open(mapping_path, 'r', encoding='utf-8') as f:
             mapping = json.load(f).get("official_to_acled", {})
-            df['admin2_final'] = df['adm_2_clean'].map(mapping).fillna(df['adm_2_clean'])
-            print(f"  ✓ Applied {len(mapping)} name mappings.")
-    else:
-        df['admin2_final'] = df['adm_2_clean']
 
-    # 3. Create Features (2015 - 2026)
-    # UCDP columns: year, date_start, latitude, longitude, best (fatalities)
-    df = df[(df['year'] >= 2015) & (df['year'] <= 2026)]
-    
     features = []
-    for _, row in df.iterrows():
-        # Handle month
-        month = "Unknown"
-        if 'date_start' in row and pd.notna(row['date_start']):
-            try:
-                month = pd.to_datetime(row['date_start']).strftime('%B')
-            except:
-                pass
+
+    # 2. Process UCDP (Granular - 2016 to 2024)
+    if ucdp_path.exists():
+        df_u = pd.read_csv(ucdp_path)
+        # Filter for years where UCDP is the primary source
+        df_u = df_u[(df_u['year'] >= 2016) & (df_u['year'] <= 2024)]
+        
+        for _, row in df_u.iterrows():
+            # Clean and map province
+            name = str(row['adm_2']).replace(' province', '').replace(' region', '').strip().title()
+            name = mapping.get(name, name)
             
-        feature = {
+            features.append({
+                "type": "Feature",
+                "properties": {
+                    "year": int(row['year']),
+                    "month": str(row['date_start']).split('-')[1] if '-' in str(row['date_start']) else "Unknown",
+                    "admin2": name,
+                    "events": 1,
+                    "fatalities": int(row['best']) if pd.notna(row['best']) else 0,
+                    "is_granular": True
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [float(row['longitude']), float(row['latitude'])]
+                }
+            })
+        print(f"  ✓ Added {len(df_u)} granular UCDP records.")
+
+    # 3. Process ACLED (Aggregated - 2015, 2025, 2026)
+    df_a = pd.read_csv(acled_path)
+    # Filter for years where UCDP is missing but we need data
+    df_a = df_a[(df_a['Year'] == 2015) | (df_a['Year'] == 2025) | (df_a['Year'] == 2026)]
+    # Only keep rows with actual events
+    df_a = df_a[df_a['Events'] > 0]
+    
+    for _, row in df_a.iterrows():
+        # ACLED names are already matched to dashboard
+        features.append({
             "type": "Feature",
             "properties": {
-                "year": int(row['year']),
-                "month": month,
-                "admin2": str(row['admin2_final']),
-                "events": 1,
-                "fatalities": int(row['best']) if pd.notna(row['best']) else 0,
-                "source": "UCDP"
+                "year": int(row['Year']),
+                "month": str(row['Month']),
+                "admin2": str(row['Admin2']),
+                "events": int(row['Events']),
+                "fatalities": int(row['Fatalities']),
+                "is_granular": False
             },
             "geometry": {
                 "type": "Point",
-                "coordinates": [float(row['longitude']), float(row['latitude'])]
+                "coordinates": [float(row['Longitude']), float(row['Latitude'])]
             }
-        }
-        features.append(feature)
+        })
+    print(f"  ✓ Added {len(df_a)} aggregated ACLED records for 2015, 2025, 2026.")
 
     geojson = {
         "type": "FeatureCollection",
@@ -76,8 +89,7 @@ def export_conflicts_geojson():
     with open(out_path, 'w', encoding='utf-8') as f:
         json.dump(geojson, f, separators=(',', ':'))
     
-    print(f"✅ Success! Saved {len(features)} granular events to {out_path}")
-    print(f"   Time range: {df['year'].min()} - {df['year'].max()}")
+    print(f"✅ Success! Saved {len(features)} total events to {out_path}")
 
 if __name__ == "__main__":
     export_conflicts_geojson()
