@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 /* ── Reset ───────────────────────────────────────────── */
@@ -458,6 +459,19 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
         </p>
       </div>
 
+      <!-- Chart Panel -->
+      <div class="panel" style="border-top: 1px solid var(--border); background: var(--surface2);">
+        <div class="panel-label" id="chartTitle">National Risk Trajectory</div>
+        <div style="height: 140px; position: relative;">
+          <canvas id="riskChart"></canvas>
+        </div>
+        <div class="legend-grid" style="margin-top: 10px; font-size: 9px;">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--tier-critical)"></div>Critical</div>
+          <div class="legend-item"><div class="dot" style="background:var(--tier-high); width:12px; height:12px; border-radius:2px;"></div>High</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--tier-low)"></div>Stable</div>
+        </div>
+      </div>
+
     </aside>
   </div>
 </div>
@@ -468,6 +482,7 @@ const SCHOOLS_URL  = "../artifacts/schools.geojson";
 const SCORE_URL    = "../artifacts/school_vulnerability_scores.json";
 const PROV_STATS_URL = "../artifacts/province_at_risk_stats.json";
 const VULN_CSV_URL   = "../artifacts/schools/BFA_school_vulnerability.csv";
+const RISK_TRAJECTORY_URL = "../artifacts/province_school_risk.json";
 
 const TIER_COLORS = {
   critical: "#8B1A1A",
@@ -501,8 +516,10 @@ let heatmapLayer    = null;
 let scoreData       = [];
 let schoolsData     = null;
 let provinceStats   = null;
+let riskTrajectory  = null;
 let vulnMap         = {}; // To store detailed conflict/fragility metrics
 let selectedLayer   = null;
+let riskChart       = null;
 let currentYear     = 2024;
 let currentProvince = null;
 
@@ -527,17 +544,22 @@ async function init() {
   updateNavLinks();
 
   try {
-    const [geoRes, schoolsRes, scoreRes, provStatsRes, vulnCsvRes] = await Promise.all([
+    const [geoRes, schoolsRes, scoreRes, provStatsRes, vulnCsvRes, riskTrajRes] = await Promise.all([
       fetch(GEOJSON_URL).then(r => r.json()),
       fetch(SCHOOLS_URL).then(r => r.json()),
       fetch(SCORE_URL).then(r => r.json()),
       fetch(PROV_STATS_URL).then(r => r.json()),
-      fetch(VULN_CSV_URL).then(r => r.text())
+      fetch(VULN_CSV_URL).then(r => r.text()),
+      fetch(RISK_TRAJECTORY_URL).then(r => r.json())
     ]);
 
     scoreData = scoreRes;
     schoolsData = schoolsRes;
     provinceStats = provStatsRes;
+    riskTrajectory = riskTrajRes;
+    
+    // Initial chart
+    updateRiskChart("National");
 
     // Parse Site Level Metrics
     const rows = vulnCsvRes.split('\n').slice(1);
@@ -580,6 +602,7 @@ async function init() {
             
             currentProvince = f.properties.admin2;
             updateNavLinks();
+            updateRiskChart(currentProvince);
 
             const stats = provinceStats[currentYear] || {};
             const provData = stats[f.properties.admin2] || { count: 0 };
@@ -694,6 +717,7 @@ async function init() {
       renderSchools(schoolsData);
       renderHeatmap();
       updateGlobalStats();
+      updateRiskChart(currentProvince || "National");
     });
   } catch (e) {
     console.error("Load failed", e);
@@ -724,6 +748,7 @@ function resetSelection() {
   }
   currentProvince = null;
   updateNavLinks();
+  updateRiskChart("National");
   
   document.getElementById("detailPanel").innerHTML = `
     <div class="panel-label">School detail</div>
@@ -751,6 +776,97 @@ function renderHeatmap() {
     gradient: { 0.2: "#A8C5A0", 0.5: "#F0C060", 0.8: "#E07B3B", 1.0: "#8B1A1A" }
   });
   if (document.getElementById("toggleHeatmap").checked) heatmapLayer.addTo(map);
+}
+
+function updateRiskChart(provinceName) {
+  const ctx = document.getElementById('riskChart').getContext('2d');
+  const data = riskTrajectory[provinceName] || riskTrajectory["National"];
+  const years = Object.keys(data).sort();
+  
+  const critical = years.map(y => data[y].critical);
+  const high = years.map(y => data[y].high);
+  const stable = years.map(y => data[y].stable);
+
+  document.getElementById("chartTitle").textContent = `${provinceName} Risk Trajectory`;
+
+  if (riskChart) riskChart.destroy();
+
+  // Create plugin for vertical line
+  const verticalLinePlugin = {
+    id: 'verticalLine',
+    afterDraw: (chart) => {
+      if (chart.tooltip?._active?.length) return;
+      const ctx = chart.ctx;
+      const x = chart.scales.x.getPixelForValue(currentYear.toString());
+      const top = chart.scales.y.top;
+      const bottom = chart.scales.y.bottom;
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(x, top);
+      ctx.lineTo(x, bottom);
+      ctx.lineWidth = 1;
+      ctx.setLineDash([5, 5]);
+      ctx.strokeStyle = '#1A141088';
+      ctx.stroke();
+      ctx.restore();
+    }
+  };
+
+  riskChart = new Chart(ctx, {
+    type: 'line',
+    plugins: [verticalLinePlugin],
+    data: {
+      labels: years,
+      datasets: [
+        {
+          label: 'Critical',
+          data: critical,
+          borderColor: TIER_COLORS.critical,
+          backgroundColor: TIER_COLORS.critical + '99',
+          fill: true,
+          tension: 0.4,
+          pointRadius: 0
+        },
+        {
+          label: 'High',
+          data: high,
+          borderColor: TIER_COLORS.high,
+          backgroundColor: TIER_COLORS.high + '99',
+          fill: true,
+          tension: 0.4,
+          pointRadius: 0
+        },
+        {
+          label: 'Stable',
+          data: stable,
+          borderColor: TIER_COLORS.low,
+          backgroundColor: TIER_COLORS.low + '99',
+          fill: true,
+          tension: 0.4,
+          pointRadius: 0
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { intersect: false, mode: 'index' },
+      plugins: { 
+        legend: { display: false },
+        tooltip: {
+            titleFont: { family: 'IBM Plex Mono', size: 10 },
+            bodyFont: { family: 'IBM Plex Sans', size: 11 },
+            padding: 10,
+            cornerRadius: 4
+        }
+      },
+      scales: {
+        x: { display: true, ticks: { font: { size: 8, family: 'IBM Plex Mono' } }, grid: { display: false } },
+        y: { stacked: true, display: false }
+      }
+    }
+  });
 }
 
 function renderSchools(geo) {

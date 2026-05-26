@@ -129,6 +129,79 @@ def build_geojson(vuln: pd.DataFrame, boundaries: gpd.GeoDataFrame) -> dict:
     return {"type": "FeatureCollection", "features": features}
 
 
+def build_province_school_risk(school_scores: list, all_schools_df: pd.DataFrame, admin2_path: str) -> dict:
+    """Groups all schools by province, year, and risk category."""
+    # Structure: { province: { year: { stable: n, high: n, critical: n } } }
+    risk_data = {"National": {}}
+    
+    # 1. Spatial Join to get Province for all schools
+    schools_gdf = gpd.GeoDataFrame(
+        all_schools_df, 
+        geometry=gpd.points_from_xy(all_schools_df.longitude, all_schools_df.latitude),
+        crs="EPSG:4326"
+    )
+    boundaries = gpd.read_file(admin2_path)
+    if boundaries.crs != schools_gdf.crs:
+        boundaries = boundaries.to_crs(schools_gdf.crs)
+        
+    name_col = next(
+        (c for c in boundaries.columns
+         if any(x in c.lower() for x in ["adm2_en", "adm2_name", "name_2", "shapename", "admin2name"])),
+        boundaries.columns[0]
+    )
+    
+    joined = gpd.sjoin(schools_gdf, boundaries[[name_col, "geometry"]], how="left", predicate="within")
+    
+    # Use mapping if available to align ACLED/Analysis names with OCHA names
+    mapping_path = Path("artifacts/admin_mapping.json")
+    official_to_acled = {}
+    if mapping_path.exists():
+        with open(mapping_path, 'r') as f:
+            official_to_acled = json.load(f).get("official_to_acled", {})
+
+    all_schools_df['province_official'] = joined[name_col].str.strip().str.title().fillna("Unknown")
+    all_schools_df['province'] = all_schools_df['province_official'].map(official_to_acled).fillna(all_schools_df['province_official'])
+
+    # 2. Process all schools
+    # Build a lookup for assessed schools (those near conflict)
+    # Using coords as key for better matching
+    assessed = {}
+    for s in school_scores:
+        key = f"{round(s['lat'], 4)},{round(s['lon'], 4)}"
+        assessed[key] = s
+    
+    for _, school in all_schools_df.iterrows():
+        prov = school['province']
+        key = f"{round(school['latitude'], 4)},{round(school['longitude'], 4)}"
+        
+        if prov not in risk_data: risk_data[prov] = {}
+        
+        if key in assessed:
+            score = assessed[key].get('v_score', 0)
+            years = assessed[key].get('at_risk_years', [])
+            # Thresholds: >0.7 critical, >0.4 high, else stable
+            # Match aggregate_at_risk_schools.py logic
+            category = "stable"
+            if score > 0.7: category = "critical"
+            elif score > 0.4: category = "high"
+        else:
+            years = list(range(2015, 2027))
+            category = "stable"
+
+        for yr in years:
+            yr_str = str(yr)
+            # Province stats
+            if yr_str not in risk_data[prov]:
+                risk_data[prov][yr_str] = {"stable": 0, "high": 0, "critical": 0}
+            risk_data[prov][yr_str][category] += 1
+            # National stats
+            if yr_str not in risk_data["National"]:
+                risk_data["National"][yr_str] = {"stable": 0, "high": 0, "critical": 0}
+            risk_data["National"][yr_str][category] += 1
+            
+    return risk_data
+
+
 def build_trends_json(trends: pd.DataFrame, school_risk_counts: dict) -> list[dict]:
     """Convert national trends DataFrame to a JSON array for the chart."""
     # Round all numeric columns and replace NaN with None for valid JSON (null)
@@ -299,6 +372,18 @@ if __name__ == "__main__":
     with open(trends_path, "w") as f:
         json.dump(trends_json, f, separators=(",", ":"))
     print(f"  ✓ Trends ({len(trends_json)} years) → {trends_path}")
+
+    # ── Province School Risk JSON ─────────────────────────────────────────────
+    if in_school_scores.exists() and in_schools.exists() and in_admin2.exists():
+        print(f"  → Generating province school risk trajectory...")
+        with open(in_school_scores, "r") as f:
+            scores_data = json.load(f)
+        all_schools_df = pd.read_csv(in_schools)
+        risk_data = build_province_school_risk(scores_data, all_schools_df, str(in_admin2))
+        out_risk = OUT_DIR / "province_school_risk.json"
+        with open(out_risk, "w") as f:
+            json.dump(risk_data, f, indent=2)
+        print(f"  ✓ Province Risk JSON → {out_risk}")
 
     # ── Insights JSON ─────────────────────────────────────────────────────────
     insights = build_insights(vuln, trends, iso3, school_risk_counts)
