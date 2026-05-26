@@ -8,10 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
-<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
 
 <style>
 /* ── Reset ───────────────────────────────────────────── */
@@ -782,49 +779,54 @@ function renderConflicts() {
   if (conflictsLayer) map.removeLayer(conflictsLayer);
   if (!document.getElementById("toggleConflicts").checked) return;
 
-  conflictsLayer = L.markerClusterGroup({
-    showCoverageOnHover: false,
-    maxClusterRadius: 40,
-    iconCreateFunction: (cluster) => {
-      const childCount = cluster.getChildCount();
-      let c = ' marker-cluster-';
-      if (childCount < 10) c += 'small';
-      else if (childCount < 100) c += 'medium';
-      else c += 'large';
+  const yearConflicts = conflictsData.features.filter(f => f.properties.year === currentYear);
+  
+  conflictsLayer = L.geoJSON({ type: "FeatureCollection", features: yearConflicts }, {
+    pointToLayer: (f, latlng) => {
+      const events = f.properties.events || 0;
+      const fatalities = f.properties.fatalities || 0;
 
-      return new L.DivIcon({ 
-        html: `<div><span>${childCount}</span></div>`, 
-        className: 'marker-cluster' + c, 
-        iconSize: new L.Point(40, 40) 
+      // Color based on number of events (Intensity)
+      let color = "#F0C060"; // 1 event
+      if (events > 5) color = "#8B1A1A"; // Severe escalation
+      else if (events > 1) color = "#E07B3B"; // High activity
+
+      // Size based on fatalities (Impact)
+      let size = 8;
+      if (fatalities > 50) size = 22;
+      else if (fatalities > 10) size = 15;
+      else if (fatalities > 0) size = 10;
+
+      const icon = L.divIcon({
+        className: 'conflict-marker',
+        html: `
+          <svg width="${size}" height="${size}" viewBox="0 0 100 100" style="display:block;">
+            <polygon points="50,5 95,95 5,95" fill="${color}" stroke="#fff" stroke-width="5"/>
+          </svg>`,
+        iconSize: [size, size],
+        iconAnchor: [size/2, size/2]
       });
+
+      const marker = L.marker(latlng, { icon });
+      
+      const popupContent = `
+        <div style="font-family:IBM Plex Sans, sans-serif; font-size:12px; line-height:1.4; min-width:120px;">
+          <div style="text-transform:uppercase; font-size:9px; font-family:IBM Plex Mono, monospace; color:#8B1A1A; margin-bottom:4px; font-weight:bold; letter-spacing:0.05em;">Conflict Incident</div>
+          <strong style="font-size:14px;">${f.properties.admin2}</strong><br/>
+          <span style="color:#6B6259;">${f.properties.month} ${f.properties.year}</span>
+          <hr style="border:0; border-top:1px solid #eee; margin:8px 0;"/>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <div><div style="font-size:16px; font-weight:bold;">${events}</div><div style="font-size:9px; text-transform:uppercase; color:#6B6259;">Events</div></div>
+            <div><div style="font-size:16px; font-weight:bold;">${fatalities}</div><div style="font-size:9px; text-transform:uppercase; color:#6B6259;">Fatalities</div></div>
+          </div>
+        </div>
+      `;
+      marker.bindPopup(popupContent);
+      return marker;
     }
   });
 
-  const yearConflicts = conflictsData.features.filter(f => f.properties.year === currentYear);
-  
-  yearConflicts.forEach(f => {
-    const marker = L.circleMarker([f.geometry.coordinates[1], f.geometry.coordinates[0]], {
-      radius: 5,
-      fillColor: "#000",
-      color: "#fff",
-      weight: 1,
-      opacity: 1,
-      fillOpacity: 0.8
-    });
-    
-    const popupContent = `
-      <div style="font-family:IBM Plex Sans, sans-serif; font-size:12px;">
-        <strong>${f.properties.admin2}</strong><br/>
-        ${f.properties.month} ${f.properties.year}<br/>
-        Events: ${f.properties.events}<br/>
-        Fatalities: ${f.properties.fatalities}
-      </div>
-    `;
-    marker.bindPopup(popupContent);
-    conflictsLayer.addLayer(marker);
-  });
-
-  map.addLayer(conflictsLayer);
+  conflictsLayer.addTo(map);
 }
 
 function renderChoropleth(year) {

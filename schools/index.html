@@ -443,7 +443,7 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
         <div class="panel-label" style="margin-top:16px;margin-bottom:8px">Infrastructure Layers</div>
         <div style="display:flex; flex-direction:column; gap:8px;">
            <label style="display:flex; align-items:center; gap:8px; font-size:11px; color:var(--ink-muted); cursor:pointer;">
-             <input type="checkbox" id="toggleSchools" checked> <span>Individual School Points</span>
+             <input type="checkbox" id="toggleSchools"> <span>Individual School Points</span>
            </label>
         </div>
       </div>
@@ -635,7 +635,7 @@ async function init() {
       }
     }).addTo(map);
 
-    document.getElementById("toggleSchools").checked = true;
+    document.getElementById("toggleSchools").checked = false;
 
     // Add event listeners for toggles
     document.getElementById("toggleSchools").addEventListener("change", () => renderSchools(schoolsData));
