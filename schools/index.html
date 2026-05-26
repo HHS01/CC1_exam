@@ -603,6 +603,10 @@ async function init() {
     document.getElementById("toggleSchools").checked = false;
     document.getElementById("toggleHeatmap").checked = false;
 
+    // Add event listeners for toggles
+    document.getElementById("toggleSchools").addEventListener("change", () => renderSchools(schoolsData));
+    document.getElementById("toggleHeatmap").addEventListener("change", renderHeatmap);
+
     renderSchools(schoolsData);
     renderHeatmap();
     updateGlobalStats();

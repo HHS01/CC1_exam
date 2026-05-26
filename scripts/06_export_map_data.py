@@ -25,7 +25,8 @@ OUT_DIR      = Path("artifacts")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # Naming alignment for Burkina Faso (CSV Name -> GeoJSON Name)
-BFA_NAME_MAP = {
+# We now load this dynamically if admin_mapping.json exists
+DEFAULT_NAME_MAP = {
     "Kossi": "Kossin",
     "Oubritenga": "Bassitenga",
     "Sanmatenga": "Sandbondtenga",
@@ -39,6 +40,15 @@ def build_geojson(vuln: pd.DataFrame, boundaries: gpd.GeoDataFrame) -> dict:
     """
     Join vulnerability scores onto admin2 polygons for the choropleth.
     """
+    # Load Dynamic Mapping if exists
+    mapping_path = Path("artifacts/admin_mapping.json")
+    acled_to_official = DEFAULT_NAME_MAP
+    if mapping_path.exists():
+        with open(mapping_path, 'r') as f:
+            mapping_data = json.load(f)
+            acled_to_official = mapping_data.get("acled_to_official", {})
+            print(f"  [Info] Loaded {len(acled_to_official)} name mappings dynamically.")
+
     # Detect admin2 name column in boundaries
     name_col = next(
         (c for c in boundaries.columns
@@ -47,11 +57,17 @@ def build_geojson(vuln: pd.DataFrame, boundaries: gpd.GeoDataFrame) -> dict:
     )
     if "Admin2_Geo" not in boundaries.columns:
         boundaries = boundaries.rename(columns={name_col: "Admin2_Geo"})
-    
+
     boundaries["Admin2_Geo"] = boundaries["Admin2_Geo"].str.strip().str.title()
-    
-    # Map CSV names to GeoJSON names
-    vuln["Admin2_Mapped"] = vuln["Admin2"].map(BFA_NAME_MAP).fillna(vuln["Admin2"])
+
+    # Load Dynamic Mapping if exists (for national stats block)
+    mapping_path = Path("artifacts/admin_mapping.json")
+    acled_to_official = DEFAULT_NAME_MAP
+    if mapping_path.exists():
+        with open(mapping_path, 'r') as f:
+            acled_to_official = json.load(f).get("acled_to_official", {})
+
+    vuln["Admin2_Mapped"] = vuln["Admin2"].map(acled_to_official).fillna(vuln["Admin2"])
     vuln["Admin2_Mapped"] = vuln["Admin2_Mapped"].str.strip().str.title()
 
     # --- Categorization Logic ---
@@ -226,7 +242,13 @@ if __name__ == "__main__":
         school_counts["Admin2_Geo"] = school_counts["Admin2_Geo"].str.strip().str.title()
         
         # Merge school counts into vuln early
-        vuln["Admin2_Mapped"] = vuln["Admin2"].map(BFA_NAME_MAP).fillna(vuln["Admin2"])
+        mapping_path = Path("artifacts/admin_mapping.json")
+        acled_to_official = DEFAULT_NAME_MAP
+        if mapping_path.exists():
+            with open(mapping_path, 'r') as f:
+                acled_to_official = json.load(f).get("acled_to_official", {})
+
+        vuln["Admin2_Mapped"] = vuln["Admin2"].map(acled_to_official).fillna(vuln["Admin2"])
         vuln["Admin2_Mapped"] = vuln["Admin2_Mapped"].str.strip().str.title()
         
         # Merge the new count from spatial join

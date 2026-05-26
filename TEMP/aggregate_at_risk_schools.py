@@ -18,13 +18,15 @@ def aggregate_at_risk_schools():
     for s in scores:
         province = s.get("province", "Unknown")
         v_score = s.get("v_score", 0)
+        trauma = s.get("trauma", 0)
         at_risk_years = s.get("at_risk_years", [])
         name = s.get("name", "Unnamed School")
         lat = s.get("lat", 0)
         lon = s.get("lon", 0)
 
-        # Threshold criteria (using 0.7 as per existing UI logic)
-        if v_score > 0.7:
+        # Threshold criteria: High risk (v_score > 0.7) AND proximity events (trauma > 0)
+        # This matches the logic in at_risk_summary.html more closely.
+        if v_score > 0.7 and trauma > 0:
             for year in at_risk_years:
                 y_str = str(year)
                 if y_str not in aggregated:
