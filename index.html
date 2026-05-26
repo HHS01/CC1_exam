@@ -401,6 +401,21 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
   margin-top: 8px;
 }
 
+/* Faint Province Labels */
+.faint-province-label {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #1A1410 !important;
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 8px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  pointer-events: none !important;
+  opacity: 0.25 !important;
+  text-align: center;
+}
+
 /* Score basis tag */
 .basis-tag {
   font-family: var(--mono);
@@ -863,6 +878,7 @@ function renderConflicts() {
           <strong style="font-size:14px;">${f.properties.admin2}</strong><br/>
           <span style="color:#6B6259;">${f.properties.month || 'Yearly'} ${f.properties.year}</span>
           <hr style="border:0; border-top:1px solid #eee; margin:8px 0;"/>
+
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
             <div><div style="font-size:16px; font-weight:bold;">${events}</div><div style="font-size:9px; text-transform:uppercase;">Events</div></div>
             <div><div style="font-size:16px; font-weight:bold;">${fatalities}</div><div style="font-size:9px; text-transform:uppercase;">Fatalities</div></div>
@@ -897,6 +913,14 @@ function renderChoropleth(year) {
         return style;
     },
     onEachFeature: (f, layer) => {
+      // Add faint province labels
+      layer.bindTooltip(f.properties.admin2, {
+        permanent: true,
+        direction: 'center',
+        className: 'faint-province-label',
+        opacity: 0.4
+      });
+
       // For historical years, calculate events dynamically from granular data
       let displayProps = { ...f.properties };
       if (isHistorical) {
@@ -1039,6 +1063,16 @@ function showProvinceDetail(props) {
   const securityExposure = (props.conflict_score || 0) * 100;
   const densityFragility = (props.density_fragility || 0.5) * 100;
 
+  // Calculate pins for this province in this year
+  const yearConflicts = (conflictsData?.features || []).filter(c => c.properties.year === currentYear);
+  const acledToOfficial = adminMapping ? adminMapping.acled_to_official : {};
+  const provConflicts = yearConflicts.filter(c => {
+    const acledName = c.properties.admin2;
+    const officialName = acledToOfficial[acledName] || acledName;
+    return officialName === props.admin2;
+  });
+  const pins = provConflicts.length;
+
   document.getElementById("detailPanel").innerHTML = `
     <div class="panel-label">Province detail</div>
     <div class="detail-name">${name}</div>
@@ -1050,7 +1084,8 @@ function showProvinceDetail(props) {
     <div class="detail-metrics">
       <div class="metric">
         <div class="metric-val">${events.toLocaleString()}</div>
-        <div class="metric-label">Events</div>
+        <div class="metric-label">Events (Official)</div>
+        <div style="font-size:8px; color:var(--ink-muted); margin-top:2px;">${pins} Precision Pins</div>
       </div>
       <div class="metric">
         <div class="metric-val">${fatal.toLocaleString()}</div>
