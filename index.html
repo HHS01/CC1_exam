@@ -797,7 +797,7 @@ function renderConflicts() {
 
   let displayFeatures = [];
 
-  if (currentZoom < 9) {
+  if (currentZoom < 8) {
     // Grouped View: Show only the "Primary Impact Site" for each province
     const groups = {};
     yearConflicts.forEach(f => {
@@ -819,21 +819,32 @@ function renderConflicts() {
     displayFeatures = yearConflicts;
   }
 
+  const maxEvents = allEvents[allEvents.length - 1] || 0;
+  const minEvents = allEvents[0] || 0;
+  const maxFatals = allFatals[allFatals.length - 1] || 0;
+  const minFatals = allFatals[0] || 0;
+
   conflictsLayer = L.geoJSON({ type: "FeatureCollection", features: displayFeatures }, {
     pointToLayer: (f, latlng) => {
       const events = f.properties.events || 0;
       const fatalities = f.properties.fatalities || 0;
 
       // Relative Color (Intensity) based on Events
-      let color = "#F0C060"; // Moderate
-      if (events >= p90Events) color = "#8B1A1A"; // Top 10%
-      else if (events >= p75Events) color = "#E07B3B"; // Top 25%
+      let color = "#F0C060"; // Default
+      if (maxEvents > minEvents) {
+        if (events >= p90Events && events > 1) color = "#8B1A1A"; 
+        else if (events >= p75Events) color = "#E07B3B";
+      }
 
       // Relative Size (Impact) based on Fatalities
       let size = 10;
-      if (fatalities >= p90Fatals) size = 24;
-      else if (fatalities >= p75Fatals) size = 16;
-      else if (fatalities > 0) size = 12;
+      if (maxFatals > minFatals) {
+        if (fatalities >= p90Fatals && p90Fatals > p75Fatals) size = 24;
+        else if (fatalities >= p75Fatals) size = 16;
+        else if (fatalities > 0) size = 12;
+      } else if (maxFatals > 0) {
+        size = 12; // Standard size if all are equal but > 0
+      }
 
       const icon = L.divIcon({
         className: 'conflict-marker',
@@ -847,7 +858,7 @@ function renderConflicts() {
 
       const marker = L.marker(latlng, { icon });
       
-      const title = currentZoom < 9 ? "Province Hotspot" : "Conflict Incident";
+      const title = currentZoom < 8 ? "Province Hotspot" : "Conflict Incident";
       const popupContent = `
         <div style="font-family:IBM Plex Sans, sans-serif; font-size:12px; line-height:1.4; min-width:140px;">
           <div style="text-transform:uppercase; font-size:9px; font-family:IBM Plex Mono, monospace; color:#8B1A1A; margin-bottom:4px; font-weight:bold; letter-spacing:0.05em;">${title}</div>
