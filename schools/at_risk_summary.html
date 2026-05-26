@@ -131,11 +131,12 @@ async function load() {
         const row = `<tr>
             <td>${index + 1}</td>
             <td style="font-weight:500;">${s.name || 'Unnamed'}</td>
-            <td>${s.province || 'Various'}</td>
+            <td>${s.province || province || 'Unknown'}</td>
             <td style="font-family:monospace; color:var(--ink-muted);">${s.lat.toFixed(4)}</td>
             <td style="font-family:monospace; color:var(--ink-muted);">${s.lon.toFixed(4)}</td>
             <td style="font-family:monospace; text-align:center; font-weight:bold; color:#C0392B;">${s.trauma || 0}</td>
         </tr>`;
+
         tbody.innerHTML += row;
       });
   }

@@ -47,6 +47,7 @@ def aggregate_at_risk_schools():
                 aggregated[y_str][province]["count"] += 1
                 aggregated[y_str][province]["schools"].append({
                     "name": name,
+                    "province": province,
                     "lat": lat,
                     "lon": lon,
                     "v_score": v_score,
