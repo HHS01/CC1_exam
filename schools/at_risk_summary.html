@@ -30,10 +30,8 @@
   <thead><tr>
     <th>#</th>
     <th>Name</th>
-    <th>Province</th>
     <th>Latitude</th>
     <th>Longitude</th>
-    <th title="Total conflict events within 10km radius">Nearby Events</th>
   </tr></thead>
   <tbody></tbody>
 </table>
@@ -114,27 +112,24 @@ async function load() {
       }
   }
   
-  // Sort: Conflict Score (desc), then Memory Score (desc), then Trauma (desc)
+  // Sort: Alphabetical by Name
   atRiskSchools.sort((a, b) => {
-      const vDataA = vulnMap[`${a.lat.toFixed(3)},${a.lon.toFixed(3)}`] || nameMap[(a.name || '').toLowerCase().trim()] || { conflict: 0 };
-      const vDataB = vulnMap[`${b.lat.toFixed(3)},${b.lon.toFixed(3)}`] || nameMap[(b.name || '').toLowerCase().trim()] || { conflict: 0 };
-
-      if (vDataB.conflict !== vDataA.conflict) return vDataB.conflict - vDataA.conflict;
-      if (b.v_score !== a.v_score) return b.v_score - a.v_score;
-      return (b.trauma || 0) - (a.trauma || 0);
+      const nameA = (a.name || 'Unnamed').toLowerCase();
+      const nameB = (b.name || 'Unnamed').toLowerCase();
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
+      return 0;
   });
   
   if (atRiskSchools.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">No high-risk schools found for ${year} in this selection.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No high-risk schools found for ${year} in this selection.</td></tr>`;
   } else {
       atRiskSchools.forEach((s, index) => {
         const row = `<tr>
             <td>${index + 1}</td>
             <td style="font-weight:500;">${s.name || 'Unnamed'}</td>
-            <td>${s.province || province || 'Unknown'}</td>
             <td style="font-family:monospace; color:var(--ink-muted);">${s.lat.toFixed(4)}</td>
             <td style="font-family:monospace; color:var(--ink-muted);">${s.lon.toFixed(4)}</td>
-            <td style="font-family:monospace; text-align:center; font-weight:bold; color:#C0392B;">${s.trauma || 0}</td>
         </tr>`;
 
         tbody.innerHTML += row;
