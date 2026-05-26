@@ -8,7 +8,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
 
 <style>
 /* ── Reset ───────────────────────────────────────────── */
@@ -592,6 +595,14 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
         <div style="font-size: 10px; color: var(--ink-muted); margin-top: 14px; font-style: italic; line-height: 1.4; border-top: 1px solid var(--border); padding-top: 10px;">
           EVI (0-100) measures the risk of school closure due to conflict, where higher scores indicate greater threat.
         </div>
+
+        <!-- Layer Toggles -->
+        <div class="panel-label" style="margin-top:16px;margin-bottom:8px">Map Layers</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+           <label style="display:flex; align-items:center; gap:8px; font-size:11px; color:var(--ink-muted); cursor:pointer;">
+             <input type="checkbox" id="toggleConflicts"> <span>Conflict Incident Pins</span>
+           </label>
+        </div>
       </div>
 
       <!-- Province detail -->
@@ -623,6 +634,7 @@ const LS_CACHE_KEY   = "evi_briefings_bfa";
 const GEOJSON_URL  = "./artifacts/data.geojson";
 const TRENDS_URL   = "./artifacts/trends.json";
 const INSIGHTS_URL = "./artifacts/insights.json";
+const CONFLICTS_URL = "./artifacts/conflicts.geojson";
 
 const TIER_COLORS = {
   critical:       "#8B1A1A",
@@ -657,9 +669,11 @@ L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png
 
 let allFeatures  = {};
 let trendsData   = [];
+let conflictsData = null;
 let currentYear  = 2023;
 let currentProvince = null;
 let choropleth   = null;
+let conflictsLayer = null;
 let selectedLayer = null;
 let aiCache = (() => {
   try { return JSON.parse(localStorage.getItem(LS_CACHE_KEY) || "{}"); }
@@ -693,13 +707,15 @@ async function loadAll() {
   }
 
   try {
-    const [geojson, trends, insights] = await Promise.all([
+    const [geojson, trends, insights, conflicts] = await Promise.all([
       fetch(GEOJSON_URL).then(r => r.json()),
       fetch(TRENDS_URL).then(r => r.json()),
       fetch(INSIGHTS_URL).then(r => r.json()),
+      fetch(CONFLICTS_URL).then(r => r.json()),
     ]);
 
     trendsData = trends;
+    conflictsData = conflicts;
 
     geojson.features.forEach(f => {
       const yr = f.properties.year || currentYear;
@@ -718,8 +734,11 @@ async function loadAll() {
     populateStats(insights);
     drawTrend(trends);
     renderChoropleth(currentYear);
+    renderConflicts();
     
     updateNavLinks();
+
+    document.getElementById("toggleConflicts").addEventListener("change", renderConflicts);
 
     // Auto-select province if in URL
     if (currentProvince) {
@@ -758,6 +777,55 @@ map.on('click', e => {
 // ═══════════════════════════════════════════════════════
 // CHOROPLETH
 // ═══════════════════════════════════════════════════════
+
+function renderConflicts() {
+  if (conflictsLayer) map.removeLayer(conflictsLayer);
+  if (!document.getElementById("toggleConflicts").checked) return;
+
+  conflictsLayer = L.markerClusterGroup({
+    showCoverageOnHover: false,
+    maxClusterRadius: 40,
+    iconCreateFunction: (cluster) => {
+      const childCount = cluster.getChildCount();
+      let c = ' marker-cluster-';
+      if (childCount < 10) c += 'small';
+      else if (childCount < 100) c += 'medium';
+      else c += 'large';
+
+      return new L.DivIcon({ 
+        html: `<div><span>${childCount}</span></div>`, 
+        className: 'marker-cluster' + c, 
+        iconSize: new L.Point(40, 40) 
+      });
+    }
+  });
+
+  const yearConflicts = conflictsData.features.filter(f => f.properties.year === currentYear);
+  
+  yearConflicts.forEach(f => {
+    const marker = L.circleMarker([f.geometry.coordinates[1], f.geometry.coordinates[0]], {
+      radius: 5,
+      fillColor: "#000",
+      color: "#fff",
+      weight: 1,
+      opacity: 1,
+      fillOpacity: 0.8
+    });
+    
+    const popupContent = `
+      <div style="font-family:IBM Plex Sans, sans-serif; font-size:12px;">
+        <strong>${f.properties.admin2}</strong><br/>
+        ${f.properties.month} ${f.properties.year}<br/>
+        Events: ${f.properties.events}<br/>
+        Fatalities: ${f.properties.fatalities}
+      </div>
+    `;
+    marker.bindPopup(popupContent);
+    conflictsLayer.addLayer(marker);
+  });
+
+  map.addLayer(conflictsLayer);
+}
 
 function renderChoropleth(year) {
   if (choropleth) map.removeLayer(choropleth);
@@ -810,6 +878,7 @@ document.getElementById("yearSlider").addEventListener("input", e => {
   document.getElementById("yearDisplay").textContent = currentYear;
   updateNavLinks();
   renderChoropleth(currentYear);
+  renderConflicts();
 
   if (currentProvince) {
     const layers = choropleth.getLayers();

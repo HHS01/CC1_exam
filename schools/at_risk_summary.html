@@ -31,9 +31,9 @@
     <th>#</th>
     <th>Name</th>
     <th>Province</th>
+    <th>Latitude</th>
+    <th>Longitude</th>
     <th title="Total conflict events within 10km radius">Nearby Events</th>
-    <th title="Annual conflict pressure (2yr rolling) at province level">Security Exposure</th>
-    <th>Risk Index</th>
   </tr></thead>
   <tbody></tbody>
 </table>
@@ -125,25 +125,16 @@ async function load() {
   });
   
   if (atRiskSchools.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;">No high-risk schools found for ${year} in this selection.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">No high-risk schools found for ${year} in this selection.</td></tr>`;
   } else {
       atRiskSchools.forEach((s, index) => {
-        const latKey = s.lat.toFixed(3);
-        const lonKey = s.lon.toFixed(3);
-        const nameKey = (s.name || '').toLowerCase().trim();
-        const vData = vulnMap[`${latKey},${lonKey}`] || nameMap[nameKey];
-
-        // Use values from the official CSV
-        const securityExposure = vData ? vData.conflict.toFixed(2) : '0.00';
-        const riskIndex = vData ? vData.final.toFixed(2) : (s.v_score || 0).toFixed(2);
-
         const row = `<tr>
             <td>${index + 1}</td>
             <td style="font-weight:500;">${s.name || 'Unnamed'}</td>
-            <td>${province || 'Various'}</td>
-            <td style="font-family:monospace; text-align:center;">${s.trauma || 0}</td>
-            <td style="color:#C0392B; font-family:monospace;">${securityExposure}</td>
-            <td style="font-weight:bold; font-family:monospace;">${riskIndex}</td>
+            <td>${s.province || 'Various'}</td>
+            <td style="font-family:monospace; color:var(--ink-muted);">${s.lat.toFixed(4)}</td>
+            <td style="font-family:monospace; color:var(--ink-muted);">${s.lon.toFixed(4)}</td>
+            <td style="font-family:monospace; text-align:center; font-weight:bold; color:#C0392B;">${s.trauma || 0}</td>
         </tr>`;
         tbody.innerHTML += row;
       });
