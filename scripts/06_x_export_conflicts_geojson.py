@@ -13,7 +13,7 @@ COUNTRY_MAP = {
 }
 
 def export_conflicts_geojson():
-    print(f"🚀 Exporting conflict events GeoJSON for {ISO3}...")
+    print(f"🚀 Exporting GRANULAR conflict events GeoJSON for {ISO3}...")
     
     in_path = Path(f"data/clean/acled/HRP_2_countries/{COUNTRY_MAP.get(ISO3, 'Burkina_Faso')}_geocoded.csv")
     out_path = Path("artifacts/conflicts.geojson")
@@ -24,8 +24,9 @@ def export_conflicts_geojson():
 
     df = pd.read_csv(in_path)
     
-    # Filter for valid coordinates and basic cleanup
+    # Filter for valid coordinates
     df = df.dropna(subset=['Latitude', 'Longitude'])
+    
     df['Year'] = df['Year'].astype(int)
     df['Events'] = df['Events'].fillna(0).astype(int)
     df['Fatalities'] = df['Fatalities'].fillna(0).astype(int)
@@ -33,22 +34,22 @@ def export_conflicts_geojson():
     # Convert to GeoJSON features
     features = []
     for _, row in df.iterrows():
-        # Only include years within our simulation range to keep file size down
+        # Only include years within our simulation range
         if not (2015 <= row['Year'] <= 2026):
             continue
             
         feature = {
             "type": "Feature",
             "properties": {
-                "year": row['Year'],
+                "year": int(row['Year']),
                 "month": row['Month'],
                 "admin2": row['Admin2'],
-                "events": row['Events'],
-                "fatalities": row['Fatalities']
+                "events": int(row['Events']),
+                "fatalities": int(row['Fatalities'])
             },
             "geometry": {
                 "type": "Point",
-                "coordinates": [row['Longitude'], row['Latitude']]
+                "coordinates": [float(row['Longitude']), float(row['Latitude'])]
             }
         }
         features.append(feature)
@@ -61,7 +62,7 @@ def export_conflicts_geojson():
     with open(out_path, 'w', encoding='utf-8') as f:
         json.dump(geojson, f, separators=(',', ':'))
     
-    print(f"✅ Saved {len(features)} events to {out_path}")
+    print(f"✅ Saved {len(features)} granular events to {out_path}")
 
 if __name__ == "__main__":
     export_conflicts_geojson()
