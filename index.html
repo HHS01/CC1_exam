@@ -736,6 +736,9 @@ async function loadAll() {
     updateNavLinks();
 
     document.getElementById("toggleConflicts").addEventListener("change", renderConflicts);
+    map.on('zoomend', () => {
+      if (document.getElementById("toggleConflicts").checked) renderConflicts();
+    });
 
     // Auto-select province if in URL
     if (currentProvince) {
@@ -779,23 +782,58 @@ function renderConflicts() {
   if (conflictsLayer) map.removeLayer(conflictsLayer);
   if (!document.getElementById("toggleConflicts").checked) return;
 
+  const currentZoom = map.getZoom();
   const yearConflicts = conflictsData.features.filter(f => f.properties.year === currentYear);
+  if (!yearConflicts.length) return;
+
+  // --- Dynamic Thresholds (Relative to this year's data) ---
+  const allEvents = yearConflicts.map(f => f.properties.events || 0).sort((a,b) => a-b);
+  const allFatals = yearConflicts.map(f => f.properties.fatalities || 0).sort((a,b) => a-b);
   
-  conflictsLayer = L.geoJSON({ type: "FeatureCollection", features: yearConflicts }, {
+  const p75Events = allEvents[Math.floor(allEvents.length * 0.75)] || 1;
+  const p90Events = allEvents[Math.floor(allEvents.length * 0.90)] || 2;
+  const p75Fatals = allFatals[Math.floor(allFatals.length * 0.75)] || 1;
+  const p90Fatals = allFatals[Math.floor(allFatals.length * 0.90)] || 5;
+
+  let displayFeatures = [];
+
+  if (currentZoom < 9) {
+    // Grouped View: Show only the "Primary Impact Site" for each province
+    const groups = {};
+    yearConflicts.forEach(f => {
+      const prov = f.properties.admin2;
+      if (!groups[prov]) {
+        groups[prov] = f;
+      } else {
+        const currentBest = groups[prov].properties;
+        const potential = f.properties;
+        // Priority: Most events, then most fatalities
+        if (potential.events > currentBest.events || (potential.events === currentBest.events && potential.fatalities > currentBest.fatalities)) {
+          groups[prov] = f;
+        }
+      }
+    });
+    displayFeatures = Object.values(groups);
+  } else {
+    // Detailed View: Show all individual pins
+    displayFeatures = yearConflicts;
+  }
+
+  conflictsLayer = L.geoJSON({ type: "FeatureCollection", features: displayFeatures }, {
     pointToLayer: (f, latlng) => {
       const events = f.properties.events || 0;
       const fatalities = f.properties.fatalities || 0;
 
-      // Color based on number of events (Intensity)
-      let color = "#F0C060"; // 1 event
-      if (events > 5) color = "#8B1A1A"; // Severe escalation
-      else if (events > 1) color = "#E07B3B"; // High activity
+      // Relative Color (Intensity) based on Events
+      let color = "#F0C060"; // Moderate
+      if (events >= p90Events) color = "#8B1A1A"; // Top 10%
+      else if (events >= p75Events) color = "#E07B3B"; // Top 25%
 
-      // Size based on fatalities (Impact)
-      let size = 8;
-      if (fatalities > 50) size = 22;
-      else if (fatalities > 10) size = 15;
-      else if (fatalities > 0) size = 10;
+      // Relative Size (Impact) based on Fatalities
+      let size = 10;
+      if (fatalities >= p90Fatals) size = 24;
+      else if (fatalities >= p75Fatals) size = 16;
+      else if (fatalities > 0) size = 12;
 
       const icon = L.divIcon({
         className: 'conflict-marker',
@@ -809,11 +847,12 @@ function renderConflicts() {
 
       const marker = L.marker(latlng, { icon });
       
+      const title = currentZoom < 9 ? "Province Hotspot" : "Conflict Incident";
       const popupContent = `
-        <div style="font-family:IBM Plex Sans, sans-serif; font-size:12px; line-height:1.4; min-width:120px;">
-          <div style="text-transform:uppercase; font-size:9px; font-family:IBM Plex Mono, monospace; color:#8B1A1A; margin-bottom:4px; font-weight:bold; letter-spacing:0.05em;">Conflict Incident</div>
+        <div style="font-family:IBM Plex Sans, sans-serif; font-size:12px; line-height:1.4; min-width:140px;">
+          <div style="text-transform:uppercase; font-size:9px; font-family:IBM Plex Mono, monospace; color:#8B1A1A; margin-bottom:4px; font-weight:bold; letter-spacing:0.05em;">${title}</div>
           <strong style="font-size:14px;">${f.properties.admin2}</strong><br/>
-          <span style="color:#6B6259;">${f.properties.month} ${f.properties.year}</span>
+          <span style="color:#6B6259;">${f.properties.month || 'Summary'} ${f.properties.year}</span>
           <hr style="border:0; border-top:1px solid #eee; margin:8px 0;"/>
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
             <div><div style="font-size:16px; font-weight:bold;">${events}</div><div style="font-size:9px; text-transform:uppercase; color:#6B6259;">Events</div></div>
