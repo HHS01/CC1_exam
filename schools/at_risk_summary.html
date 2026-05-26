@@ -53,8 +53,8 @@ async function load() {
   const province = params.get('province');
   document.getElementById('yearVal').textContent = year + (province ? ` (${province})` : '');
   
-  const [scores, vulnerabilityRaw] = await Promise.all([
-    fetch("../artifacts/school_vulnerability_scores.json").then(r => r.json()),
+  const [provStats, vulnerabilityRaw] = await Promise.all([
+    fetch("../artifacts/province_at_risk_stats.json").then(r => r.json()),
     fetch("../artifacts/schools/BFA_school_vulnerability.csv").then(r => r.text())
   ]);
 
@@ -101,77 +101,53 @@ async function load() {
 
   const tbody = document.querySelector("#schoolTable tbody");
   
-  // Filter: 
-  // 1. High structural risk (v_score > 0.7) OR High conflict risk (final_score > 0.7)
-  // 2. Must be in the specific year's risk list
-  const filtered = scores.filter(s => {
-      const lat = s.lat.toFixed(3);
-      const lon = s.lon.toFixed(3);
-      const key = `${lat},${lon}`;
-      const nameKey = (s.name || '').toLowerCase().trim();
-      const vData = vulnMap[key] || nameMap[nameKey];
-      
-      const isAtRiskYear = (s.at_risk_years || []).includes(parseInt(year));
-      const hasTrauma = (s.trauma || 0) > 0;
-      
-      // Handle potential casing/encoding mismatches in province names
-      const matchProv = province 
-        ? (s.province || '').toLowerCase().trim() === province.toLowerCase().trim() 
-        : true;
-      
-      const score = vData ? vData.final : s.v_score;
-      
-      // Logic: 
-      // 1. Must be in the at-risk list for this specific year (handles retention/memory)
-      // 2. Must have high risk (>0.7) in either the proximity model or annual model
-      // 3. Must match province (if filtered)
-      return isAtRiskYear && (s.v_score > 0.7 || score > 0.7) && matchProv;
-  });
+  // 1. Get the authoritative list of at-risk schools for this year/province
+  let atRiskSchools = [];
+  const yearData = provStats[year] || {};
+
+  if (province) {
+      atRiskSchools = (yearData[province] || {}).schools || [];
+  } else {
+      // If no province selected, show all schools for that year
+      for (const p in yearData) {
+          atRiskSchools = atRiskSchools.concat(yearData[p].schools || []);
+      }
+  }
   
-  // Sort: Conflict Score (desc), then Final Score (desc), then Trauma (desc)
-  filtered.sort((a, b) => {
-      const nameA = (a.name || '').toLowerCase().trim();
-      const nameB = (b.name || '').toLowerCase().trim();
-      const vA = vulnMap[`${a.lat.toFixed(3)},${a.lon.toFixed(3)}`] || nameMap[nameA] || { conflict: 0, final: a.v_score };
-      const vB = vulnMap[`${b.lat.toFixed(3)},${b.lon.toFixed(3)}`] || nameMap[nameB] || { conflict: 0, final: b.v_score };
+  // Sort: Conflict Score (desc), then Memory Score (desc), then Trauma (desc)
+  atRiskSchools.sort((a, b) => {
+      const vDataA = vulnMap[`${a.lat.toFixed(3)},${a.lon.toFixed(3)}`] || nameMap[(a.name || '').toLowerCase().trim()] || { conflict: 0 };
+      const vDataB = vulnMap[`${b.lat.toFixed(3)},${b.lon.toFixed(3)}`] || nameMap[(b.name || '').toLowerCase().trim()] || { conflict: 0 };
 
-      // 1. Conflict Score
-      const cA = vA.conflict;
-      const cB = vB.conflict;
-      if (cB !== cA) return cB - cA;
-
-      // 2. Final Score
-      const fA = vA.final;
-      const fB = vB.final;
-      if (fB !== fA) return fB - fA;
-
-      // 3. Trauma (Events Near)
+      if (vDataB.conflict !== vDataA.conflict) return vDataB.conflict - vDataA.conflict;
+      if (b.v_score !== a.v_score) return b.v_score - a.v_score;
       return (b.trauma || 0) - (a.trauma || 0);
   });
   
-  if (filtered.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;">No high-risk schools found for ${year} in this selection.</td></tr>`;
+  if (atRiskSchools.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;">No high-risk schools found for ${year} in this selection.</td></tr>`;
   } else {
-      filtered.forEach((s, index) => {
+      atRiskSchools.forEach((s, index) => {
         const latKey = s.lat.toFixed(3);
         const lonKey = s.lon.toFixed(3);
         const nameKey = (s.name || '').toLowerCase().trim();
         const vData = vulnMap[`${latKey},${lonKey}`] || nameMap[nameKey];
-        
+
         const displayConflict = vData ? vData.conflict.toFixed(3) : '0.000';
-        const displayFragility = vData ? vData.fragility.toFixed(3) : '0.000';
         const displayFinal = vData ? vData.final.toFixed(3) : (s.v_score || 0).toFixed(3);
 
         const row = `<tr>
             <td>${index + 1}</td>
             <td style="font-weight:500;">${s.name || 'Unnamed'}</td>
-            <td>${s.province}</td>
+            <td>${province || 'Various'}</td>
             <td style="font-family:monospace; color:#2E86C1;">${(s.v_score * 100).toFixed(0)}%</td>
             <td style="color:#C0392B; font-family:monospace;">${displayConflict}</td>
             <td style="font-weight:bold; font-family:monospace;">${displayFinal}</td>
         </tr>`;
         tbody.innerHTML += row;
       });
+  }
+
   }
   document.getElementById('loading').style.display = 'none';
   document.getElementById('schoolTable').style.display = 'table';

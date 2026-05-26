@@ -34,9 +34,9 @@ def aggregate_at_risk_schools():
         lat = s.get("lat", 0)
         lon = s.get("lon", 0)
 
-        # Threshold criteria: High risk (v_score > 0.7) AND proximity events (trauma > 0)
-        # This matches the logic in at_risk_summary.html more closely.
-        if v_score > 0.7 and trauma > 0:
+        # Threshold criteria: High memory risk (v_score > 0.7)
+        # This is the primary time-series risk indicator used for markers and trends.
+        if v_score > 0.7:
             for year in at_risk_years:
                 y_str = str(year)
                 if y_str not in aggregated:
@@ -48,7 +48,9 @@ def aggregate_at_risk_schools():
                 aggregated[y_str][province]["schools"].append({
                     "name": name,
                     "lat": lat,
-                    "lon": lon
+                    "lon": lon,
+                    "v_score": v_score,
+                    "trauma": trauma
                 })
 
     # Save output with ensure_ascii=False for proper Unicode support

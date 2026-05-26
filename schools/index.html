@@ -715,9 +715,14 @@ async function init() {
 }
 
 function updateGlobalStats() {
-  const activeScores = scoreData.filter(s => (s.at_risk_years || []).includes(currentYear));
+  const stats = provinceStats[currentYear] || {};
+  let totalAtRisk = 0;
+  for (const p in stats) {
+    totalAtRisk += stats[p].count || 0;
+  }
+  
   document.getElementById("statSchoolsTotal").textContent = schoolsData.features.length.toLocaleString();
-  document.getElementById("statSchoolsAtRisk").textContent = activeScores.filter(s => s.v_score > 0.7).length.toLocaleString();
+  document.getElementById("statSchoolsAtRisk").textContent = totalAtRisk.toLocaleString();
   
   const geoFeatures = choroplethLayer.toGeoJSON().features;
   const events = geoFeatures.reduce((s, f) => s + (f.properties.events || 0), 0);
