@@ -488,12 +488,16 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
 </div>
 
 <script>
-const GEOJSON_URL  = "../artifacts/data.geojson";
-const SCHOOLS_URL  = "../artifacts/schools.geojson";
-const SCORE_URL    = "../artifacts/school_vulnerability_scores.json";
-const PROV_STATS_URL = "../artifacts/province_at_risk_stats.json";
-const VULN_CSV_URL   = "../artifacts/schools/BFA_school_vulnerability.csv";
-const RISK_TRAJECTORY_URL = "../artifacts/province_school_risk.json";
+const urlParams = new URLSearchParams(window.location.search);
+const ISO3 = (urlParams.get('iso3') || 'BFA').toUpperCase();
+
+const ARTIFACTS_PATH = `../artifacts/${ISO3}`;
+const GEOJSON_URL  = `${ARTIFACTS_PATH}/data.geojson`;
+const SCHOOLS_URL  = `${ARTIFACTS_PATH}/schools.geojson`;
+const SCORE_URL    = `${ARTIFACTS_PATH}/school_vulnerability_scores.json`;
+const PROV_STATS_URL = `${ARTIFACTS_PATH}/province_at_risk_stats.json`;
+const VULN_CSV_URL   = `${ARTIFACTS_PATH}/schools/${ISO3}_school_vulnerability.csv`;
+const RISK_TRAJECTORY_URL = `${ARTIFACTS_PATH}/province_school_risk.json`;
 
 const TIER_COLORS = {
   critical: "#8B1A1A",
@@ -534,7 +538,7 @@ let currentYear     = 2024;
 let currentProvince = null;
 
 function updateNavLinks() {
-  let backUrl = `../index.html?year=${currentYear}`;
+  let backUrl = `../index.html?year=${currentYear}&iso3=${ISO3}`;
   if (currentProvince) {
     backUrl += `&province=${encodeURIComponent(currentProvince)}`;
   }

@@ -13,7 +13,6 @@ def get_growth_rates(iso3):
     """Fetch annual population growth % from World Bank API."""
     print(f"  → Fetching annual growth rates from World Bank for {iso3}...")
     try:
-        # Fetching a wide range to cover 2015-2026
         url = f"https://api.worldbank.org/v2/country/{iso3}/indicator/SP.POP.GROW?format=json&per_page=100"
         res = requests.get(url, timeout=10)
         data = res.json()
@@ -28,30 +27,26 @@ def calculate_density_gap():
     print(f"🚀 Calculating continuous relative school density gap for {ISO3} ({COUNTRY})...")
     
     # 1. Paths
-    schools_path = Path(f"data/clean/schools/schools_{ISO3}.csv")
-    pop_path     = Path(f"data/clean/{ISO3.lower()}_pop_density/{ISO3.lower()}_pop_2020.json") 
-    bounds_path  = Path(f"data/raw/boundaries/{ISO3}_admin2.geojson")
+    clean_pop_dir = Path(f"data/clean/{ISO3.lower()}_pop_density")
+    schools_path  = Path(f"data/clean/schools/schools_{ISO3}.csv")
+    bounds_path   = Path(f"data/raw/boundaries/{ISO3}_admin2.geojson")
     
     out_dir = Path("artifacts") / ISO3
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / "province_school_fragility.csv"
 
-    if not all([schools_path.exists(), pop_path.exists(), bounds_path.exists()]):
-        print("✗ Missing input data. Ensure 02_x, 04_1, and raw boundaries exist.")
+    # 2. Check for Anchor Data (2020)
+    anchor_year = 2020
+    anchor_zonal = clean_pop_dir / f"{ISO3.lower()}_zonal_{anchor_year}.csv"
+    anchor_heatmap = clean_pop_dir / f"{ISO3.lower()}_pop_{anchor_year}.json"
+
+    if not anchor_zonal.exists() and not anchor_heatmap.exists():
+        print(f"✗ Missing anchor population data for {anchor_year}. Run 04_1 first.")
         return
 
-    # 2. Load Data
+    # 3. Load School and Boundary Data
     schools_df = pd.read_csv(schools_path)
-    with open(pop_path, 'r') as f:
-        pop_data = json.load(f)
     bounds = gpd.read_file(bounds_path)
-
-    # 3. Process Schools per Province
-    schools_gdf = gpd.GeoDataFrame(
-        schools_df, 
-        geometry=gpd.points_from_xy(schools_df.longitude, schools_df.latitude),
-        crs="EPSG:4326"
-    )
     
     name_col = next(
         (c for c in bounds.columns
@@ -59,73 +54,91 @@ def calculate_density_gap():
         bounds.columns[0]
     )
 
+    schools_gdf = gpd.GeoDataFrame(
+        schools_df, 
+        geometry=gpd.points_from_xy(schools_df.longitude, schools_df.latitude),
+        crs="EPSG:4326"
+    )
     if bounds.crs != schools_gdf.crs:
         bounds = bounds.to_crs(schools_gdf.crs)
     
     schools_joined = gpd.sjoin(schools_gdf, bounds[[name_col, "geometry"]], how="inner", predicate="within")
     school_counts = schools_joined.groupby(name_col).size().reset_index(name="school_count")
 
-    # 4. Process Population per Province
-    pop_points = []
-    for entry in pop_data["data"]:
-        pop_points.append({"lat": entry[0], "lon": entry[1], "pop_density": entry[2]})
-    
-    pop_df = pd.DataFrame(pop_points)
-    pop_gdf = gpd.GeoDataFrame(
-        pop_df,
-        geometry=gpd.points_from_xy(pop_df.lon, pop_df.lat),
-        crs="EPSG:4326"
-    )
-    
-    pop_joined = gpd.sjoin(pop_gdf, bounds[[name_col, "geometry"]], how="inner", predicate="within")
-    pop_counts = pop_joined.groupby(name_col)["pop_density"].sum().reset_index(name="total_pop")
+    # 4. Load or Generate Anchor Population (2020)
+    if anchor_zonal.exists():
+        print(f"  → Loading anchor zonal stats for {anchor_year}...")
+        anchor_pop = pd.read_csv(anchor_zonal)
+    else:
+        print(f"  → Generating anchor zonal stats from heatmap JSON for {anchor_year}...")
+        with open(anchor_heatmap, 'r') as f:
+            pop_data = json.load(f)
+        pop_points = [{"lat": e[0], "lon": e[1], "pop_density": e[2]} for e in pop_data["data"]]
+        pop_df = pd.DataFrame(pop_points)
+        pop_gdf = gpd.GeoDataFrame(pop_df, geometry=gpd.points_from_xy(pop_df.lon, pop_df.lat), crs="EPSG:4326")
+        pop_joined = gpd.sjoin(pop_gdf, bounds[[name_col, "geometry"]], how="inner", predicate="within")
+        anchor_pop = pop_joined.groupby(name_col)["pop_density"].sum().reset_index()
+        anchor_pop.columns = ["Region", "Population"]
 
-    # 5. Merge and Calculate Ratio
-    # This 'merged' represents our anchor year (2020)
-    anchor_2020 = bounds[[name_col]].merge(school_counts, on=name_col, how="left").merge(pop_counts, on=name_col, how="left")
+    anchor_2020 = bounds[[name_col]].merge(school_counts, on=name_col, how="left").merge(anchor_pop, left_on=name_col, right_on="Region", how="left")
     anchor_2020["school_count"] = anchor_2020["school_count"].fillna(0)
-    anchor_2020["total_pop"] = anchor_2020["total_pop"].fillna(0)
+    anchor_2020["Population"] = anchor_2020["Population"].fillna(0)
+    anchor_2020["school_age_pop_anchor"] = anchor_2020["Population"] * 0.25
     
-    # Estimate school-age population (25% constant proxy)
-    anchor_2020["school_age_pop_2020"] = anchor_2020["total_pop"] * 0.25
-    
+    # 5. Load Other Existing Zonal Files (Priority Source)
+    ground_truth = {}
+    for zonal_file in clean_pop_dir.glob(f"{ISO3.lower()}_zonal_*.csv"):
+        try:
+            year_str = zonal_file.stem.split("_")[-1]
+            year = int(year_str)
+            if year != anchor_year:
+                df_yr = pd.read_csv(zonal_file)
+                ground_truth[year] = df_yr.set_index("Region")["Population"].to_dict()
+                print(f"  → Found ground truth data for {year}")
+        except: continue
+
     # 6. DYNAMIC CHAIN EXTRAPOLATION (2015-2026)
     rates = get_growth_rates(ISO3)
-    default_rate = 0.023 # 2.3% fallback
-    
+    default_rate = 0.023
     years = list(range(2015, 2027))
     all_years_data = []
 
-    print(f"  → Extrapolating population using the Chain Method (Anchor: 2020)...")
+    print(f"  → Extrapolating population using the Chain Method (Anchor: {anchor_year})...")
     for _, province_row in anchor_2020.iterrows():
         p_name = province_row[name_col]
-        pop_history = {2020: province_row["school_age_pop_2020"]}
+        
+        # Calculate full chain history first (from 2020 anchor)
+        pop_chain = {anchor_year: province_row["school_age_pop_anchor"]}
         
         # Forward Chain (2021-2026)
-        for yr in range(2021, 2027):
-            # Use specific rate if available, else latest available
+        for yr in range(anchor_year + 1, 2027):
             rate = rates.get(yr, rates.get(max(rates.keys()) if rates else 2024, default_rate))
-            pop_history[yr] = pop_history[yr-1] * (1 + rate)
+            pop_chain[yr] = pop_chain[yr-1] * (1 + rate)
             
         # Backward Chain (2015-2019)
-        # 2019 pop = 2020 pop / (1 + 2020 growth)
-        for yr in range(2019, 2014, -1):
+        for yr in range(anchor_year - 1, 2014, -1):
             rate = rates.get(yr+1, rates.get(min(rates.keys()) if rates else 2015, default_rate))
-            pop_history[yr] = pop_history[yr+1] / (1 + rate)
+            pop_chain[yr] = pop_chain[yr+1] / (1 + rate)
 
         for yr in years:
+            # PRIORITY: Ground Truth > Chain Extrapolation
+            pop_val = ground_truth.get(yr, {}).get(p_name, None)
+            if pop_val is not None:
+                final_pop = pop_val * 0.25 # Apply child proxy to ground truth
+            else:
+                final_pop = pop_chain[yr]
+
             all_years_data.append({
                 "Region": p_name,
                 "year": yr,
                 "school_count": province_row["school_count"],
-                "school_age_pop": pop_history[yr]
+                "school_age_pop": final_pop
             })
 
     final_df = pd.DataFrame(all_years_data)
     
-    # 7. RELATIVE FRAGILITY LOGIC (Per Year)
+    # 7. RELATIVE FRAGILITY LOGIC
     def calculate_annual_scores(group):
-        # The 'year' column is part of the group
         group["schools_per_1000_children"] = (group["school_count"] / (group["school_age_pop"] / 1000)).replace([float('inf'), -float('inf')], 0).fillna(0)
         target = group["schools_per_1000_children"].quantile(0.8)
         if target <= 0: target = 1.0
@@ -134,23 +147,15 @@ def calculate_density_gap():
 
     final_df = final_df.groupby("year", group_keys=False).apply(calculate_annual_scores)
     
-    # Force recovery of 'year' if it's trapped in the index
+    # Ensure year is a column
     if "year" not in final_df.columns:
         final_df = final_df.reset_index()
         if "year" not in final_df.columns and "index" in final_df.columns:
             final_df = final_df.rename(columns={"index": "year"})
-        elif "year" not in final_df.columns and "level_0" in final_df.columns:
-             final_df = final_df.rename(columns={"level_0": "year"})
 
-    # Absolute fallback: if we still don't have it, we can't proceed
-    if "year" not in final_df.columns:
-        print(f"  ⚠ CRITICAL: 'year' column lost. Columns: {final_df.columns}")
-        return
-    
     final_cols = ["Region", "year", "school_fragility_score", "school_count", "schools_per_1000_children", "school_age_pop"]
     final_df[final_cols].to_csv(out_path, index=False)
-    
-    print(f"  ✓ Saved Dynamic Bi-Directional Chain Analysis for {len(anchor_2020)} provinces across {len(years)} years to {out_path}")
+    print(f"  ✓ Saved Hybrid Ground-Truth/Chain Analysis to {out_path}")
 
 if __name__ == "__main__":
     calculate_density_gap()

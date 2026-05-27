@@ -706,7 +706,7 @@ function saveCache() {
 }
 
 function updateNavLinks() {
-  let url = `./schools/index.html?year=${currentYear}`;
+  let url = `./schools/index.html?year=${currentYear}&iso3=${ISO3}`;
   if (currentProvince) url += `&province=${encodeURIComponent(currentProvince)}`;
   document.getElementById("schoolsLink").href = url;
 }
