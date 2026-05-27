@@ -42,45 +42,63 @@ def export_conflicts_geojson():
 
     features = []
 
-    # 2. Process UCDP (Granular - 2016 to 2024)
+    # 2. Process UCDP (Granular - 1989 to 2024)
+    ucdp_years = set()
     if ucdp_path.exists():
-        df_u = pd.read_csv(ucdp_path)
-        # Filter for years where UCDP is the primary source
-        df_u = df_u[(df_u['year'] >= 2016) & (df_u['year'] <= 2024)]
-        
-        for _, row in df_u.iterrows():
-            # Clean and map province
-            name = str(row['adm_2']).replace(' province', '').replace(' region', '').strip().title()
-            name = mapping.get(name, name)
-            
-            # Numeric Month (e.g. '05')
-            month = "00"
-            if '-' in str(row['date_start']):
-                month = str(row['date_start']).split('-')[1]
+        try:
+            df_u = pd.read_csv(ucdp_path)
+            if not df_u.empty and 'year' in df_u.columns:
+                # Filter for valid records
+                df_u = df_u.dropna(subset=['latitude', 'longitude'])
+                
+                for _, row in df_u.iterrows():
+                    # Clean and map province
+                    name = str(row.get('adm_2', 'Unknown')).replace(' province', '').replace(' region', '').strip().title()
+                    name = mapping.get(name, name)
+                    
+                    # Numeric Month
+                    month = "00"
+                    date_str = str(row.get('date_start', ''))
+                    if '-' in date_str:
+                        month = date_str.split('-')[1]
+                    elif '/' in date_str:
+                        month = date_str.split('/')[1]
 
-            features.append({
-                "type": "Feature",
-                "properties": {
-                    "year": int(row['year']),
-                    "month": month,
-                    "admin2": name,
-                    "events": 1,
-                    "fatalities": int(row['best']) if pd.notna(row['best']) else 0,
-                    "is_granular": True
-                },
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [float(row['longitude']), float(row['latitude'])]
-                }
-            })
-        print(f"  ✓ Added {len(df_u)} granular UCDP records.")
+                    features.append({
+                        "type": "Feature",
+                        "properties": {
+                            "year": int(row['year']),
+                            "month": month,
+                            "admin2": name,
+                            "events": 1,
+                            "fatalities": int(row['best']) if pd.notna(row.get('best')) else 0,
+                            "is_granular": True,
+                            "source": "UCDP"
+                        },
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [float(row['longitude']), float(row['latitude'])]
+                        }
+                    })
+                    ucdp_years.add(int(row['year']))
+                print(f"  ✓ Added {len(df_u)} granular UCDP records.")
+        except Exception as e:
+            print(f"  ⚠ Error processing UCDP file: {e}")
 
-    # 3. Process ACLED (Aggregated - 2015, 2025, 2026)
+    # 3. Process ACLED (Aggregated - use as fallback for missing years)
     df_a = pd.read_csv(acled_path)
-    # Filter for years where UCDP is missing but we need data
-    df_a = df_a[(df_a['Year'] == 2015) | (df_a['Year'] == 2025) | (df_a['Year'] == 2026)]
-    # Only keep rows with actual events
-    df_a = df_a[df_a['Events'] > 0]
+    
+    # We use ACLED for:
+    # 1. Years not covered by UCDP (e.g. 2025, 2026)
+    # 2. As a complete fallback if UCDP had no records
+    if not ucdp_years:
+        # Fallback to ALL ACLED years
+        df_a_filtered = df_a[df_a['Events'] > 0]
+        print(f"  [Info] UCDP missing. Falling back to ACLED for all years.")
+    else:
+        # Use ACLED for years UCDP doesn't have
+        df_a_filtered = df_a[(df_a['Events'] > 0) & (~df_a['Year'].isin(ucdp_years))]
+        print(f"  [Info] Using ACLED for years: {sorted(list(set(df_a_filtered['Year'].unique())))}")
     
     # Month Map for ACLED names to numbers
     MONTH_MAP = {
@@ -89,23 +107,28 @@ def export_conflicts_geojson():
         'September': '09', 'October': '10', 'November': '11', 'December': '12'
     }
 
-    for _, row in df_a.iterrows():
+    for _, row in df_a_filtered.iterrows():
+        # Clean and map province for ACLED as well
+        acled_name = str(row['Admin2']).strip().title()
+        mapped_name = mapping.get(acled_name, acled_name)
+
         features.append({
             "type": "Feature",
             "properties": {
                 "year": int(row['Year']),
                 "month": MONTH_MAP.get(str(row['Month']), '00'),
-                "admin2": str(row['Admin2']),
+                "admin2": mapped_name,
                 "events": int(row['Events']),
                 "fatalities": int(row['Fatalities']),
-                "is_granular": False
+                "is_granular": False,
+                "source": "ACLED"
             },
             "geometry": {
                 "type": "Point",
                 "coordinates": [float(row['Longitude']), float(row['Latitude'])]
             }
         })
-    print(f"  ✓ Added {len(df_a)} aggregated ACLED records for 2015, 2025, 2026.")
+    print(f"  ✓ Added {len(df_a_filtered)} aggregated ACLED records.")
 
     geojson = {
         "type": "FeatureCollection",
