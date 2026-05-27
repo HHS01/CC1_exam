@@ -486,6 +486,8 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
 .chart-panel {
   padding: 14px 0px 16px;
   flex-shrink: 0;
+  height: 160px; /* Fixed height for the container */
+  position: relative;
 }
 
 .chart-title {
@@ -498,8 +500,8 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
 }
 
 #trendChart {
-  width: 100%;
-  height: 100px;
+  width: 100% !important;
+  height: 120px !important;
 }
 
 /* ── Loading overlay ─────────────────────────────────── */
@@ -929,26 +931,11 @@ function renderConflicts() {
   let displayFeatures = [];
 
   if (currentProvince) {
-    // DRILL DOWN: Pins are already normalized to ACLED names in the export script
+    // DRILL DOWN: Filter to the selected province
     displayFeatures = yearConflicts.filter(f => f.properties.admin2 === currentProvince);
-  } else if (currentZoom >= 8) {
-    // AUTO-REVEAL: Show all individual incidents when zoomed in
-    displayFeatures = yearConflicts;
   } else {
-    // BIRD'S EYE: Show only 1 primary hotspot per province
-    const groups = {};
-    yearConflicts.forEach(f => {
-      const name = f.properties.admin2;
-      if (!groups[name]) groups[name] = f;
-      else {
-        const cur = groups[name].properties;
-        const pot = f.properties;
-        if (pot.events > cur.events || (pot.events === cur.events && pot.fatalities > cur.fatalities)) {
-          groups[name] = f;
-        }
-      }
-    });
-    displayFeatures = Object.values(groups);
+    // SHOW ALL: Display all individual incidents regardless of zoom
+    displayFeatures = yearConflicts;
   }
 
   const allFatals = yearConflicts.map(c => c.properties.fatalities || 0).sort((a,b) => a-b);
@@ -967,7 +954,7 @@ function renderConflicts() {
       if (events >= p90Events && events > 1) color = "#633974"; 
       else if (events >= p75Events) color = "#AF7AC5";
 
-      const baseSize = (currentProvince || currentZoom >= 8) ? 10 : 16;
+      const baseSize = (currentProvince || currentZoom >= 8) ? 10 : 12;
       const scaleFactor = Math.min(fatalities / maxFatalsYear, 1.0);
       let size = baseSize + (scaleFactor * 25);
 
@@ -982,8 +969,8 @@ function renderConflicts() {
       });
 
       const marker = L.marker(latlng, { icon });
-      const type = (currentProvince || currentZoom >= 8) ? "Incident" : "Hotspot";
       const isGranular = f.properties.is_granular;
+      const type = isGranular ? "Incident" : "Aggregated";
       
       marker.bindPopup(`
         <div style="font-family:IBM Plex Sans; font-size:11px; min-width:70px; text-align:center;">
@@ -992,7 +979,7 @@ function renderConflicts() {
           <span style="color:#6B6259;">${f.properties.month} / ${f.properties.year}</span>
           <hr style="border:0; border-top:1px solid #eee; margin:8px 0;"/>
           <div><div style="font-size:14px; font-weight:bold;">${fatalities}</div><div style="font-size:8px; text-transform:uppercase; color:#6B6259;">Fatalities</div></div>
-          ${!isGranular ? '<div style="font-size:7px; color:#999; margin-top:4px;">* Aggregated</div>' : ''}
+          ${!isGranular ? '<div style="font-size:7px; color:#999; margin-top:4px;">* ACLED Fallback</div>' : ''}
         </div>
       `, { closeButton: false });
 
