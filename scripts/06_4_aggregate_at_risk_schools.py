@@ -53,19 +53,23 @@ def aggregate_at_risk_schools():
 
     for _, s in df.iterrows():
         province_raw = str(s.get("province", "Unknown"))
+        if province_raw == "nan": province_raw = "Unknown"
         province = official_to_acled.get(province_raw, province_raw)
         
         v_score = s.get("final_score", 0)
-        at_risk = s.get("at_risk", False)
-        name = s.get("name", "Unnamed School")
+        if pd.isna(v_score): v_score = 0
+        
+        name = s.get("name")
+        if pd.isna(name): name = "Unnamed School"
+        
         lat = s.get("latitude", 0)
         lon = s.get("longitude", 0)
+        if pd.isna(lat): lat = 0
+        if pd.isna(lon): lon = 0
 
         # Threshold criteria: High risk (final_score > 0.7)
         if v_score > 0.7:
-            # Since the current CSV is a snapshot for 2024, we'll map it to 2024
-            # In a full version, we'd have historical scores
-            for year in [2024, 2025, 2026]: # Mocking future risk
+            for year in [2024, 2025, 2026]:
                 y_str = str(year)
                 if y_str not in aggregated:
                     aggregated[y_str] = {}
@@ -74,22 +78,22 @@ def aggregate_at_risk_schools():
                 
                 aggregated[y_str][province]["count"] += 1
                 aggregated[y_str][province]["schools"].append({
-                    "name": name,
-                    "province": province,
-                    "lat": lat,
-                    "lon": lon,
+                    "name": str(name),
+                    "province": str(province),
+                    "lat": float(lat),
+                    "lon": float(lon),
                     "v_score": float(v_score)
                 })
 
-    # Save output (this is what Step 22 or other steps might expect as school_vulnerability_scores.json if renamed)
-    # Actually, we'll save it to the path requested by aggregate_at_risk_schools
+    # Save output
     out_path = Path("artifacts/province_at_risk_stats.json")
     with open(out_path, 'w', encoding='utf-8') as f:
         json.dump(aggregated, f, indent=2, ensure_ascii=False)
     
     # Also save the flat scores JSON if needed by other scripts
+    # Use where(notnull, None) to convert NaNs to nulls in JSON
     scores_json_path = Path("artifacts/school_vulnerability_scores.json")
-    df.to_json(scores_json_path, orient="records")
+    df.where(df.notnull(), None).to_json(scores_json_path, orient="records")
 
     print(f"✅ Success! Saved stats to {out_path}")
 
