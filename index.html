@@ -768,10 +768,9 @@ async function loadAll() {
     renderChoropleth(currentYear);
     renderConflicts();
 
-    // GENERIC FRAMING: Fit map to the loaded data (either choropleth or national center)    if (choropleth && choropleth.getLayers().length > 0) {
+    // GENERIC FRAMING: Fit map to the loaded data (either choropleth or national center)
+    if (choropleth && choropleth.getLayers().length > 0) {
         map.fitBounds(choropleth.getBounds(), { padding: [30, 30] });
-    } else {
-        map.setView(CONFIG.center, CONFIG.zoom);
     }
 
     updateNavLinks();
