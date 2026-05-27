@@ -836,10 +836,22 @@ async function loadAll() {
 
     // Auto-select province if in URL
     if (currentProvince) {
-      const layers = choropleth.getLayers();
-      const match = layers.find(l => l.feature.properties.admin2 === currentProvince);
+      // Find the specific feature for THIS year for this province from the raw geojson
+      const match = geojson.features.find(f => 
+        f.properties.admin2 === currentProvince && 
+        (f.properties.year === currentYear || !f.properties.year)
+      );
+      
       if (match) {
-        match.fire('click', { target: match });
+        showProvinceDetail(match.properties);
+        
+        // Also highlight it on the map once layers are ready
+        const layers = choropleth.getLayers();
+        const layerMatch = layers.find(l => l.feature.properties.admin2 === currentProvince);
+        if (layerMatch) {
+            selectedLayer = layerMatch;
+            layerMatch.setStyle({ weight: 3, color: "#1A1410", fillOpacity: 1.0 });
+        }
       }
     }
 
@@ -1190,12 +1202,14 @@ function showProvinceDetail(props) {
     <div class="detail-metrics">
       <div class="metric-split">
         <div class="split-nums">
-          <div class="split-num">${events.toLocaleString()}</div>
-          <div class="split-num" style="color:#B8860B">${Math.round(events * 0.7).toLocaleString()}</div>
-        </div>
-        <div class="split-sources">
-          <div class="split-source">ACLED</div>
-          <div class="split-source">UCDP</div>
+          <div style="display:flex; flex-direction:column; align-items:center; width:50%;">
+            <div class="split-num">${events.toLocaleString()}</div>
+            <div class="split-source">ACLED</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; width:50%;">
+            <div class="split-num" style="color:#B8860B">${Math.round(events * 0.7).toLocaleString()}</div>
+            <div class="split-source">UCDP</div>
+          </div>
         </div>
         <div class="metric-label-integrated">Total Events</div>
       </div>
