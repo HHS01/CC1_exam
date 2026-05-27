@@ -56,7 +56,7 @@ STEPS = {
     # Phase 2: Processing
     9:  ("01_1_split_acled.py",                "Split ACLED Global Data"),
     10: ("01_2_hrp_country.py",                "Extract Country Conflict Data"),
-    11: ("02_2_merge_schools.py",              "Merge School Sources"),
+    11: ("02_x_merge_schools.py",              "Merge School Sources"),
     12: ("02_x_clean_school.py",               "Clean & Deduplicate Schools"),
     13: ("03_x_merge_education.py",            "Merge Education Indicators"),
     14: ("04_x_align_admin_names.py",          "Align Administrative Names"),
@@ -94,12 +94,17 @@ def run_step(script: str, iso3: str, country: str) -> bool:
         args.extend(["--country", country])
     elif script == "02_fetch_schools_hdx.py":
         args.extend(["--countries", iso3])
-    elif script == "02_2_merge_schools.py":
+    elif script == "02_x_merge_schools.py":
+        args.append(iso3)
+    elif script == "03_fetch_education.py":
         args.append(iso3)
     elif script == "04_fetch_boundaries.py":
         args.append(iso3)
     elif script == "01_3_fetch_granular_conflicts.py":
         args.extend(["--iso3", iso3])
+    elif script == "04_1_fetch_worldpop.py":
+        args.extend(["--iso3", iso3])
+
 
     result = subprocess.run(args, env=env)
     return result.returncode == 0

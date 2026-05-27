@@ -92,7 +92,7 @@ OUT_CSV      = Path(f"artifacts/schools/{ISO3}_school_vulnerability.csv")
 OUT_GJ       = Path(f"artifacts/schools/schools_{ISO3}.geojson")   # overwrites with scores
 OUT_FRAG     = Path(f"artifacts/schools/{ISO3}_fragility_by_year.csv")
 
-Path("artifacts").mkdir(parents=True, exist_ok=True)
+Path("artifacts/schools").mkdir(parents=True, exist_ok=True)
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────

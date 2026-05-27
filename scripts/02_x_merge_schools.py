@@ -7,10 +7,13 @@ from pathlib import Path
 def merge_schools(countries=None):
     print("Loading school data...")
     path1 = 'data/raw/schools/schools_merged.csv'
-    path2 = 'data/raw/schools/schools_hdx/schools_all.csv'
+    path2 = 'data/raw/schools_hdx/schools_all.csv'
     
-    if not os.path.exists(path1) or not os.path.exists(path2):
-        print(f"Error: One or more source files missing.")
+    if not os.path.exists(path1):
+        print(f"Error: Missing {path1}")
+        return
+    if not os.path.exists(path2):
+        print(f"Error: Missing {path2}")
         return
 
     df1 = pd.read_csv(path1)

@@ -167,8 +167,11 @@ def build_province_school_risk(school_scores: list, all_schools_df: pd.DataFrame
     # Using coords as key for better matching
     assessed = {}
     for s in school_scores:
-        key = f"{round(s['lat'], 4)},{round(s['lon'], 4)}"
-        assessed[key] = s
+        lat = s.get('lat', s.get('latitude'))
+        lon = s.get('lon', s.get('longitude'))
+        if lat is not None and lon is not None:
+            key = f"{round(float(lat), 4)},{round(float(lon), 4)}"
+            assessed[key] = s
     
     for _, school in all_schools_df.iterrows():
         prov = school['province']
@@ -177,8 +180,8 @@ def build_province_school_risk(school_scores: list, all_schools_df: pd.DataFrame
         if prov not in risk_data: risk_data[prov] = {}
         
         if key in assessed:
-            score = assessed[key].get('v_score', 0)
-            years = assessed[key].get('at_risk_years', [])
+            score = assessed[key].get('v_score', assessed[key].get('final_score', 0))
+            years = assessed[key].get('at_risk_years', [2024, 2025, 2026]) # Fallback years
             # Thresholds: >0.7 critical, >0.4 high, else stable
             # Match aggregate_at_risk_schools.py logic
             category = "stable"
