@@ -709,7 +709,39 @@ async function init() {
       const layers = choroplethLayer.getLayers();
       const match = layers.find(l => l.feature.properties.admin2 === currentProvince);
       if (match) {
-        match.fire('click', { target: match });
+        selectedLayer = match;
+        match.setStyle({ weight: 3, color: "#1A1410", fillOpacity: 0.8 });
+        
+        // Populate sidebar manually for initial load
+        const stats = provinceStats[currentYear] || {};
+        const provData = stats[currentProvince] || { count: 0 };
+        const schoolsPer1k = match.feature.properties.schools_per_1000 ?? 0;
+        
+        document.getElementById("detailPanel").innerHTML = `
+          <div class="panel-label">Province detail</div>
+          <div class="detail-name">${currentProvince}</div>
+          <div class="detail-metrics">
+            <div class="metric">
+              <div class="metric-val">${match.feature.properties.school_count || 0}</div>
+              <div class="metric-label">Total Schools</div>
+            </div>
+            <div class="metric">
+              <div class="metric-val">${schoolsPer1k.toFixed(1)}</div>
+              <div class="metric-label">Schools / 1k children</div>
+            </div>
+            ${provData.count > 0 ? `
+            <a href="at_risk_summary.html?year=${currentYear}&province=${encodeURIComponent(currentProvince)}&iso3=${ISO3}" class="metric" style="text-decoration:none; cursor:pointer;">
+              <div class="metric-val">${provData.count}</div>
+              <div class="metric-label" style="text-decoration:underline;">At-Risk Schools</div>
+            </a>` : `
+            <div class="metric">
+              <div class="metric-val">0</div>
+              <div class="metric-label">At-Risk Schools</div>
+            </div>`}
+          </div>
+        `;
+        updateRiskChart(currentProvince);
+        map.fitBounds(match.getBounds(), { padding: [20, 20], maxZoom: 10 });
       }
     }
 
