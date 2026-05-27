@@ -2,11 +2,27 @@ import pandas as pd
 import geopandas as gpd
 import os
 import json
+import requests
 from pathlib import Path
 
 # ── Config ────────────────────────────────────────────────────────────────────
-ISO3    = os.environ.get("PIPELINE_ISO3", "NGA")
-COUNTRY = os.environ.get("PIPELINE_COUNTRY", "Nigeria")
+ISO3    = os.environ.get("PIPELINE_ISO3", "BFA")
+COUNTRY = os.environ.get("PIPELINE_COUNTRY", "Burkina Faso")
+
+def get_growth_rates(iso3):
+    """Fetch annual population growth % from World Bank API."""
+    print(f"  → Fetching annual growth rates from World Bank for {iso3}...")
+    try:
+        # Fetching a wide range to cover 2015-2026
+        url = f"https://api.worldbank.org/v2/country/{iso3}/indicator/SP.POP.GROW?format=json&per_page=100"
+        res = requests.get(url, timeout=10)
+        data = res.json()
+        if len(data) > 1:
+            rates = {int(item['date']): item['value']/100 for item in data[1] if item['value'] is not None}
+            return rates
+    except Exception as e:
+        print(f"  ⚠ Growth rate fetch failed: {e}. Using fallback 2.3%.")
+    return {}
 
 def calculate_density_gap():
     print(f"🚀 Calculating continuous relative school density gap for {ISO3} ({COUNTRY})...")
@@ -65,44 +81,76 @@ def calculate_density_gap():
     pop_counts = pop_joined.groupby(name_col)["pop_density"].sum().reset_index(name="total_pop")
 
     # 5. Merge and Calculate Ratio
-    merged = bounds[[name_col]].merge(school_counts, on=name_col, how="left").merge(pop_counts, on=name_col, how="left")
-    merged["school_count"] = merged["school_count"].fillna(0)
-    merged["total_pop"] = merged["total_pop"].fillna(0)
+    # This 'merged' represents our anchor year (2020)
+    anchor_2020 = bounds[[name_col]].merge(school_counts, on=name_col, how="left").merge(pop_counts, on=name_col, how="left")
+    anchor_2020["school_count"] = anchor_2020["school_count"].fillna(0)
+    anchor_2020["total_pop"] = anchor_2020["total_pop"].fillna(0)
     
     # Estimate school-age population (25% constant proxy)
-    merged["school_age_pop"] = merged["total_pop"] * 0.25
+    anchor_2020["school_age_pop_2020"] = anchor_2020["total_pop"] * 0.25
     
-    # Schools per 1000 children
-    merged["schools_per_1000_children"] = (merged["school_count"] / (merged["school_age_pop"] / 1000)).replace([float('inf'), -float('inf')], 0).fillna(0)
+    # 6. DYNAMIC CHAIN EXTRAPOLATION (2015-2026)
+    rates = get_growth_rates(ISO3)
+    default_rate = 0.023 # 2.3% fallback
     
-    # 6. RELATIVE FRAGILITY LOGIC
-    # We use the 80th Percentile of the country's own data as the sufficiency target
-    target = merged["schools_per_1000_children"].quantile(0.8)
-    if target <= 0: target = 1.0 # Safety fallback
-    
-    print(f"  → Sufficiency Target (80th Percentile): {target:.3f} schools/1k children")
-    
-    # Continuous Score: 1 - (Ratio / Target), clipped 0-1
-    merged["school_fragility_score"] = (1 - (merged["schools_per_1000_children"] / target)).clip(0, 1)
-
-    # 7. MULTI-YEAR PROJECTION
-    # Apply this structural baseline to all years in the timeline (2015-2026)
-    # This allows the structural bar to show alongside dynamic conflict bars
     years = list(range(2015, 2027))
     all_years_data = []
-    
-    for yr in years:
-        yr_df = merged.copy()
-        yr_df["year"] = yr
-        all_years_data.append(yr_df)
+
+    print(f"  → Extrapolating population using the Chain Method (Anchor: 2020)...")
+    for _, province_row in anchor_2020.iterrows():
+        p_name = province_row[name_col]
+        pop_history = {2020: province_row["school_age_pop_2020"]}
         
-    final_df = pd.concat(all_years_data)
-    final_df = final_df.rename(columns={name_col: "Region"})
+        # Forward Chain (2021-2026)
+        for yr in range(2021, 2027):
+            # Use specific rate if available, else latest available
+            rate = rates.get(yr, rates.get(max(rates.keys()) if rates else 2024, default_rate))
+            pop_history[yr] = pop_history[yr-1] * (1 + rate)
+            
+        # Backward Chain (2015-2019)
+        # 2019 pop = 2020 pop / (1 + 2020 growth)
+        for yr in range(2019, 2014, -1):
+            rate = rates.get(yr+1, rates.get(min(rates.keys()) if rates else 2015, default_rate))
+            pop_history[yr] = pop_history[yr+1] / (1 + rate)
+
+        for yr in years:
+            all_years_data.append({
+                "Region": p_name,
+                "year": yr,
+                "school_count": province_row["school_count"],
+                "school_age_pop": pop_history[yr]
+            })
+
+    final_df = pd.DataFrame(all_years_data)
+    
+    # 7. RELATIVE FRAGILITY LOGIC (Per Year)
+    def calculate_annual_scores(group):
+        # The 'year' column is part of the group
+        group["schools_per_1000_children"] = (group["school_count"] / (group["school_age_pop"] / 1000)).replace([float('inf'), -float('inf')], 0).fillna(0)
+        target = group["schools_per_1000_children"].quantile(0.8)
+        if target <= 0: target = 1.0
+        group["school_fragility_score"] = (1 - (group["schools_per_1000_children"] / target)).clip(0, 1)
+        return group
+
+    final_df = final_df.groupby("year", group_keys=False).apply(calculate_annual_scores)
+    
+    # Force recovery of 'year' if it's trapped in the index
+    if "year" not in final_df.columns:
+        final_df = final_df.reset_index()
+        if "year" not in final_df.columns and "index" in final_df.columns:
+            final_df = final_df.rename(columns={"index": "year"})
+        elif "year" not in final_df.columns and "level_0" in final_df.columns:
+             final_df = final_df.rename(columns={"level_0": "year"})
+
+    # Absolute fallback: if we still don't have it, we can't proceed
+    if "year" not in final_df.columns:
+        print(f"  ⚠ CRITICAL: 'year' column lost. Columns: {final_df.columns}")
+        return
     
     final_cols = ["Region", "year", "school_fragility_score", "school_count", "schools_per_1000_children", "school_age_pop"]
     final_df[final_cols].to_csv(out_path, index=False)
     
-    print(f"  ✓ Saved continuous relative analysis for {len(merged)} provinces across {len(years)} years to {out_path}")
+    print(f"  ✓ Saved Dynamic Bi-Directional Chain Analysis for {len(anchor_2020)} provinces across {len(years)} years to {out_path}")
 
 if __name__ == "__main__":
     calculate_density_gap()
