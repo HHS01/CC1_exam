@@ -12,10 +12,13 @@ def calculate_density_gap():
     print(f"🚀 Calculating continuous relative school density gap for {ISO3} ({COUNTRY})...")
     
     # 1. Paths
-    schools_path = Path(f"data/clean/schools/final_cleaned_schools_{ISO3}.csv")
-    pop_path     = Path(f"data/clean/nga_pop_density/nga_pop_2020.json") 
+    schools_path = Path(f"data/clean/schools/schools_{ISO3}.csv")
+    pop_path     = Path(f"data/clean/{ISO3.lower()}_pop_density/{ISO3.lower()}_pop_2020.json") 
     bounds_path  = Path(f"data/raw/boundaries/{ISO3}_admin2.geojson")
-    out_path     = Path("artifacts/province_school_fragility.csv")
+    
+    out_dir = Path("artifacts") / ISO3
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_path = out_dir / "province_school_fragility.csv"
 
     if not all([schools_path.exists(), pop_path.exists(), bounds_path.exists()]):
         print("✗ Missing input data. Ensure 02_x, 04_1, and raw boundaries exist.")

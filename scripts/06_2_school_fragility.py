@@ -87,7 +87,7 @@ FRAGILITY_INDICATORS = [
 # File paths — update if yours differ
 IN_ACLED     = find_acled_file(country_safe)
 IN_EDU       = Path("data/clean/education/master_education.csv")
-IN_SCHOOLS   = Path(f"data/clean/schools/final_cleaned_schools_{ISO3}.csv")
+IN_SCHOOLS   = Path(f"data/clean/schools/schools_{ISO3}.csv")
 
 OUT_DIR      = Path("artifacts") / ISO3
 OUT_CSV      = OUT_DIR / f"schools/{ISO3}_school_vulnerability.csv"
