@@ -15,20 +15,23 @@ def find_acled_file(country: str) -> Path:
     """Search for the country's ACLED CSV in any data/clean/acled/* subdirectory."""
     base_dir = Path("data/clean/acled")
     if not base_dir.exists():
-        return Path(f"data/clean/acled/HRP_2_countries/{country}.csv")
+        return Path(f"data/clean/acled/HRP_1_countries/{country}.csv")
     for path in base_dir.glob(f"**/{country}_geocoded.csv"):
         return path
     for path in base_dir.glob(f"**/{country}.csv"):
         return path
-    return base_dir / f"HRP_2_countries/{country}.csv"
+    return base_dir / f"HRP_1_countries/{country}.csv"
 
 def export_conflicts_geojson():
     print(f"🚀 Exporting HYBRID conflict events GeoJSON for {ISO3} ({COUNTRY})...")
     
+    out_dir = Path("artifacts") / ISO3
+    out_dir.mkdir(parents=True, exist_ok=True)
+
     ucdp_path = Path(f"data/raw/conflicts/{ISO3}_granular_conflicts.csv")
     acled_path = find_acled_file(country_safe)
-    out_path = Path("artifacts/conflicts.geojson")
-    mapping_path = Path("artifacts/admin_mapping.json")
+    out_path = out_dir / "conflicts.geojson"
+    mapping_path = out_dir / "admin_mapping.json"
 
     if not acled_path.exists():
         print(f"✗ ACLED file not found: {acled_path}")
@@ -40,34 +43,50 @@ def export_conflicts_geojson():
         with open(mapping_path, 'r', encoding='utf-8') as f:
             mapping = json.load(f).get("official_to_acled", {})
 
-    features = []
+    # 2. Load Existing Data (Persistence Strategy)
+    # Separated by year to allow easy merging/overwriting
+    master_features_by_year = {}
+    if out_path.exists():
+        print(f"  → Loading existing historical data from {out_path}...")
+        try:
+            with open(out_path, 'r', encoding='utf-8') as f:
+                old_data = json.load(f)
+                for feat in old_data.get("features", []):
+                    yr = feat["properties"].get("year")
+                    if yr:
+                        if yr not in master_features_by_year:
+                            master_features_by_year[yr] = []
+                        master_features_by_year[yr].append(feat)
+            print(f"    ✓ Found data for {len(master_features_by_year)} years.")
+        except Exception as e:
+            print(f"  ⚠ Failed to load existing GeoJSON: {e}")
 
-    # 2. Process UCDP (Granular - 1989 to 2024)
+    # 3. Process New Data (Current CSVs)
+    new_features_by_year = {}
+
+    # 3a. Process UCDP (Granular)
     ucdp_years = set()
     if ucdp_path.exists():
         try:
             df_u = pd.read_csv(ucdp_path)
             if not df_u.empty and 'year' in df_u.columns:
-                # Filter for valid records
                 df_u = df_u.dropna(subset=['latitude', 'longitude'])
-                
                 for _, row in df_u.iterrows():
-                    # Clean and map province
+                    yr = int(row['year'])
+                    if yr not in new_features_by_year: new_features_by_year[yr] = []
+                    
                     name = str(row.get('adm_2', 'Unknown')).replace(' province', '').replace(' region', '').strip().title()
                     name = mapping.get(name, name)
                     
-                    # Numeric Month
                     month = "00"
                     date_str = str(row.get('date_start', ''))
-                    if '-' in date_str:
-                        month = date_str.split('-')[1]
-                    elif '/' in date_str:
-                        month = date_str.split('/')[1]
+                    if '-' in date_str: month = date_str.split('-')[1]
+                    elif '/' in date_str: month = date_str.split('/')[1]
 
-                    features.append({
+                    new_features_by_year[yr].append({
                         "type": "Feature",
                         "properties": {
-                            "year": int(row['year']),
+                            "year": yr,
                             "month": month,
                             "admin2": name,
                             "events": 1,
@@ -80,65 +99,73 @@ def export_conflicts_geojson():
                             "coordinates": [float(row['longitude']), float(row['latitude'])]
                         }
                     })
-                    ucdp_years.add(int(row['year']))
-                print(f"  ✓ Added {len(df_u)} granular UCDP records.")
+                    ucdp_years.add(yr)
+                print(f"  ✓ Processed UCDP records for years: {sorted(list(ucdp_years))}")
         except Exception as e:
             print(f"  ⚠ Error processing UCDP file: {e}")
 
-    # 3. Process ACLED (Aggregated - use as fallback for missing years)
+    # 3b. Process ACLED (Aggregated fallback)
     df_a = pd.read_csv(acled_path)
-    
-    # We use ACLED for:
-    # 1. Years not covered by UCDP (e.g. 2025, 2026)
-    # 2. As a complete fallback if UCDP had no records
-    if not ucdp_years:
-        # Fallback to ALL ACLED years
-        df_a_filtered = df_a[df_a['Events'] > 0]
-        print(f"  [Info] UCDP missing. Falling back to ACLED for all years.")
-    else:
-        # Use ACLED for years UCDP doesn't have
-        df_a_filtered = df_a[(df_a['Events'] > 0) & (~df_a['Year'].isin(ucdp_years))]
-        print(f"  [Info] Using ACLED for years: {sorted(list(set(df_a_filtered['Year'].unique())))}")
-    
-    # Month Map for ACLED names to numbers
-    MONTH_MAP = {
-        'January': '01', 'February': '02', 'March': '03', 'April': '04',
-        'May': '05', 'June': '06', 'July': '07', 'August': '08',
-        'September': '09', 'October': '10', 'November': '11', 'December': '12'
-    }
-
-    for _, row in df_a_filtered.iterrows():
-        # Clean and map province for ACLED as well
-        acled_name = str(row['Admin2']).strip().title()
-        mapped_name = mapping.get(acled_name, acled_name)
-
-        features.append({
-            "type": "Feature",
-            "properties": {
-                "year": int(row['Year']),
-                "month": MONTH_MAP.get(str(row['Month']), '00'),
-                "admin2": mapped_name,
-                "events": int(row['Events']),
-                "fatalities": int(row['Fatalities']),
-                "is_granular": False,
-                "source": "ACLED"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [float(row['Longitude']), float(row['Latitude'])]
+    # We use ACLED if UCDP is missing for that year OR if UCDP has no records at all
+    for yr, group in df_a.groupby("Year"):
+        yr = int(yr)
+        if yr not in ucdp_years:
+            if yr not in new_features_by_year: new_features_by_year[yr] = []
+            
+            MONTH_MAP = {
+                'January': '01', 'February': '02', 'March': '03', 'April': '04',
+                'May': '05', 'June': '06', 'July': '07', 'August': '08',
+                'September': '09', 'October': '10', 'November': '11', 'December': '12'
             }
-        })
-    print(f"  ✓ Added {len(df_a_filtered)} aggregated ACLED records.")
 
+            for _, row in group.iterrows():
+                if row['Events'] <= 0: continue
+                
+                acled_name = str(row['Admin2']).strip().title()
+                mapped_name = mapping.get(acled_name, acled_name)
+
+                new_features_by_year[yr].append({
+                    "type": "Feature",
+                    "properties": {
+                        "year": yr,
+                        "month": MONTH_MAP.get(str(row['Month']), '00'),
+                        "admin2": mapped_name,
+                        "events": int(row['Events']),
+                        "fatalities": int(row['Fatalities']),
+                        "is_granular": False,
+                        "source": "ACLED"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [float(row['Longitude']), float(row['Latitude'])]
+                    }
+                })
+    
+    # 4. Merge Logic (Overwrite overlap, preserve history)
+    # Start with historical years
+    final_features = []
+    
+    # Years to keep from existing data (those not present in the new CSVs)
+    preserved_years = [y for y in master_features_by_year if y not in new_features_by_year]
+    for y in preserved_years:
+        final_features.extend(master_features_by_year[y])
+    
+    # Years to take from new data
+    for y in sorted(new_features_by_year.keys()):
+        final_features.extend(new_features_by_year[y])
+
+    print(f"  → Merging complete. Preserved {len(preserved_years)} historical years. Updated {len(new_features_by_year)} years.")
+
+    # 5. Save
     geojson = {
         "type": "FeatureCollection",
-        "features": features
+        "features": final_features
     }
 
     with open(out_path, 'w', encoding='utf-8') as f:
         json.dump(geojson, f, separators=(',', ':'))
     
-    print(f"✅ Success! Saved {len(features)} total events to {out_path}")
+    print(f"✅ Success! Saved {len(final_features)} total events to {out_path}")
 
 if __name__ == "__main__":
     export_conflicts_geojson()

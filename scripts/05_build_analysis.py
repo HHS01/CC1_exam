@@ -53,7 +53,7 @@ def find_acled_file(country: str) -> Path:
 
 IN_ACLED = find_acled_file(country_safe)
 IN_EDU   = Path("data/clean/education/master_education.csv")
-OUT_DIR  = Path("artifacts")
+OUT_DIR  = Path("artifacts") / ISO3
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 

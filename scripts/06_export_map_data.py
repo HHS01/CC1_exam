@@ -21,7 +21,7 @@ from shapely.geometry import mapping
 
 # ── Config ────────────────────────────────────────────────────────────────────
 ISO3         = os.environ.get("PIPELINE_ISO3", "BFA")
-OUT_DIR      = Path("artifacts")
+OUT_DIR      = Path("artifacts") / ISO3
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # Naming alignment for Burkina Faso (Legacy Fallback)
@@ -38,7 +38,7 @@ def build_geojson(vuln: pd.DataFrame, boundaries: gpd.GeoDataFrame) -> dict:
     Join vulnerability scores onto admin2 polygons for the choropleth.
     """
     # Load Dynamic Mapping if exists (Priority 1)
-    mapping_path = Path("artifacts/admin_mapping.json")
+    mapping_path = OUT_DIR / "admin_mapping.json"
     acled_to_official = {}
     
     if mapping_path.exists():
@@ -152,7 +152,7 @@ def build_province_school_risk(school_scores: list, all_schools_df: pd.DataFrame
     joined = gpd.sjoin(schools_gdf, boundaries[[name_col, "geometry"]], how="left", predicate="within")
     
     # Use mapping if available to align ACLED/Analysis names with OCHA names
-    mapping_path = Path("artifacts/admin_mapping.json")
+    mapping_path = OUT_DIR / "admin_mapping.json"
     official_to_acled = {}
     if mapping_path.exists():
         with open(mapping_path, 'r') as f:
@@ -319,7 +319,7 @@ if __name__ == "__main__":
         school_counts["Admin2_Geo"] = school_counts["Admin2_Geo"].str.strip().str.title()
         
         # Merge school counts into vuln early
-        mapping_path = Path("artifacts/admin_mapping.json")
+        mapping_path = OUT_DIR / "admin_mapping.json"
         acled_to_official = DEFAULT_NAME_MAP
         if mapping_path.exists():
             with open(mapping_path, 'r') as f:
@@ -343,7 +343,26 @@ if __name__ == "__main__":
         # Export schools.geojson (all points, minimal properties for performance)
         schools_out_path = OUT_DIR / "schools.geojson"
         print(f"  → Saving schools point data...")
-        schools_gdf[["name", "amenity", "geometry"]].to_file(schools_out_path, driver="GeoJSON")
+        
+        # Round coordinates for schools too
+        schools_gdf["geometry"] = schools_gdf.geometry.apply(lambda g: mapping(g))
+        def round_geom(g):
+            if "coordinates" in g:
+                g["coordinates"] = [round(c, 4) for c in g["coordinates"]]
+            return g
+        schools_gdf["geometry"] = schools_gdf["geometry"].apply(round_geom)
+        
+        # We can't use to_file directly on a dict-geometry column easily with fiona without issues, 
+        # but since it's just a few points we'll convert back or use a manual dump if needed.
+        # Actually, simpler to just use GeoPandas and then truncate precision on export if possible, 
+        # but GeoPandas to_file doesn't have a simple precision argument for all drivers.
+        # Let's just use a simpler approach for schools:
+        schools_gdf_lite = schools_gdf[["name", "amenity", "geometry"]].copy()
+        
+        # Back to actual geometry for to_file
+        from shapely.geometry import shape
+        schools_gdf_lite["geometry"] = schools_gdf_lite["geometry"].apply(lambda x: shape(x))
+        schools_gdf_lite.to_file(schools_out_path, driver="GeoJSON")
         print(f"  ✓ Schools GeoJSON → {schools_out_path}")
 
     # ── GeoJSON ──────────────────────────────────────────────────────────────

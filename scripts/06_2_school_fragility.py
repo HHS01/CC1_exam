@@ -88,11 +88,13 @@ FRAGILITY_INDICATORS = [
 IN_ACLED     = find_acled_file(country_safe)
 IN_EDU       = Path("data/clean/education/master_education.csv")
 IN_SCHOOLS   = Path(f"data/clean/schools/final_cleaned_schools_{ISO3}.csv")
-OUT_CSV      = Path(f"artifacts/schools/{ISO3}_school_vulnerability.csv")
-OUT_GJ       = Path(f"artifacts/schools/schools_{ISO3}.geojson")   # overwrites with scores
-OUT_FRAG     = Path(f"artifacts/schools/{ISO3}_fragility_by_year.csv")
 
-Path("artifacts/schools").mkdir(parents=True, exist_ok=True)
+OUT_DIR      = Path("artifacts") / ISO3
+OUT_CSV      = OUT_DIR / f"schools/{ISO3}_school_vulnerability.csv"
+OUT_GJ       = OUT_DIR / f"schools/schools_{ISO3}.geojson"   # overwrites with scores
+OUT_FRAG     = OUT_DIR / f"schools/{ISO3}_fragility_by_year.csv"
+
+(OUT_DIR / "schools").mkdir(parents=True, exist_ok=True)
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────

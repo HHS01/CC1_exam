@@ -9,8 +9,9 @@ def calculate_proximity():
     print(f"🚀 Calculating school proximity to conflict for {ISO3}...")
     # Placeholder for proximity analysis
     # In a real run, this would calculate distance between schools and nearest conflict
-    out_path = Path("artifacts/proximity_risk_stats.json")
-    out_path.parent.mkdir(exist_ok=True)
+    out_dir = Path("artifacts") / ISO3
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_path = out_dir / "proximity_risk_stats.json"
     
     stats = {
         "iso3": ISO3,

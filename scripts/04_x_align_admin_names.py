@@ -28,7 +28,10 @@ def align_admin_names():
     # 1. Load Data
     acled_path = find_acled_file(country_safe)
     bounds_path = Path(f"data/raw/boundaries/{ISO3}_admin2.geojson")
-    out_path = Path("artifacts/admin_mapping.json")
+    
+    out_dir = Path("artifacts") / ISO3
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_path = out_dir / "admin_mapping.json"
     
     if not acled_path.exists() or not bounds_path.exists():
         print(f"✗ Missing required data files for alignment.")
@@ -80,9 +83,6 @@ def align_admin_names():
                 print(f"  [Match] {acled_name} -> {top_name}")
 
     # 5. Save results
-    out_dir = Path("artifacts")
-    out_dir.mkdir(exist_ok=True)
-    
     result = {
         "iso3": ISO3,
         "acled_to_official": mapping,

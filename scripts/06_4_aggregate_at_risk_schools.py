@@ -20,8 +20,11 @@ COUNTRY = os.environ.get("PIPELINE_COUNTRY", "Burkina Faso")
 def aggregate_at_risk_schools():
     print(f"🚀 Aggregating at-risk school statistics for {ISO3} ({COUNTRY})...")
     
+    out_dir = Path("artifacts") / ISO3
+    out_dir.mkdir(parents=True, exist_ok=True)
+
     # Load data
-    score_path = Path(f"artifacts/schools/{ISO3}_school_vulnerability.csv")
+    score_path = out_dir / f"schools/{ISO3}_school_vulnerability.csv"
     if not score_path.exists():
         print(f"✗ Score data missing: {score_path}")
         return
@@ -29,7 +32,7 @@ def aggregate_at_risk_schools():
     df = pd.read_csv(score_path)
 
     # Load Dynamic Mapping if available
-    mapping_path = Path("artifacts/admin_mapping.json")
+    mapping_path = out_dir / "admin_mapping.json"
     official_to_acled = {}
     if mapping_path.exists():
         with open(mapping_path, 'r', encoding='utf-8') as f:
@@ -48,6 +51,17 @@ def aggregate_at_risk_schools():
         else:
              df["province"] = "Unknown"
 
+    # Load Timeline from national trends if available to avoid hardcoding years
+    trends_csv = out_dir / f"{ISO3}_national_trends.csv"
+    available_years = [2024, 2025, 2026] # Fallback
+    if trends_csv.exists():
+        try:
+            tdf = pd.read_csv(trends_csv)
+            available_years = sorted(tdf["year"].unique().tolist())
+            print(f"  [Info] Using dynamic timeline from trends CSV: {available_years[0]}–{available_years[-1]}")
+        except:
+            pass
+
     # Structure: { year: { province: { count: int, schools: [...] } } }
     aggregated = {}
 
@@ -55,13 +69,13 @@ def aggregate_at_risk_schools():
         province_raw = str(s.get("province", "Unknown"))
         if province_raw == "nan": province_raw = "Unknown"
         province = official_to_acled.get(province_raw, province_raw)
-        
+
         v_score = s.get("final_score", 0)
         if pd.isna(v_score): v_score = 0
-        
+
         name = s.get("name")
         if pd.isna(name): name = "Unnamed School"
-        
+
         lat = s.get("latitude", 0)
         lon = s.get("longitude", 0)
         if pd.isna(lat): lat = 0
@@ -69,7 +83,7 @@ def aggregate_at_risk_schools():
 
         # Threshold criteria: High risk (final_score > 0.7)
         if v_score > 0.7:
-            for year in [2024, 2025, 2026]:
+            for year in available_years:
                 y_str = str(year)
                 if y_str not in aggregated:
                     aggregated[y_str] = {}
@@ -85,20 +99,19 @@ def aggregate_at_risk_schools():
                     "v_score": float(v_score)
                 })
 
-        # Add frontend-specific fields to the flat dataframe for Map 2
-        # at_risk_years, v_score (alias for final_score), trauma (conflict history proxy)
-        df["at_risk_years"] = df["at_risk"].apply(lambda x: [2024, 2025, 2026] if x == 1 else [])
-        df["v_score"] = df["final_score"]
-        df["trauma"] = (df["conflict_score"] * 10).astype(int) # Mock trauma as scaled conflict score
-
+    # Add frontend-specific fields to the flat dataframe for Map 2
+    # at_risk_years, v_score (alias for final_score), trauma (conflict history proxy)
+    df["at_risk_years"] = df["at_risk"].apply(lambda x: available_years if x == 1 else [])
+    df["v_score"] = df["final_score"]
+    df["trauma"] = (df["conflict_score"] * 10).astype(int) # Mock trauma as scaled conflict score
     # Save output
-    out_path = Path("artifacts/province_at_risk_stats.json")
+    out_path = out_dir / "province_at_risk_stats.json"
     with open(out_path, 'w', encoding='utf-8') as f:
         json.dump(aggregated, f, indent=2, ensure_ascii=False)
     
     # Also save the flat scores JSON if needed by other scripts
     # Use where(notnull, None) to convert NaNs to nulls in JSON
-    scores_json_path = Path("artifacts/school_vulnerability_scores.json")
+    scores_json_path = out_dir / "school_vulnerability_scores.json"
     df.where(df.notnull(), None).to_json(scores_json_path, orient="records")
 
     print(f"✅ Success! Saved stats to {out_path}")

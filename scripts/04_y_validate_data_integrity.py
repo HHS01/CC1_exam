@@ -74,7 +74,7 @@ def validate():
             errors.append(f"CRITICAL: Boundary GeoJSON is corrupt: {e}")
 
     # 4. Check Mapping (Optional but recommended)
-    mapping_path = Path("artifacts/admin_mapping.json")
+    mapping_path = Path("artifacts") / ISO3 / "admin_mapping.json"
     if not mapping_path.exists():
         warnings.append("WARNING: admin_mapping.json not found. Spatial joins may fail if names differ.")
     else:
