@@ -4,13 +4,13 @@
 Aggregates individual school risk scores into province-level annual summaries.
 Used by the interactive map to show time-series trends and markers.
 
-Input: artifacts/school_vulnerability_scores.json
-Output: artifacts/province_at_risk_stats.json
+Dynamic Version: Calculates risk for EACH year based on the province's score in that year.
 """
 
 import json
 import os
 import pandas as pd
+import numpy as np
 from pathlib import Path
 
 # ── Config ────────────────────────────────────────────────────────────────────
@@ -18,103 +18,111 @@ ISO3    = os.environ.get("PIPELINE_ISO3", "BFA")
 COUNTRY = os.environ.get("PIPELINE_COUNTRY", "Burkina Faso")
 
 def aggregate_at_risk_schools():
-    print(f"🚀 Aggregating at-risk school statistics for {ISO3} ({COUNTRY})...")
+    print(f"🚀 Aggregating dynamic at-risk school statistics for {ISO3} ({COUNTRY})...")
     
     out_dir = Path("artifacts") / ISO3
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    # Load data
+    # 1. Load Data
     score_path = out_dir / f"schools/{ISO3}_school_vulnerability.csv"
     if not score_path.exists():
-        print(f"✗ Score data missing: {score_path}")
+        print(f"✗ Base school score data missing: {score_path}")
         return
+    
+    schools_df = pd.read_csv(score_path)
 
-    df = pd.read_csv(score_path)
+    hybrid_path = out_dir / f"{ISO3}_hybrid_vulnerability_index.csv"
+    if not hybrid_path.exists():
+        print(f"✗ Hybrid index missing: {hybrid_path}")
+        return
+    
+    hybrid_df = pd.read_csv(hybrid_path)
 
-    # Load Dynamic Mapping if available
+    # 2. Alignment & Mapping
     mapping_path = out_dir / "admin_mapping.json"
     official_to_acled = {}
     if mapping_path.exists():
         with open(mapping_path, 'r', encoding='utf-8') as f:
             mapping_data = json.load(f)
-            if mapping_data.get("iso3") == ISO3:
-                official_to_acled = mapping_data.get("official_to_acled", {})
-                print(f"  [Info] Using name alignment from admin_mapping.json")
+            official_to_acled = mapping_data.get("official_to_acled", {})
 
-    # If province is not in CSV, we might need a spatial join, but let's assume it's there or handle missing
-    if "province" not in df.columns:
-        # Fallback: if we don't have provinces in the CSV, we'll use a dummy or try to get it
-        print("  ⚠ 'province' column missing in score CSV. Attempting to use Admin2 mapping if available.")
-        # For now, let's assume 'Admin2' might be there if we joined it
-        if "Admin2" in df.columns:
-             df["province"] = df["Admin2"]
+    if "province" not in schools_df.columns:
+        if "Admin2_join" in schools_df.columns:
+            schools_df["province"] = schools_df["Admin2_join"]
+        elif "Admin2" in schools_df.columns:
+            schools_df["province"] = schools_df["Admin2"]
         else:
-             df["province"] = "Unknown"
+            schools_df["province"] = "Unknown"
 
-    # Load Timeline from national trends if available to avoid hardcoding years
-    trends_csv = out_dir / f"{ISO3}_national_trends.csv"
-    available_years = [2024, 2025, 2026] # Fallback
-    if trends_csv.exists():
-        try:
-            tdf = pd.read_csv(trends_csv)
-            available_years = sorted(tdf["year"].unique().tolist())
-            print(f"  [Info] Using dynamic timeline from trends CSV: {available_years[0]}–{available_years[-1]}")
-        except:
-            pass
+    schools_df["Admin2_ACLED"] = schools_df["province"].map(official_to_acled).fillna(schools_df["province"])
 
-    # Structure: { year: { province: { count: int, schools: [...] } } }
+    # 3. Dynamic Calculation
     aggregated = {}
+    available_years = sorted(hybrid_df["year"].unique().tolist())
+    
+    # Initialize list for tracking yearly scores per school
+    school_yearly_scores = []
 
-    for _, s in df.iterrows():
-        province_raw = str(s.get("province", "Unknown"))
-        if province_raw == "nan": province_raw = "Unknown"
-        province = official_to_acled.get(province_raw, province_raw)
+    print(f"  → Processing {len(available_years)} years for {len(schools_df)} schools...")
 
-        v_score = s.get("final_score", 0)
-        if pd.isna(v_score): v_score = 0
+    # Pivot hybrid_df for faster lookup
+    # index: Admin2, columns: year, values: score
+    score_lookup = hybrid_df.pivot(index="Admin2", columns="year", values="score").to_dict()
 
-        name = s.get("name")
-        if pd.isna(name): name = "Unnamed School"
+    for idx, s in schools_df.iterrows():
+        prov = s["Admin2_ACLED"]
+        y_scores = {}
+        at_risk_years = []
+        
+        for year in available_years:
+            y_str = str(year)
+            v_score = score_lookup.get(year, {}).get(prov, 0)
+            y_scores[y_str] = float(v_score)
 
-        lat = s.get("latitude", 0)
-        lon = s.get("longitude", 0)
-        if pd.isna(lat): lat = 0
-        if pd.isna(lon): lon = 0
-
-        # Threshold criteria: High risk (final_score > 0.7)
-        if v_score > 0.7:
-            for year in available_years:
-                y_str = str(year)
+            # Threshold: High risk (score > 0.6)
+            if v_score > 0.6:
+                at_risk_years.append(year)
+                
                 if y_str not in aggregated:
                     aggregated[y_str] = {}
-                if province not in aggregated[y_str]:
-                    aggregated[y_str][province] = {"count": 0, "schools": []}
-
-                aggregated[y_str][province]["count"] += 1
-                aggregated[y_str][province]["schools"].append({
-                    "name": str(name),
-                    "province": str(province),
-                    "lat": float(lat),
-                    "lon": float(lon),
+                if prov not in aggregated[y_str]:
+                    aggregated[y_str][prov] = {"count": 0, "schools": []}
+                
+                aggregated[y_str][prov]["count"] += 1
+                aggregated[y_str][prov]["schools"].append({
+                    "name": str(s.get("name", "Unnamed School")),
+                    "province": str(prov),
+                    "lat": float(s.get("latitude", 0)),
+                    "lon": float(s.get("longitude", 0)),
                     "v_score": float(v_score)
                 })
+        
+        school_yearly_scores.append({
+            "yearly_scores": y_scores,
+            "at_risk_years": at_risk_years
+        })
 
-    # Add frontend-specific fields to the flat dataframe for Map 2
-    # at_risk_years, v_score (alias for final_score), trauma (conflict history proxy)
-    df["at_risk_years"] = df["at_risk"].apply(lambda x: available_years if x == 1 else [])
-    df["v_score"] = df["final_score"]
-    df["trauma"] = (df["conflict_score"] * 10).astype(int) # Mock trauma as scaled conflict score
-    # Save output
+    # Add the results back to schools_df
+    scores_df = pd.DataFrame(school_yearly_scores)
+    schools_df["yearly_scores"] = scores_df["yearly_scores"]
+    schools_df["at_risk_years"] = scores_df["at_risk_years"]
+
+    # 4. Final Formatting
+    schools_df["v_score"] = schools_df["yearly_scores"].apply(lambda x: x.get("2024", x.get(str(available_years[-1]), 0)))
+    schools_df["trauma"] = (schools_df["v_score"] * 10).astype(int)
+    
+    # Save Outputs
     out_path = out_dir / "province_at_risk_stats.json"
     with open(out_path, 'w', encoding='utf-8') as f:
-        json.dump(aggregated, f, indent=2, ensure_ascii=False)
+        json.dump(aggregated, f, separators=(",", ":"), ensure_ascii=False)
     
-    # Also save the flat scores JSON if needed by other scripts
-    # Use where(notnull, None) to convert NaNs to nulls in JSON
     scores_json_path = out_dir / "school_vulnerability_scores.json"
-    df.where(df.notnull(), None).to_json(scores_json_path, orient="records")
+    # DO NOT drop yearly_scores, export_map_data needs it!
+    final_json_df = schools_df.drop(columns=["Admin2_ACLED"])
+    final_json_df.to_json(scores_json_path, orient="records")
 
-    print(f"✅ Success! Saved stats to {out_path}")
+    print(f"✅ Success! Dynamic stats saved to {out_path}")
+    print(f"✅ School scores (with yearly_scores) saved to {scores_json_path}")
 
 if __name__ == "__main__":
     aggregate_at_risk_schools()

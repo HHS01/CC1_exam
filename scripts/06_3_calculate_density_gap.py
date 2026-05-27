@@ -145,13 +145,12 @@ def calculate_density_gap():
         group["school_fragility_score"] = (1 - (group["schools_per_1000_children"] / target)).clip(0, 1)
         return group
 
-    final_df = final_df.groupby("year", group_keys=False).apply(calculate_annual_scores)
-    
-    # Ensure year is a column
-    if "year" not in final_df.columns:
-        final_df = final_df.reset_index()
-        if "year" not in final_df.columns and "index" in final_df.columns:
-            final_df = final_df.rename(columns={"index": "year"})
+    # Apply calculations per year
+    print("  → Calculating annual fragility scores...")
+    results = []
+    for yr, group in final_df.groupby("year"):
+        results.append(calculate_annual_scores(group))
+    final_df = pd.concat(results)
 
     final_cols = ["Region", "year", "school_fragility_score", "school_count", "schools_per_1000_children", "school_age_pop"]
     final_df[final_cols].to_csv(out_path, index=False)

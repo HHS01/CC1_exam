@@ -180,24 +180,27 @@ def build_province_school_risk(school_scores: list, all_schools_df: pd.DataFrame
         
         if prov not in risk_data: risk_data[prov] = {}
         
+        # Get yearly scores if available, otherwise default to stable
+        yearly_scores = {}
         if key in assessed:
-            score = assessed[key].get('v_score', assessed[key].get('final_score', 0))
-            years = assessed[key].get('at_risk_years', [2024, 2025, 2026]) # Fallback years
-            # Thresholds: >0.7 critical, >0.4 high, else stable
-            # Match aggregate_at_risk_schools.py logic
+            yearly_scores = assessed[key].get('yearly_scores', {})
+        
+        # We need a defined range of years to ensure consistency
+        available_years = sorted(yearly_scores.keys()) if yearly_scores else [str(y) for y in range(2015, 2027)]
+        
+        for yr_str in available_years:
+            score = float(yearly_scores.get(yr_str, 0))
+            
+            # Use the same thresholds as the aggregation script
             category = "stable"
-            if score > 0.7: category = "critical"
-            elif score > 0.4: category = "high"
-        else:
-            years = list(range(2015, 2027))
-            category = "stable"
-
-        for yr in years:
-            yr_str = str(yr)
+            if score > 0.6:   category = "critical"
+            elif score > 0.3: category = "high"
+            
             # Province stats
             if yr_str not in risk_data[prov]:
                 risk_data[prov][yr_str] = {"stable": 0, "high": 0, "critical": 0}
             risk_data[prov][yr_str][category] += 1
+            
             # National stats
             if yr_str not in risk_data["National"]:
                 risk_data["National"][yr_str] = {"stable": 0, "high": 0, "critical": 0}
@@ -284,11 +287,10 @@ if __name__ == "__main__":
         with open(in_school_scores, "r") as f:
             scores_data = json.load(f)
         
-        # High risk threshold = 0.7 (matches summary report)
         for s in scores_data:
-            if s.get("v_score", 0) > 0.7:
-                for yr in s.get("at_risk_years", []):
-                    school_risk_counts[str(yr)] = school_risk_counts.get(str(yr), 0) + 1
+            # Count for each year the school is considered at risk
+            for yr in s.get("at_risk_years", []):
+                school_risk_counts[str(yr)] = school_risk_counts.get(str(yr), 0) + 1
 
     school_counts = None
     if in_schools.exists() and in_admin2.exists():

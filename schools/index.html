@@ -419,8 +419,10 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
         <div class="stat-label">Total Schools</div>
       </div>
       <div class="stat" style="text-align: center;">
-        <div class="stat-num" id="statSchoolsAtRisk">—</div>
-        <div class="stat-label">Schools at Risk</div>
+        <a href="at_risk_summary.html" id="summaryLink" style="text-decoration:none; cursor:pointer; color:inherit;">
+          <div class="stat-num" id="statSchoolsAtRisk">—</div>
+          <div class="stat-label" style="text-decoration:underline;">Schools at Risk</div>
+        </a>
       </div>
       <div class="stat" style="text-align: center;">
         <div class="stat-num" id="statSchoolsPer1k">—</div>
@@ -543,6 +545,13 @@ function updateNavLinks() {
     backUrl += `&province=${encodeURIComponent(currentProvince)}`;
   }
   document.getElementById("backLink").href = backUrl;
+
+  let summaryUrl = `at_risk_summary.html?year=${currentYear}&iso3=${ISO3}`;
+  if (currentProvince) {
+    summaryUrl += `&province=${encodeURIComponent(currentProvince)}`;
+  }
+  const sLink = document.getElementById("summaryLink");
+  if (sLink) sLink.href = summaryUrl;
 }
 
 async function init() {
@@ -710,7 +719,7 @@ async function init() {
       const match = layers.find(l => l.feature.properties.admin2 === currentProvince);
       if (match) {
         selectedLayer = match;
-        match.setStyle({ weight: 3, color: "#1A1410", fillOpacity: 0.8 });
+        match.setStyle({ weight: 1.5, color: "#1A1410", fillOpacity: 0.15 });
         
         // Populate sidebar manually for initial load
         const stats = provinceStats[currentYear] || {};
@@ -766,7 +775,7 @@ async function init() {
         const match = layers.find(l => l.feature.properties.admin2 === currentProvince);
         if (match) {
             selectedLayer = match;
-            match.setStyle({ weight: 3, color: "#1A1410", fillOpacity: 0.8 });
+            match.setStyle({ weight: 1.5, color: "#1A1410", fillOpacity: 0.15 });
             // Re-trigger the sidebar update manually to avoid infinite recursion or event issues
             const stats = provinceStats[currentYear] || {};
             const provData = stats[match.feature.properties.admin2] || { count: 0 };
@@ -785,7 +794,7 @@ async function init() {
                   <div class="metric-label">Schools / 1k children</div>
                 </div>
                 ${provData.count > 0 ? `
-                <a href="at_risk_summary.html?year=${currentYear}&province=${encodeURIComponent(match.feature.properties.admin2)}" class="metric" style="text-decoration:none; cursor:pointer;">
+                <a href="at_risk_summary.html?year=${currentYear}&province=${encodeURIComponent(match.feature.properties.admin2)}&iso3=${ISO3}" class="metric" style="text-decoration:none; cursor:pointer;">
                   <div class="metric-val">${provData.count}</div>
                   <div class="metric-label" style="text-decoration:underline;">At-Risk Schools</div>
                 </a>` : `

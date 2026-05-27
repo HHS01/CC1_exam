@@ -610,7 +610,7 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
     </div>
     <div class="stats" style="justify-content: center; gap: 40px;">
       <div class="stat" style="text-align: center;">
-        <a href="./schools/at_risk_summary.html" id="nationalAtRiskLink" style="text-decoration:none; cursor:pointer;">
+        <a href="./schools/index.html" id="schoolsLink" style="text-decoration:none; cursor:pointer;">
           <div class="stat-num" id="statSchoolsAtRisk">—</div>
           <div class="stat-label" style="text-decoration:underline; color: var(--ink-muted);">Schools at risk</div>
         </a>
@@ -785,11 +785,8 @@ function saveCache() {
 function updateNavLinks() {
   let url = `./schools/index.html?year=${currentYear}&iso3=${ISO3}`;
   if (currentProvince) url += `&province=${encodeURIComponent(currentProvince)}`;
-  document.getElementById("schoolsLink").href = url;
-
-  // National Summary Link
-  const nationalUrl = `./schools/at_risk_summary.html?year=${currentYear}&iso3=${ISO3}`;
-  document.getElementById("nationalAtRiskLink").href = nationalUrl;
+  const sLink = document.getElementById("schoolsLink");
+  if (sLink) sLink.href = url;
 }
 
 // ═══════════════════════════════════════════════════════
@@ -1031,9 +1028,9 @@ function renderChoropleth(year) {
         }
         // Preserve selection highlight
         if (currentProvince && f.properties.admin2 === currentProvince) {
-            style.weight = 3;
+            style.weight = 1.5;
             style.color = "#1A1410";
-            style.fillOpacity = 1.0;
+            style.fillOpacity = 0.15;
         }
         return style;
     },
