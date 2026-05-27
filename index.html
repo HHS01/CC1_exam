@@ -776,12 +776,14 @@ async function loadAll() {
     updateNavLinks();
 
     document.getElementById("toggleConflicts").addEventListener("change", renderConflicts);
-    document.getElementById("toggleSchools").addEventListener("change", renderSchools);
+    const toggleSchools = document.getElementById("toggleSchools");
+    if (toggleSchools) toggleSchools.addEventListener("change", renderSchools);
 
     map.on('zoomend', () => {
       renderChoropleth(currentYear); // Refresh labels on zoom
       if (document.getElementById("toggleConflicts").checked) renderConflicts();
-      if (document.getElementById("toggleSchools").checked) renderSchools();
+      const toggleS = document.getElementById("toggleSchools");
+      if (toggleS && toggleS.checked) renderSchools();
     });
 
     // Auto-select province if in URL

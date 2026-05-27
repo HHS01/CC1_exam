@@ -346,24 +346,21 @@ if __name__ == "__main__":
         print(f"  → Saving schools point data...")
         
         # Round coordinates for schools too
-        schools_gdf["geometry"] = schools_gdf.geometry.apply(lambda g: mapping(g))
-        def round_geom(g):
-            if "coordinates" in g:
-                g["coordinates"] = [round(c, 4) for c in g["coordinates"]]
-            return g
+        def round_geom(geom):
+            from shapely.geometry import shape, mapping
+            from shapely.ops import transform
+            def round_coords(*args):
+                return tuple(round(c, 4) for c in args)
+            return transform(round_coords, geom)
+
         schools_gdf["geometry"] = schools_gdf["geometry"].apply(round_geom)
         
-        # We can't use to_file directly on a dict-geometry column easily with fiona without issues, 
-        # but since it's just a few points we'll convert back or use a manual dump if needed.
-        # Actually, simpler to just use GeoPandas and then truncate precision on export if possible, 
-        # but GeoPandas to_file doesn't have a simple precision argument for all drivers.
-        # Let's just use a simpler approach for schools:
-        schools_gdf_lite = schools_gdf[["name", "amenity", "geometry"]].copy()
-        
-        # Back to actual geometry for to_file
-        from shapely.geometry import shape
-        schools_gdf_lite["geometry"] = schools_gdf_lite["geometry"].apply(lambda x: shape(x))
-        schools_gdf_lite.to_file(schools_out_path, driver="GeoJSON")
+        # Use GeoPandas for export
+        schools_out_gdf = gpd.GeoDataFrame(
+            schools_gdf[["name", "amenity", "geometry"]],
+            crs="EPSG:4326"
+        )
+        schools_out_gdf.to_file(schools_out_path, driver="GeoJSON")
         print(f"  ✓ Schools GeoJSON → {schools_out_path}")
 
     # ── GeoJSON ──────────────────────────────────────────────────────────────
@@ -412,11 +409,6 @@ if __name__ == "__main__":
     # ── Insights JSON ─────────────────────────────────────────────────────────
     insights = build_insights(vuln, trends, iso3, school_risk_counts)
     insights_path = OUT_DIR / "insights.json"
-    with open(insights_path, "w") as f:
-        json.dump(insights, f, indent=2)
-    print(f"  ✓ Insights → {insights_path}")
-    print(f"\n  Headline: {insights['critical_regions']} regions CRITICAL, {insights['high_risk_regions']} HIGH priority")
-.json"
     with open(insights_path, "w") as f:
         json.dump(insights, f, indent=2)
     print(f"  ✓ Insights → {insights_path}")
