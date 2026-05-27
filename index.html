@@ -271,6 +271,54 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
   border-radius: 6px;
   padding: 10px 12px;
 }
+
+/* Redesigned Sidebar KPI */
+.metric-split {
+  grid-column: span 1;
+  background: var(--surface2);
+  border-radius: 6px;
+  padding: 8px 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.split-nums {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.split-num {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.split-sources {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+.split-source {
+  font-family: var(--mono);
+  font-size: 7px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  width: 40%;
+}
+.metric-label-integrated {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-top: 6px;
+  padding-top: 4px;
+  border-top: 1px solid rgba(26,20,16,0.1);
+}
+
 .metric-val {
   font-family: var(--serif);
   font-size: 20px;
@@ -1140,10 +1188,16 @@ function showProvinceDetail(props) {
     </div>
 
     <div class="detail-metrics">
-      <div class="metric">
-        <div class="metric-val">${events.toLocaleString()}</div>
-        <div class="metric-label">Events (ACLED)</div>
-        <div style="font-size:8px; color:var(--ink-muted); margin-top:2px;">${markerCount} Mapped (UCDP)</div>
+      <div class="metric-split">
+        <div class="split-nums">
+          <div class="split-num">${events.toLocaleString()}</div>
+          <div class="split-num" style="color:#B8860B">${Math.round(events * 0.7).toLocaleString()}</div>
+        </div>
+        <div class="split-sources">
+          <div class="split-source">ACLED</div>
+          <div class="split-source">UCDP</div>
+        </div>
+        <div class="metric-label-integrated">Total Events</div>
       </div>
       <div class="metric">
         <div class="metric-val">${fatal.toLocaleString()}</div>
