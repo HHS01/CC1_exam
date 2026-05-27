@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Education Under Threat — Schools Overlay (TEST)</title>
+<title>Education Under Threat — Nigeria</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -754,7 +754,7 @@ function resetSelection() {
   renderConflicts(); // Back to province hotspots
   
   // Restore national view
-  map.setView([12.3, -1.9], 7);
+  map.setView([9.08, 8.68], 6);
 
   const newUrl = new URL(window.location);
   newUrl.searchParams.delete('province');
@@ -1188,7 +1188,7 @@ async function generateSituationBriefing(props) {
   const densityFragility = ((props.density_fragility || 0.5) * 100).toFixed(0);
 
   const prompt = `You are a humanitarian analyst providing a rationale for the Education Vulnerability Index (EVI).
-Province: ${name}, Nigeria. Year: ${year}. 
+Province: ${name}, Nigeria
 EVI Score: ${score}/100. Priority Classification: ${tier}.
 
 Risk Driver Breakdown:
