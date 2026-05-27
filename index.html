@@ -636,15 +636,11 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
 const GEMINI_MODEL   = "gemini-1.5-flash";
 const LS_CACHE_KEY   = "evi_briefings_bfa";
 
-// Multi-country support
-const COUNTRY_CONFIG = {
-  "NGA": { name: "Nigeria", center: [9.08, 8.68], zoom: 6, subhead: "Structural & Conflict Risk" },
-  "BFA": { name: "Burkina Faso", center: [12.23, -1.56], zoom: 7, subhead: "Conflict & Education Resilience" }
-};
+// Multi-country support (Metadata loaded dynamically from insights.json)
+let CONFIG = { name: "Burkina Faso", subhead: "Conflict & Education Resilience" };
 
 const urlParams = new URLSearchParams(window.location.search);
-const ISO3 = (urlParams.get('iso3') || 'NGA').toUpperCase();
-const CONFIG = COUNTRY_CONFIG[ISO3] || COUNTRY_CONFIG["NGA"];
+const ISO3 = (urlParams.get('iso3') || 'BFA').toUpperCase();
 
 const ARTIFACTS_PATH = `./artifacts/${ISO3}`;
 const GEOJSON_URL  = `${ARTIFACTS_PATH}/data.geojson`;
@@ -670,13 +666,11 @@ const TIER_COLORS = {
 // ═══════════════════════════════════════════════════════
 
 const map = L.map("map", {
-  center: CONFIG.center,
-  zoom: CONFIG.zoom,
   zoomControl: true,
   attributionControl: true,
 });
 
-// Update dynamic text
+// Update dynamic text (Fallback initialized, loadAll will update)
 document.getElementById("headerKicker").textContent = `${CONFIG.name} · ${CONFIG.subhead} · 2015–2026`;
 document.getElementById("headerHeadline").innerHTML = `Conflict is closing schools faster than<br><em>they can be rebuilt</em>`;
 document.getElementById("chartTitle").textContent = `National conflict events · ${CONFIG.name} · 2015–2026`;
@@ -746,6 +740,14 @@ async function loadAll() {
     conflictsData = conflicts;
     schoolsData = schools;
     adminMapping = mapping;
+
+    // Update CONFIG from insights
+    if (insights.country_name) CONFIG.name = insights.country_name;
+    if (insights.subhead)      CONFIG.subhead = insights.subhead;
+
+    // Update dynamic text
+    document.getElementById("headerKicker").textContent = `${CONFIG.name} · ${CONFIG.subhead} · 2015–2026`;
+    document.getElementById("chartTitle").textContent = `National conflict events · ${CONFIG.name} · 2015–2026`;
 
     geojson.features.forEach(f => {
       const yr = f.properties.year || currentYear;

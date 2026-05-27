@@ -21,6 +21,7 @@ from shapely.geometry import mapping
 
 # ── Config ────────────────────────────────────────────────────────────────────
 ISO3         = os.environ.get("PIPELINE_ISO3", "BFA")
+COUNTRY      = os.environ.get("PIPELINE_COUNTRY", "Burkina Faso")
 OUT_DIR      = Path("artifacts") / ISO3
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -411,6 +412,11 @@ if __name__ == "__main__":
     # ── Insights JSON ─────────────────────────────────────────────────────────
     insights = build_insights(vuln, trends, iso3, school_risk_counts)
     insights_path = OUT_DIR / "insights.json"
+    with open(insights_path, "w") as f:
+        json.dump(insights, f, indent=2)
+    print(f"  ✓ Insights → {insights_path}")
+    print(f"\n  Headline: {insights['critical_regions']} regions CRITICAL, {insights['high_risk_regions']} HIGH priority")
+.json"
     with open(insights_path, "w") as f:
         json.dump(insights, f, indent=2)
     print(f"  ✓ Insights → {insights_path}")
