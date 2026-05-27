@@ -364,11 +364,11 @@ if __name__ == "__main__":
     scored = score_schools(schools_gdf, province_scores, ref_scalar)
 
     # Save CSV (no geometry)
-    csv_cols = ["name","amenity","latitude","longitude",
+    csv_cols = ["name","amenity","latitude","longitude","Admin2_join",
                 "conflict_score","fragility_uplift","final_score","tier",
                 "at_risk","score_basis"]
     csv_cols = [c for c in csv_cols if c in scored.columns]
-    scored[csv_cols].to_csv(OUT_CSV, index=False)
+    scored[csv_cols].rename(columns={"Admin2_join": "province"}).to_csv(OUT_CSV, index=False)
     print(f"  ✓ CSV → {OUT_CSV}")
 
     # Save GeoJSON (with geometry + scores)

@@ -75,7 +75,7 @@ def aggregate_at_risk_schools():
                     aggregated[y_str] = {}
                 if province not in aggregated[y_str]:
                     aggregated[y_str][province] = {"count": 0, "schools": []}
-                
+
                 aggregated[y_str][province]["count"] += 1
                 aggregated[y_str][province]["schools"].append({
                     "name": str(name),
@@ -84,6 +84,12 @@ def aggregate_at_risk_schools():
                     "lon": float(lon),
                     "v_score": float(v_score)
                 })
+
+        # Add frontend-specific fields to the flat dataframe for Map 2
+        # at_risk_years, v_score (alias for final_score), trauma (conflict history proxy)
+        df["at_risk_years"] = df["at_risk"].apply(lambda x: [2024, 2025, 2026] if x == 1 else [])
+        df["v_score"] = df["final_score"]
+        df["trauma"] = (df["conflict_score"] * 10).astype(int) # Mock trauma as scaled conflict score
 
     # Save output
     out_path = Path("artifacts/province_at_risk_stats.json")

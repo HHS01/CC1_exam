@@ -1,17 +1,17 @@
 {
   "National": {
     "2024": {
-      "stable": 3939,
+      "stable": 3703,
       "high": 246,
       "critical": 81
     },
     "2025": {
-      "stable": 3939,
+      "stable": 3703,
       "high": 246,
       "critical": 81
     },
     "2026": {
-      "stable": 3939,
+      "stable": 3703,
       "high": 246,
       "critical": 81
     }
@@ -137,17 +137,17 @@
   },
   "Ejigbo": {
     "2024": {
-      "stable": 20,
+      "stable": 18,
       "high": 0,
       "critical": 0
     },
     "2025": {
-      "stable": 20,
+      "stable": 18,
       "high": 0,
       "critical": 0
     },
     "2026": {
-      "stable": 20,
+      "stable": 18,
       "high": 0,
       "critical": 0
     }
@@ -222,17 +222,17 @@
   },
   "Kaltungo": {
     "2024": {
-      "stable": 5,
+      "stable": 2,
       "high": 0,
       "critical": 0
     },
     "2025": {
-      "stable": 5,
+      "stable": 2,
       "high": 0,
       "critical": 0
     },
     "2026": {
-      "stable": 5,
+      "stable": 2,
       "high": 0,
       "critical": 0
     }
@@ -356,23 +356,7 @@
       "critical": 0
     }
   },
-  "Kiri-Kasamma": {
-    "2024": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    }
-  },
+  "Kiri-Kasamma": {},
   "Enugu North": {
     "2024": {
       "stable": 46,
@@ -596,17 +580,17 @@
   },
   "Kagarko": {
     "2024": {
-      "stable": 5,
+      "stable": 0,
       "high": 1,
       "critical": 0
     },
     "2025": {
-      "stable": 5,
+      "stable": 0,
       "high": 1,
       "critical": 0
     },
     "2026": {
-      "stable": 5,
+      "stable": 0,
       "high": 1,
       "critical": 0
     }
@@ -868,17 +852,17 @@
   },
   "Dala": {
     "2024": {
-      "stable": 4,
+      "stable": 3,
       "high": 0,
       "critical": 0
     },
     "2025": {
-      "stable": 4,
+      "stable": 3,
       "high": 0,
       "critical": 0
     },
     "2026": {
-      "stable": 4,
+      "stable": 3,
       "high": 0,
       "critical": 0
     }
@@ -1019,23 +1003,7 @@
       "critical": 0
     }
   },
-  "Langtang North": {
-    "2024": {
-      "stable": 9,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 9,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 9,
-      "high": 0,
-      "critical": 0
-    }
-  },
+  "Langtang North": {},
   "Ifo": {
     "2024": {
       "stable": 256,
@@ -1070,23 +1038,7 @@
       "critical": 0
     }
   },
-  "Ise": {
-    "2024": {
-      "stable": 7,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 7,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 7,
-      "high": 0,
-      "critical": 0
-    }
-  },
+  "Ise": {},
   "Nnewi North": {
     "2024": {
       "stable": 3,
@@ -1325,23 +1277,7 @@
       "critical": 0
     }
   },
-  "Kubau": {
-    "2024": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    }
-  },
+  "Kubau": {},
   "Owan West": {
     "2024": {
       "stable": 3,
@@ -1410,23 +1346,7 @@
       "critical": 0
     }
   },
-  "Ikot Abasi": {
-    "2024": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    }
-  },
+  "Ikot Abasi": {},
   "Ahoada": {
     "2024": {
       "stable": 12,
@@ -1580,23 +1500,7 @@
       "critical": 0
     }
   },
-  "Oyo East": {
-    "2024": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    }
-  },
+  "Oyo East": {},
   "Warri North": {
     "2024": {
       "stable": 1,
@@ -1650,34 +1554,34 @@
   },
   "Irepodun": {
     "2024": {
-      "stable": 6,
+      "stable": 5,
       "high": 0,
       "critical": 0
     },
     "2025": {
-      "stable": 6,
+      "stable": 5,
       "high": 0,
       "critical": 0
     },
     "2026": {
-      "stable": 6,
+      "stable": 5,
       "high": 0,
       "critical": 0
     }
   },
   "Tai": {
     "2024": {
-      "stable": 17,
+      "stable": 15,
       "high": 0,
       "critical": 0
     },
     "2025": {
-      "stable": 17,
+      "stable": 15,
       "high": 0,
       "critical": 0
     },
     "2026": {
-      "stable": 17,
+      "stable": 15,
       "high": 0,
       "critical": 0
     }
@@ -1769,17 +1673,17 @@
   },
   "Atiba": {
     "2024": {
-      "stable": 2,
+      "stable": 1,
       "high": 0,
       "critical": 0
     },
     "2025": {
-      "stable": 2,
+      "stable": 1,
       "high": 0,
       "critical": 0
     },
     "2026": {
-      "stable": 2,
+      "stable": 1,
       "high": 0,
       "critical": 0
     }
@@ -2279,17 +2183,17 @@
   },
   "Karu": {
     "2024": {
-      "stable": 24,
+      "stable": 23,
       "high": 4,
       "critical": 3
     },
     "2025": {
-      "stable": 24,
+      "stable": 23,
       "high": 4,
       "critical": 3
     },
     "2026": {
-      "stable": 24,
+      "stable": 23,
       "high": 4,
       "critical": 3
     }
@@ -2330,17 +2234,17 @@
   },
   "Egbedore": {
     "2024": {
-      "stable": 11,
+      "stable": 1,
       "high": 0,
       "critical": 0
     },
     "2025": {
-      "stable": 11,
+      "stable": 1,
       "high": 0,
       "critical": 0
     },
     "2026": {
-      "stable": 11,
+      "stable": 1,
       "high": 0,
       "critical": 0
     }
@@ -2413,23 +2317,7 @@
       "critical": 0
     }
   },
-  "Ede North": {
-    "2024": {
-      "stable": 5,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 5,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 5,
-      "high": 0,
-      "critical": 0
-    }
-  },
+  "Ede North": {},
   "Ahiazu Mbaise": {
     "2024": {
       "stable": 5,
@@ -2600,23 +2488,7 @@
       "critical": 0
     }
   },
-  "Nguru": {
-    "2024": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    }
-  },
+  "Nguru": {},
   "Obua": {
     "2024": {
       "stable": 3,
@@ -3044,17 +2916,17 @@
   },
   "Baruten": {
     "2024": {
-      "stable": 52,
+      "stable": 48,
       "high": 0,
       "critical": 0
     },
     "2025": {
-      "stable": 52,
+      "stable": 48,
       "high": 0,
       "critical": 0
     },
     "2026": {
-      "stable": 52,
+      "stable": 48,
       "high": 0,
       "critical": 0
     }
@@ -3076,23 +2948,7 @@
       "critical": 0
     }
   },
-  "Ogu": {
-    "2024": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    }
-  },
+  "Ogu": {},
   "Oron": {
     "2024": {
       "stable": 1,
@@ -3110,23 +2966,7 @@
       "critical": 0
     }
   },
-  "Ido-Osi": {
-    "2024": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    }
-  },
+  "Ido-Osi": {},
   "Mushin": {
     "2024": {
       "stable": 10,
@@ -3146,17 +2986,17 @@
   },
   "Dawakin Tofa": {
     "2024": {
-      "stable": 2,
+      "stable": 1,
       "high": 0,
       "critical": 0
     },
     "2025": {
-      "stable": 2,
+      "stable": 1,
       "high": 0,
       "critical": 0
     },
     "2026": {
-      "stable": 2,
+      "stable": 1,
       "high": 0,
       "critical": 0
     }
@@ -3469,17 +3309,17 @@
   },
   "Unknown": {
     "2024": {
-      "stable": 6,
+      "stable": 5,
       "high": 0,
       "critical": 0
     },
     "2025": {
-      "stable": 6,
+      "stable": 5,
       "high": 0,
       "critical": 0
     },
     "2026": {
-      "stable": 6,
+      "stable": 5,
       "high": 0,
       "critical": 0
     }
@@ -3554,17 +3394,17 @@
   },
   "Obubra": {
     "2024": {
-      "stable": 12,
+      "stable": 9,
       "high": 0,
       "critical": 0
     },
     "2025": {
-      "stable": 12,
+      "stable": 9,
       "high": 0,
       "critical": 0
     },
     "2026": {
-      "stable": 12,
+      "stable": 9,
       "high": 0,
       "critical": 0
     }
@@ -3637,23 +3477,7 @@
       "critical": 0
     }
   },
-  "Aleiro": {
-    "2024": {
-      "stable": 4,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 4,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 4,
-      "high": 0,
-      "critical": 0
-    }
-  },
+  "Aleiro": {},
   "Otukpo": {
     "2024": {
       "stable": 1,
@@ -3707,17 +3531,17 @@
   },
   "Ile-Oluji-Okeigbo": {
     "2024": {
-      "stable": 15,
+      "stable": 6,
       "high": 0,
       "critical": 0
     },
     "2025": {
-      "stable": 15,
+      "stable": 6,
       "high": 0,
       "critical": 0
     },
     "2026": {
-      "stable": 15,
+      "stable": 6,
       "high": 0,
       "critical": 0
     }
@@ -3773,23 +3597,7 @@
       "critical": 0
     }
   },
-  "Funakaye": {
-    "2024": {
-      "stable": 3,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 3,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 3,
-      "high": 0,
-      "critical": 0
-    }
-  },
+  "Funakaye": {},
   "Eleme": {
     "2024": {
       "stable": 3,
@@ -4149,17 +3957,17 @@
   },
   "Akamkpa": {
     "2024": {
-      "stable": 11,
+      "stable": 10,
       "high": 0,
       "critical": 0
     },
     "2025": {
-      "stable": 11,
+      "stable": 10,
       "high": 0,
       "critical": 0
     },
     "2026": {
-      "stable": 11,
+      "stable": 10,
       "high": 0,
       "critical": 0
     }
@@ -4232,23 +4040,7 @@
       "critical": 0
     }
   },
-  "Gokana": {
-    "2024": {
-      "stable": 4,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 4,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 4,
-      "high": 0,
-      "critical": 0
-    }
-  },
+  "Gokana": {},
   "Boripe": {
     "2024": {
       "stable": 1,
@@ -4385,23 +4177,7 @@
       "critical": 0
     }
   },
-  "Rimi": {
-    "2024": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    }
-  },
+  "Rimi": {},
   "Okrika": {
     "2024": {
       "stable": 5,
@@ -4453,23 +4229,7 @@
       "critical": 0
     }
   },
-  "Andoni": {
-    "2024": {
-      "stable": 5,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 5,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 5,
-      "high": 0,
-      "critical": 0
-    }
-  },
+  "Andoni": {},
   "Opobo": {
     "2024": {
       "stable": 7,
@@ -4489,17 +4249,17 @@
   },
   "Borgu": {
     "2024": {
-      "stable": 4,
+      "stable": 2,
       "high": 0,
       "critical": 0
     },
     "2025": {
-      "stable": 4,
+      "stable": 2,
       "high": 0,
       "critical": 0
     },
     "2026": {
-      "stable": 4,
+      "stable": 2,
       "high": 0,
       "critical": 0
     }
@@ -4708,23 +4468,7 @@
       "critical": 0
     }
   },
-  "Agwara": {
-    "2024": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    }
-  },
+  "Agwara": {},
   "Isokan": {
     "2024": {
       "stable": 1,
@@ -4929,23 +4673,7 @@
       "critical": 0
     }
   },
-  "Sule-Tankarkar": {
-    "2024": {
-      "stable": 25,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 25,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 25,
-      "high": 0,
-      "critical": 0
-    }
-  },
+  "Sule-Tankarkar": {},
   "Wurno": {
     "2024": {
       "stable": 1,
@@ -4999,17 +4727,17 @@
   },
   "Tudun Wada": {
     "2024": {
-      "stable": 19,
+      "stable": 18,
       "high": 0,
       "critical": 0
     },
     "2025": {
-      "stable": 19,
+      "stable": 18,
       "high": 0,
       "critical": 0
     },
     "2026": {
-      "stable": 19,
+      "stable": 18,
       "high": 0,
       "critical": 0
     }
@@ -5031,91 +4759,27 @@
       "critical": 0
     }
   },
-  "Kiru": {
-    "2024": {
-      "stable": 16,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 16,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 16,
-      "high": 0,
-      "critical": 0
-    }
-  },
+  "Kiru": {},
   "Jahun": {
     "2024": {
-      "stable": 19,
+      "stable": 10,
       "high": 3,
       "critical": 0
     },
     "2025": {
-      "stable": 19,
+      "stable": 10,
       "high": 3,
       "critical": 0
     },
     "2026": {
-      "stable": 19,
+      "stable": 10,
       "high": 3,
       "critical": 0
     }
   },
-  "Garki": {
-    "2024": {
-      "stable": 20,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 20,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 20,
-      "high": 0,
-      "critical": 0
-    }
-  },
-  "Ringim": {
-    "2024": {
-      "stable": 11,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 11,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 11,
-      "high": 0,
-      "critical": 0
-    }
-  },
-  "Guri": {
-    "2024": {
-      "stable": 9,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 9,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 9,
-      "high": 0,
-      "critical": 0
-    }
-  },
+  "Garki": {},
+  "Ringim": {},
+  "Guri": {},
   "Kafin Hausa": {
     "2024": {
       "stable": 1,
@@ -5286,36 +4950,20 @@
       "critical": 0
     }
   },
-  "Sule Takarkar": {
-    "2024": {
-      "stable": 5,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 5,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 5,
-      "high": 0,
-      "critical": 0
-    }
-  },
+  "Sule Takarkar": {},
   "Birnin Kudu": {
     "2024": {
-      "stable": 24,
+      "stable": 23,
       "high": 2,
       "critical": 0
     },
     "2025": {
-      "stable": 24,
+      "stable": 23,
       "high": 2,
       "critical": 0
     },
     "2026": {
-      "stable": 24,
+      "stable": 23,
       "high": 2,
       "critical": 0
     }
@@ -5711,23 +5359,7 @@
       "critical": 0
     }
   },
-  "Boki": {
-    "2024": {
-      "stable": 16,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 16,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 16,
-      "high": 0,
-      "critical": 0
-    }
-  },
+  "Boki": {},
   "Ogaja": {
     "2024": {
       "stable": 1,
@@ -5764,17 +5396,17 @@
   },
   "Oruk Anam": {
     "2024": {
-      "stable": 6,
+      "stable": 4,
       "high": 0,
       "critical": 0
     },
     "2025": {
-      "stable": 6,
+      "stable": 4,
       "high": 0,
       "critical": 0
     },
     "2026": {
-      "stable": 6,
+      "stable": 4,
       "high": 0,
       "critical": 0
     }
@@ -5796,74 +5428,10 @@
       "critical": 0
     }
   },
-  "Gabasawa": {
-    "2024": {
-      "stable": 2,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 2,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 2,
-      "high": 0,
-      "critical": 0
-    }
-  },
-  "Minjibir": {
-    "2024": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    }
-  },
-  "Ikara": {
-    "2024": {
-      "stable": 2,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 2,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 2,
-      "high": 0,
-      "critical": 0
-    }
-  },
-  "Rogo": {
-    "2024": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    }
-  },
+  "Gabasawa": {},
+  "Minjibir": {},
+  "Ikara": {},
+  "Rogo": {},
   "Iwajowa": {
     "2024": {
       "stable": 11,
@@ -5900,17 +5468,17 @@
   },
   "Ori Ire": {
     "2024": {
-      "stable": 41,
+      "stable": 39,
       "high": 0,
       "critical": 0
     },
     "2025": {
-      "stable": 41,
+      "stable": 39,
       "high": 0,
       "critical": 0
     },
     "2026": {
-      "stable": 41,
+      "stable": 39,
       "high": 0,
       "critical": 0
     }
@@ -5951,17 +5519,17 @@
   },
   "Ese-Edo": {
     "2024": {
-      "stable": 8,
+      "stable": 5,
       "high": 0,
       "critical": 0
     },
     "2025": {
-      "stable": 8,
+      "stable": 5,
       "high": 0,
       "critical": 0
     },
     "2026": {
-      "stable": 8,
+      "stable": 5,
       "high": 0,
       "critical": 0
     }
@@ -5983,57 +5551,9 @@
       "critical": 0
     }
   },
-  "Gwaram": {
-    "2024": {
-      "stable": 11,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 11,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 11,
-      "high": 0,
-      "critical": 0
-    }
-  },
-  "Machina": {
-    "2024": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    }
-  },
-  "Birniwa": {
-    "2024": {
-      "stable": 4,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 4,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 4,
-      "high": 0,
-      "critical": 0
-    }
-  },
+  "Gwaram": {},
+  "Machina": {},
+  "Birniwa": {},
   "Okigwe": {
     "2024": {
       "stable": 10,
@@ -6068,23 +5588,7 @@
       "critical": 0
     }
   },
-  "Kura": {
-    "2024": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2025": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    },
-    "2026": {
-      "stable": 1,
-      "high": 0,
-      "critical": 0
-    }
-  },
+  "Kura": {},
   "Magama": {
     "2024": {
       "stable": 4,

@@ -1,1722 +1,1797 @@
 {
   "2024": {
-    "Unknown": {
-      "count": 81,
+    "Birnin Gwari": {
+      "count": 1,
       "schools": [
         {
           "name": "Kuriga Primary School",
-          "province": "Unknown",
+          "province": "Birnin Gwari",
           "lat": 10.70225,
           "lon": 6.80968,
           "v_score": 0.7942
-        },
+        }
+      ]
+    },
+    "Abuja Municipal": {
+      "count": 69,
+      "schools": [
         {
           "name": "Ancient Intelligence Football Academy",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.08481,
           "lon": 7.46722,
           "v_score": 0.8406
         },
         {
           "name": "Page Schools",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.98217,
           "lon": 7.49215,
           "v_score": 0.8406
         },
         {
           "name": "The Springhall School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.08854,
           "lon": 7.50384,
           "v_score": 0.8406
         },
         {
           "name": "The Springhall School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.0888,
           "lon": 7.50404,
           "v_score": 0.8406
         },
         {
           "name": "AFDB HALL",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.99908,
           "lon": 7.41963,
           "v_score": 0.8406
         },
         {
           "name": "Nigerian Tulip International School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.07991,
           "lon": 7.47,
           "v_score": 0.8406
         },
         {
           "name": "Chinakwe International School Dakibiyu",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.05854,
           "lon": 7.42667,
           "v_score": 0.8406
         },
         {
           "name": "Rosy Premium Success Academy Nursery and Primary School Kuchigoro",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.01752,
           "lon": 7.41963,
           "v_score": 0.8406
         },
         {
           "name": "Royal Step Academy",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.01868,
           "lon": 7.42074,
           "v_score": 0.8406
         },
         {
           "name": "Divine Heritage Nursey and Primary School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.01887,
           "lon": 7.42331,
           "v_score": 0.8406
         },
         {
           "name": "Madaratsul tafuzal quran",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.01687,
           "lon": 7.42216,
           "v_score": 0.8406
         },
         {
           "name": "Mighty Mercy International School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.93953,
           "lon": 7.42935,
           "v_score": 0.8406
         },
         {
           "name": "Beacon Height School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.14009,
           "lon": 7.38027,
           "v_score": 0.8406
         },
         {
           "name": "Sleek International School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.14068,
           "lon": 7.37779,
           "v_score": 0.8406
         },
         {
           "name": "Unique Angels Montessori School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.14086,
           "lon": 7.37737,
           "v_score": 0.8406
         },
         {
           "name": "Redeemers Private School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.14053,
           "lon": 7.37924,
           "v_score": 0.8406
         },
         {
           "name": "Degracia Model Secondary School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.1383,
           "lon": 7.37057,
           "v_score": 0.8406
         },
         {
           "name": "Divine Faith Preparatory School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.13747,
           "lon": 7.37024,
           "v_score": 0.8406
         },
         {
           "name": "Degracia Model Primary School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.13807,
           "lon": 7.3702,
           "v_score": 0.8406
         },
         {
           "name": "Star Hope Nursery and Primary School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.94177,
           "lon": 7.43329,
           "v_score": 0.8406
         },
         {
           "name": "LEA Primary School Kabusa",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.95039,
           "lon": 7.4449,
           "v_score": 0.8406
         },
         {
           "name": "Government Secondary School Kabusa",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.95044,
           "lon": 7.44482,
           "v_score": 0.8406
         },
         {
           "name": "Baze University",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.0062,
           "lon": 7.4045,
           "v_score": 0.8406
         },
         {
           "name": "Faithful International Academy, Creche, Nursery & Primary",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.99306,
           "lon": 7.42787,
           "v_score": 0.8406
         },
         {
           "name": "LEA Primary School Galadimawa",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.9945,
           "lon": 7.42558,
           "v_score": 0.8406
         },
         {
           "name": "Junior Secondary School Galadimawa",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.98608,
           "lon": 7.42536,
           "v_score": 0.8406
         },
         {
           "name": "ECWA Bethel School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.01824,
           "lon": 7.41967,
           "v_score": 0.8406
         },
         {
           "name": "MJ Salasi International School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.0201,
           "lon": 7.41776,
           "v_score": 0.8406
         },
         {
           "name": "LEA Primary, Junior and Senior Secondary School Kuchigoro",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.01372,
           "lon": 7.42002,
           "v_score": 0.8406
         },
         {
           "name": "Excel Christabel Nursery and Primary School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.99338,
           "lon": 7.42774,
           "v_score": 0.8406
         },
         {
           "name": "Africa University of Science and Technology",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.99786,
           "lon": 7.42536,
           "v_score": 0.8406
         },
         {
           "name": "Faith Field Academy",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.98869,
           "lon": 7.42661,
           "v_score": 0.8406
         },
         {
           "name": "Nabel International College",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.98697,
           "lon": 7.42615,
           "v_score": 0.8406
         },
         {
           "name": "TEENEE TODDS DAY NURSERY",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.10748,
           "lon": 7.48142,
           "v_score": 0.8406
         },
         {
           "name": "Destiny Christian Academy",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.99006,
           "lon": 7.42637,
           "v_score": 0.8406
         },
         {
           "name": "The Centagon International School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.09217,
           "lon": 7.48533,
           "v_score": 0.8406
         },
         {
           "name": "Christian Community School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.07397,
           "lon": 7.47319,
           "v_score": 0.8406
         },
         {
           "name": "Pyakasa Government Science Secondary School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.08611,
           "lon": 7.47937,
           "v_score": 0.8406
         },
         {
           "name": "Secondary School  Sheretti",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.94188,
           "lon": 7.43849,
           "v_score": 0.8406
         },
         {
           "name": "Kabusa Community Secondary School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.94978,
           "lon": 7.43948,
           "v_score": 0.8406
         },
         {
           "name": "Victory Academy",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.94995,
           "lon": 7.44284,
           "v_score": 0.8406
         },
         {
           "name": "Eternal Love School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.95714,
           "lon": 7.44047,
           "v_score": 0.8406
         },
         {
           "name": "Awwaliyya Nursery and Primary School Annex 2",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.0094,
           "lon": 7.60182,
           "v_score": 0.8406
         },
         {
           "name": "Windsor Locks School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.07323,
           "lon": 7.40415,
           "v_score": 0.8406
         },
         {
           "name": "Almannar Academy Kado",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.08322,
           "lon": 7.41328,
           "v_score": 0.8406
         },
         {
           "name": "Government Secondary School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.97307,
           "lon": 7.50438,
           "v_score": 0.8406
         },
         {
           "name": "LEA Primary and Secondary School, Galadinma",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.11715,
           "lon": 7.38574,
           "v_score": 0.8406
         },
         {
           "name": "Anglican Girls Grammar School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.0097,
           "lon": 7.47412,
           "v_score": 0.8406
         },
         {
           "name": "All Saints' School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.05894,
           "lon": 7.4698,
           "v_score": 0.8406
         },
         {
           "name": "Premiere Academy (School Number 1)",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.98691,
           "lon": 7.35491,
           "v_score": 0.8406
         },
         {
           "name": "Divine Mercy Secondary School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.04918,
           "lon": 7.51049,
           "v_score": 0.8406
         },
         {
           "name": "National Defence College",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.04747,
           "lon": 7.48736,
           "v_score": 0.8406
         },
         {
           "name": "African univeristy of science and technology",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.99753,
           "lon": 7.42604,
           "v_score": 0.8406
         },
         {
           "name": "International Community School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.05332,
           "lon": 7.41613,
           "v_score": 0.8406
         },
         {
           "name": "National Open University of Nigeria",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.02071,
           "lon": 7.40833,
           "v_score": 0.8406
         },
         {
-          "name": "Central Primary School",
-          "province": "Unknown",
-          "lat": 11.219496,
-          "lon": 13.782651,
-          "v_score": 0.9932
-        },
-        {
-          "name": "St. John's Secondary Kachia",
-          "province": "Unknown",
-          "lat": 9.894928,
-          "lon": 7.951385,
-          "v_score": 0.8209
-        },
-        {
-          "name": "GSS Kachia",
-          "province": "Unknown",
-          "lat": 9.881398,
-          "lon": 7.957553,
-          "v_score": 0.8209
-        },
-        {
           "name": "American International School Abuja",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.022538,
           "lon": 7.457403,
           "v_score": 0.8406
         },
         {
           "name": "Govt. Junior Secondary School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.068432,
           "lon": 7.428698,
           "v_score": 0.8406
         },
         {
           "name": "Sarmbridge Academy",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.99358,
           "lon": 7.421978,
           "v_score": 0.8406
         },
         {
           "name": "ECWA Virtue Academy",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.992287,
           "lon": 7.423129,
           "v_score": 0.8406
         },
         {
           "name": "Rahinna Model School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.977335,
           "lon": 7.55845,
           "v_score": 0.8406
         },
         {
-          "name": "St. John's Hall",
-          "province": "Unknown",
-          "lat": 9.893348,
-          "lon": 7.952801,
-          "v_score": 0.8209
-        },
-        {
-          "name": "St. John's Primary Kachia",
-          "province": "Unknown",
-          "lat": 9.893707,
-          "lon": 7.951943,
-          "v_score": 0.8209
-        },
-        {
           "name": "Glisten Academy",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.077921,
           "lon": 7.402321,
           "v_score": 0.8406
         },
         {
-          "name": "Universal basic dducation junior",
-          "province": "Unknown",
-          "lat": 11.218469,
-          "lon": 13.783517,
-          "v_score": 0.9932
-        },
-        {
           "name": "Harvase International School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.994816,
           "lon": 7.424255,
           "v_score": 0.8406
         },
         {
           "name": "Windsor Locks School, Kingston Estate",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.091759,
           "lon": 7.377686,
           "v_score": 0.8406
         },
         {
-          "name": "St. John's Hall",
-          "province": "Unknown",
-          "lat": 9.89335,
-          "lon": 7.9528,
-          "v_score": 0.8209
-        },
-        {
-          "name": "Central Primary School",
-          "province": "Unknown",
-          "lat": 11.2195,
-          "lon": 13.78265,
-          "v_score": 0.9932
-        },
-        {
           "name": "Unnamed School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.95016,
           "lon": 7.44408,
           "v_score": 0.8406
         },
         {
           "name": "Unnamed School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.01092,
           "lon": 7.60084,
           "v_score": 0.8406
         },
         {
           "name": "Unnamed School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.94414,
           "lon": 7.54993,
           "v_score": 0.8406
         },
         {
           "name": "Unnamed School",
-          "province": "Unknown",
-          "lat": 11.52513,
-          "lon": 13.90638,
-          "v_score": 1.0
-        },
-        {
-          "name": "Unnamed School",
-          "province": "Unknown",
-          "lat": 12.42455,
-          "lon": 13.9361,
-          "v_score": 0.7004
-        },
-        {
-          "name": "Unnamed School",
-          "province": "Unknown",
-          "lat": 12.43306,
-          "lon": 13.69138,
-          "v_score": 0.7004
-        },
-        {
-          "name": "Unnamed School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.15159,
           "lon": 7.62764,
           "v_score": 0.8406
         },
         {
           "name": "Unnamed School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.02473,
           "lon": 7.45738,
           "v_score": 0.8406
         },
         {
           "name": "Unnamed School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.06618,
           "lon": 7.47608,
           "v_score": 0.8406
+        }
+      ]
+    },
+    "Gwoza": {
+      "count": 3,
+      "schools": [
+        {
+          "name": "Central Primary School",
+          "province": "Gwoza",
+          "lat": 11.219496,
+          "lon": 13.782651,
+          "v_score": 0.9932
+        },
+        {
+          "name": "Universal basic dducation junior",
+          "province": "Gwoza",
+          "lat": 11.218469,
+          "lon": 13.783517,
+          "v_score": 0.9932
+        },
+        {
+          "name": "Central Primary School",
+          "province": "Gwoza",
+          "lat": 11.2195,
+          "lon": 13.78265,
+          "v_score": 0.9932
+        }
+      ]
+    },
+    "Kachia": {
+      "count": 5,
+      "schools": [
+        {
+          "name": "St. John's Secondary Kachia",
+          "province": "Kachia",
+          "lat": 9.894928,
+          "lon": 7.951385,
+          "v_score": 0.8209
+        },
+        {
+          "name": "GSS Kachia",
+          "province": "Kachia",
+          "lat": 9.881398,
+          "lon": 7.957553,
+          "v_score": 0.8209
+        },
+        {
+          "name": "St. John's Hall",
+          "province": "Kachia",
+          "lat": 9.893348,
+          "lon": 7.952801,
+          "v_score": 0.8209
+        },
+        {
+          "name": "St. John's Primary Kachia",
+          "province": "Kachia",
+          "lat": 9.893707,
+          "lon": 7.951943,
+          "v_score": 0.8209
+        },
+        {
+          "name": "St. John's Hall",
+          "province": "Kachia",
+          "lat": 9.89335,
+          "lon": 7.9528,
+          "v_score": 0.8209
+        }
+      ]
+    },
+    "Bama": {
+      "count": 1,
+      "schools": [
+        {
+          "name": "Unnamed School",
+          "province": "Bama",
+          "lat": 11.52513,
+          "lon": 13.90638,
+          "v_score": 1.0
+        }
+      ]
+    },
+    "Marte": {
+      "count": 2,
+      "schools": [
+        {
+          "name": "Unnamed School",
+          "province": "Marte",
+          "lat": 12.42455,
+          "lon": 13.9361,
+          "v_score": 0.7004
+        },
+        {
+          "name": "Unnamed School",
+          "province": "Marte",
+          "lat": 12.43306,
+          "lon": 13.69138,
+          "v_score": 0.7004
         }
       ]
     }
   },
   "2025": {
-    "Unknown": {
-      "count": 81,
+    "Birnin Gwari": {
+      "count": 1,
       "schools": [
         {
           "name": "Kuriga Primary School",
-          "province": "Unknown",
+          "province": "Birnin Gwari",
           "lat": 10.70225,
           "lon": 6.80968,
           "v_score": 0.7942
-        },
+        }
+      ]
+    },
+    "Abuja Municipal": {
+      "count": 69,
+      "schools": [
         {
           "name": "Ancient Intelligence Football Academy",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.08481,
           "lon": 7.46722,
           "v_score": 0.8406
         },
         {
           "name": "Page Schools",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.98217,
           "lon": 7.49215,
           "v_score": 0.8406
         },
         {
           "name": "The Springhall School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.08854,
           "lon": 7.50384,
           "v_score": 0.8406
         },
         {
           "name": "The Springhall School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.0888,
           "lon": 7.50404,
           "v_score": 0.8406
         },
         {
           "name": "AFDB HALL",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.99908,
           "lon": 7.41963,
           "v_score": 0.8406
         },
         {
           "name": "Nigerian Tulip International School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.07991,
           "lon": 7.47,
           "v_score": 0.8406
         },
         {
           "name": "Chinakwe International School Dakibiyu",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.05854,
           "lon": 7.42667,
           "v_score": 0.8406
         },
         {
           "name": "Rosy Premium Success Academy Nursery and Primary School Kuchigoro",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.01752,
           "lon": 7.41963,
           "v_score": 0.8406
         },
         {
           "name": "Royal Step Academy",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.01868,
           "lon": 7.42074,
           "v_score": 0.8406
         },
         {
           "name": "Divine Heritage Nursey and Primary School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.01887,
           "lon": 7.42331,
           "v_score": 0.8406
         },
         {
           "name": "Madaratsul tafuzal quran",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.01687,
           "lon": 7.42216,
           "v_score": 0.8406
         },
         {
           "name": "Mighty Mercy International School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.93953,
           "lon": 7.42935,
           "v_score": 0.8406
         },
         {
           "name": "Beacon Height School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.14009,
           "lon": 7.38027,
           "v_score": 0.8406
         },
         {
           "name": "Sleek International School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.14068,
           "lon": 7.37779,
           "v_score": 0.8406
         },
         {
           "name": "Unique Angels Montessori School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.14086,
           "lon": 7.37737,
           "v_score": 0.8406
         },
         {
           "name": "Redeemers Private School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.14053,
           "lon": 7.37924,
           "v_score": 0.8406
         },
         {
           "name": "Degracia Model Secondary School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.1383,
           "lon": 7.37057,
           "v_score": 0.8406
         },
         {
           "name": "Divine Faith Preparatory School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.13747,
           "lon": 7.37024,
           "v_score": 0.8406
         },
         {
           "name": "Degracia Model Primary School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.13807,
           "lon": 7.3702,
           "v_score": 0.8406
         },
         {
           "name": "Star Hope Nursery and Primary School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.94177,
           "lon": 7.43329,
           "v_score": 0.8406
         },
         {
           "name": "LEA Primary School Kabusa",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.95039,
           "lon": 7.4449,
           "v_score": 0.8406
         },
         {
           "name": "Government Secondary School Kabusa",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.95044,
           "lon": 7.44482,
           "v_score": 0.8406
         },
         {
           "name": "Baze University",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.0062,
           "lon": 7.4045,
           "v_score": 0.8406
         },
         {
           "name": "Faithful International Academy, Creche, Nursery & Primary",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.99306,
           "lon": 7.42787,
           "v_score": 0.8406
         },
         {
           "name": "LEA Primary School Galadimawa",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.9945,
           "lon": 7.42558,
           "v_score": 0.8406
         },
         {
           "name": "Junior Secondary School Galadimawa",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.98608,
           "lon": 7.42536,
           "v_score": 0.8406
         },
         {
           "name": "ECWA Bethel School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.01824,
           "lon": 7.41967,
           "v_score": 0.8406
         },
         {
           "name": "MJ Salasi International School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.0201,
           "lon": 7.41776,
           "v_score": 0.8406
         },
         {
           "name": "LEA Primary, Junior and Senior Secondary School Kuchigoro",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.01372,
           "lon": 7.42002,
           "v_score": 0.8406
         },
         {
           "name": "Excel Christabel Nursery and Primary School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.99338,
           "lon": 7.42774,
           "v_score": 0.8406
         },
         {
           "name": "Africa University of Science and Technology",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.99786,
           "lon": 7.42536,
           "v_score": 0.8406
         },
         {
           "name": "Faith Field Academy",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.98869,
           "lon": 7.42661,
           "v_score": 0.8406
         },
         {
           "name": "Nabel International College",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.98697,
           "lon": 7.42615,
           "v_score": 0.8406
         },
         {
           "name": "TEENEE TODDS DAY NURSERY",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.10748,
           "lon": 7.48142,
           "v_score": 0.8406
         },
         {
           "name": "Destiny Christian Academy",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.99006,
           "lon": 7.42637,
           "v_score": 0.8406
         },
         {
           "name": "The Centagon International School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.09217,
           "lon": 7.48533,
           "v_score": 0.8406
         },
         {
           "name": "Christian Community School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.07397,
           "lon": 7.47319,
           "v_score": 0.8406
         },
         {
           "name": "Pyakasa Government Science Secondary School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.08611,
           "lon": 7.47937,
           "v_score": 0.8406
         },
         {
           "name": "Secondary School  Sheretti",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.94188,
           "lon": 7.43849,
           "v_score": 0.8406
         },
         {
           "name": "Kabusa Community Secondary School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.94978,
           "lon": 7.43948,
           "v_score": 0.8406
         },
         {
           "name": "Victory Academy",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.94995,
           "lon": 7.44284,
           "v_score": 0.8406
         },
         {
           "name": "Eternal Love School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.95714,
           "lon": 7.44047,
           "v_score": 0.8406
         },
         {
           "name": "Awwaliyya Nursery and Primary School Annex 2",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.0094,
           "lon": 7.60182,
           "v_score": 0.8406
         },
         {
           "name": "Windsor Locks School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.07323,
           "lon": 7.40415,
           "v_score": 0.8406
         },
         {
           "name": "Almannar Academy Kado",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.08322,
           "lon": 7.41328,
           "v_score": 0.8406
         },
         {
           "name": "Government Secondary School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.97307,
           "lon": 7.50438,
           "v_score": 0.8406
         },
         {
           "name": "LEA Primary and Secondary School, Galadinma",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.11715,
           "lon": 7.38574,
           "v_score": 0.8406
         },
         {
           "name": "Anglican Girls Grammar School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.0097,
           "lon": 7.47412,
           "v_score": 0.8406
         },
         {
           "name": "All Saints' School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.05894,
           "lon": 7.4698,
           "v_score": 0.8406
         },
         {
           "name": "Premiere Academy (School Number 1)",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.98691,
           "lon": 7.35491,
           "v_score": 0.8406
         },
         {
           "name": "Divine Mercy Secondary School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.04918,
           "lon": 7.51049,
           "v_score": 0.8406
         },
         {
           "name": "National Defence College",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.04747,
           "lon": 7.48736,
           "v_score": 0.8406
         },
         {
           "name": "African univeristy of science and technology",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.99753,
           "lon": 7.42604,
           "v_score": 0.8406
         },
         {
           "name": "International Community School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.05332,
           "lon": 7.41613,
           "v_score": 0.8406
         },
         {
           "name": "National Open University of Nigeria",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.02071,
           "lon": 7.40833,
           "v_score": 0.8406
         },
         {
-          "name": "Central Primary School",
-          "province": "Unknown",
-          "lat": 11.219496,
-          "lon": 13.782651,
-          "v_score": 0.9932
-        },
-        {
-          "name": "St. John's Secondary Kachia",
-          "province": "Unknown",
-          "lat": 9.894928,
-          "lon": 7.951385,
-          "v_score": 0.8209
-        },
-        {
-          "name": "GSS Kachia",
-          "province": "Unknown",
-          "lat": 9.881398,
-          "lon": 7.957553,
-          "v_score": 0.8209
-        },
-        {
           "name": "American International School Abuja",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.022538,
           "lon": 7.457403,
           "v_score": 0.8406
         },
         {
           "name": "Govt. Junior Secondary School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.068432,
           "lon": 7.428698,
           "v_score": 0.8406
         },
         {
           "name": "Sarmbridge Academy",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.99358,
           "lon": 7.421978,
           "v_score": 0.8406
         },
         {
           "name": "ECWA Virtue Academy",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.992287,
           "lon": 7.423129,
           "v_score": 0.8406
         },
         {
           "name": "Rahinna Model School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.977335,
           "lon": 7.55845,
           "v_score": 0.8406
         },
         {
-          "name": "St. John's Hall",
-          "province": "Unknown",
-          "lat": 9.893348,
-          "lon": 7.952801,
-          "v_score": 0.8209
-        },
-        {
-          "name": "St. John's Primary Kachia",
-          "province": "Unknown",
-          "lat": 9.893707,
-          "lon": 7.951943,
-          "v_score": 0.8209
-        },
-        {
           "name": "Glisten Academy",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.077921,
           "lon": 7.402321,
           "v_score": 0.8406
         },
         {
-          "name": "Universal basic dducation junior",
-          "province": "Unknown",
-          "lat": 11.218469,
-          "lon": 13.783517,
-          "v_score": 0.9932
-        },
-        {
           "name": "Harvase International School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.994816,
           "lon": 7.424255,
           "v_score": 0.8406
         },
         {
           "name": "Windsor Locks School, Kingston Estate",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.091759,
           "lon": 7.377686,
           "v_score": 0.8406
         },
         {
-          "name": "St. John's Hall",
-          "province": "Unknown",
-          "lat": 9.89335,
-          "lon": 7.9528,
-          "v_score": 0.8209
-        },
-        {
-          "name": "Central Primary School",
-          "province": "Unknown",
-          "lat": 11.2195,
-          "lon": 13.78265,
-          "v_score": 0.9932
-        },
-        {
           "name": "Unnamed School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.95016,
           "lon": 7.44408,
           "v_score": 0.8406
         },
         {
           "name": "Unnamed School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.01092,
           "lon": 7.60084,
           "v_score": 0.8406
         },
         {
           "name": "Unnamed School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 8.94414,
           "lon": 7.54993,
           "v_score": 0.8406
         },
         {
           "name": "Unnamed School",
-          "province": "Unknown",
-          "lat": 11.52513,
-          "lon": 13.90638,
-          "v_score": 1.0
-        },
-        {
-          "name": "Unnamed School",
-          "province": "Unknown",
-          "lat": 12.42455,
-          "lon": 13.9361,
-          "v_score": 0.7004
-        },
-        {
-          "name": "Unnamed School",
-          "province": "Unknown",
-          "lat": 12.43306,
-          "lon": 13.69138,
-          "v_score": 0.7004
-        },
-        {
-          "name": "Unnamed School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.15159,
           "lon": 7.62764,
           "v_score": 0.8406
         },
         {
           "name": "Unnamed School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.02473,
           "lon": 7.45738,
           "v_score": 0.8406
         },
         {
           "name": "Unnamed School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.06618,
           "lon": 7.47608,
           "v_score": 0.8406
         }
       ]
-    }
-  },
-  "2026": {
-    "Unknown": {
-      "count": 81,
+    },
+    "Gwoza": {
+      "count": 3,
       "schools": [
         {
-          "name": "Kuriga Primary School",
-          "province": "Unknown",
-          "lat": 10.70225,
-          "lon": 6.80968,
-          "v_score": 0.7942
-        },
-        {
-          "name": "Ancient Intelligence Football Academy",
-          "province": "Unknown",
-          "lat": 9.08481,
-          "lon": 7.46722,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Page Schools",
-          "province": "Unknown",
-          "lat": 8.98217,
-          "lon": 7.49215,
-          "v_score": 0.8406
-        },
-        {
-          "name": "The Springhall School",
-          "province": "Unknown",
-          "lat": 9.08854,
-          "lon": 7.50384,
-          "v_score": 0.8406
-        },
-        {
-          "name": "The Springhall School",
-          "province": "Unknown",
-          "lat": 9.0888,
-          "lon": 7.50404,
-          "v_score": 0.8406
-        },
-        {
-          "name": "AFDB HALL",
-          "province": "Unknown",
-          "lat": 8.99908,
-          "lon": 7.41963,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Nigerian Tulip International School",
-          "province": "Unknown",
-          "lat": 9.07991,
-          "lon": 7.47,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Chinakwe International School Dakibiyu",
-          "province": "Unknown",
-          "lat": 9.05854,
-          "lon": 7.42667,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Rosy Premium Success Academy Nursery and Primary School Kuchigoro",
-          "province": "Unknown",
-          "lat": 9.01752,
-          "lon": 7.41963,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Royal Step Academy",
-          "province": "Unknown",
-          "lat": 9.01868,
-          "lon": 7.42074,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Divine Heritage Nursey and Primary School",
-          "province": "Unknown",
-          "lat": 9.01887,
-          "lon": 7.42331,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Madaratsul tafuzal quran",
-          "province": "Unknown",
-          "lat": 9.01687,
-          "lon": 7.42216,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Mighty Mercy International School",
-          "province": "Unknown",
-          "lat": 8.93953,
-          "lon": 7.42935,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Beacon Height School",
-          "province": "Unknown",
-          "lat": 9.14009,
-          "lon": 7.38027,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Sleek International School",
-          "province": "Unknown",
-          "lat": 9.14068,
-          "lon": 7.37779,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Unique Angels Montessori School",
-          "province": "Unknown",
-          "lat": 9.14086,
-          "lon": 7.37737,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Redeemers Private School",
-          "province": "Unknown",
-          "lat": 9.14053,
-          "lon": 7.37924,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Degracia Model Secondary School",
-          "province": "Unknown",
-          "lat": 9.1383,
-          "lon": 7.37057,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Divine Faith Preparatory School",
-          "province": "Unknown",
-          "lat": 9.13747,
-          "lon": 7.37024,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Degracia Model Primary School",
-          "province": "Unknown",
-          "lat": 9.13807,
-          "lon": 7.3702,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Star Hope Nursery and Primary School",
-          "province": "Unknown",
-          "lat": 8.94177,
-          "lon": 7.43329,
-          "v_score": 0.8406
-        },
-        {
-          "name": "LEA Primary School Kabusa",
-          "province": "Unknown",
-          "lat": 8.95039,
-          "lon": 7.4449,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Government Secondary School Kabusa",
-          "province": "Unknown",
-          "lat": 8.95044,
-          "lon": 7.44482,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Baze University",
-          "province": "Unknown",
-          "lat": 9.0062,
-          "lon": 7.4045,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Faithful International Academy, Creche, Nursery & Primary",
-          "province": "Unknown",
-          "lat": 8.99306,
-          "lon": 7.42787,
-          "v_score": 0.8406
-        },
-        {
-          "name": "LEA Primary School Galadimawa",
-          "province": "Unknown",
-          "lat": 8.9945,
-          "lon": 7.42558,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Junior Secondary School Galadimawa",
-          "province": "Unknown",
-          "lat": 8.98608,
-          "lon": 7.42536,
-          "v_score": 0.8406
-        },
-        {
-          "name": "ECWA Bethel School",
-          "province": "Unknown",
-          "lat": 9.01824,
-          "lon": 7.41967,
-          "v_score": 0.8406
-        },
-        {
-          "name": "MJ Salasi International School",
-          "province": "Unknown",
-          "lat": 9.0201,
-          "lon": 7.41776,
-          "v_score": 0.8406
-        },
-        {
-          "name": "LEA Primary, Junior and Senior Secondary School Kuchigoro",
-          "province": "Unknown",
-          "lat": 9.01372,
-          "lon": 7.42002,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Excel Christabel Nursery and Primary School",
-          "province": "Unknown",
-          "lat": 8.99338,
-          "lon": 7.42774,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Africa University of Science and Technology",
-          "province": "Unknown",
-          "lat": 8.99786,
-          "lon": 7.42536,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Faith Field Academy",
-          "province": "Unknown",
-          "lat": 8.98869,
-          "lon": 7.42661,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Nabel International College",
-          "province": "Unknown",
-          "lat": 8.98697,
-          "lon": 7.42615,
-          "v_score": 0.8406
-        },
-        {
-          "name": "TEENEE TODDS DAY NURSERY",
-          "province": "Unknown",
-          "lat": 9.10748,
-          "lon": 7.48142,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Destiny Christian Academy",
-          "province": "Unknown",
-          "lat": 8.99006,
-          "lon": 7.42637,
-          "v_score": 0.8406
-        },
-        {
-          "name": "The Centagon International School",
-          "province": "Unknown",
-          "lat": 9.09217,
-          "lon": 7.48533,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Christian Community School",
-          "province": "Unknown",
-          "lat": 9.07397,
-          "lon": 7.47319,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Pyakasa Government Science Secondary School",
-          "province": "Unknown",
-          "lat": 9.08611,
-          "lon": 7.47937,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Secondary School  Sheretti",
-          "province": "Unknown",
-          "lat": 8.94188,
-          "lon": 7.43849,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Kabusa Community Secondary School",
-          "province": "Unknown",
-          "lat": 8.94978,
-          "lon": 7.43948,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Victory Academy",
-          "province": "Unknown",
-          "lat": 8.94995,
-          "lon": 7.44284,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Eternal Love School",
-          "province": "Unknown",
-          "lat": 8.95714,
-          "lon": 7.44047,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Awwaliyya Nursery and Primary School Annex 2",
-          "province": "Unknown",
-          "lat": 9.0094,
-          "lon": 7.60182,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Windsor Locks School",
-          "province": "Unknown",
-          "lat": 9.07323,
-          "lon": 7.40415,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Almannar Academy Kado",
-          "province": "Unknown",
-          "lat": 9.08322,
-          "lon": 7.41328,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Government Secondary School",
-          "province": "Unknown",
-          "lat": 8.97307,
-          "lon": 7.50438,
-          "v_score": 0.8406
-        },
-        {
-          "name": "LEA Primary and Secondary School, Galadinma",
-          "province": "Unknown",
-          "lat": 9.11715,
-          "lon": 7.38574,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Anglican Girls Grammar School",
-          "province": "Unknown",
-          "lat": 9.0097,
-          "lon": 7.47412,
-          "v_score": 0.8406
-        },
-        {
-          "name": "All Saints' School",
-          "province": "Unknown",
-          "lat": 9.05894,
-          "lon": 7.4698,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Premiere Academy (School Number 1)",
-          "province": "Unknown",
-          "lat": 8.98691,
-          "lon": 7.35491,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Divine Mercy Secondary School",
-          "province": "Unknown",
-          "lat": 9.04918,
-          "lon": 7.51049,
-          "v_score": 0.8406
-        },
-        {
-          "name": "National Defence College",
-          "province": "Unknown",
-          "lat": 9.04747,
-          "lon": 7.48736,
-          "v_score": 0.8406
-        },
-        {
-          "name": "African univeristy of science and technology",
-          "province": "Unknown",
-          "lat": 8.99753,
-          "lon": 7.42604,
-          "v_score": 0.8406
-        },
-        {
-          "name": "International Community School",
-          "province": "Unknown",
-          "lat": 9.05332,
-          "lon": 7.41613,
-          "v_score": 0.8406
-        },
-        {
-          "name": "National Open University of Nigeria",
-          "province": "Unknown",
-          "lat": 9.02071,
-          "lon": 7.40833,
-          "v_score": 0.8406
-        },
-        {
           "name": "Central Primary School",
-          "province": "Unknown",
+          "province": "Gwoza",
           "lat": 11.219496,
           "lon": 13.782651,
           "v_score": 0.9932
         },
         {
+          "name": "Universal basic dducation junior",
+          "province": "Gwoza",
+          "lat": 11.218469,
+          "lon": 13.783517,
+          "v_score": 0.9932
+        },
+        {
+          "name": "Central Primary School",
+          "province": "Gwoza",
+          "lat": 11.2195,
+          "lon": 13.78265,
+          "v_score": 0.9932
+        }
+      ]
+    },
+    "Kachia": {
+      "count": 5,
+      "schools": [
+        {
           "name": "St. John's Secondary Kachia",
-          "province": "Unknown",
+          "province": "Kachia",
           "lat": 9.894928,
           "lon": 7.951385,
           "v_score": 0.8209
         },
         {
           "name": "GSS Kachia",
-          "province": "Unknown",
+          "province": "Kachia",
           "lat": 9.881398,
           "lon": 7.957553,
           "v_score": 0.8209
         },
         {
-          "name": "American International School Abuja",
-          "province": "Unknown",
-          "lat": 9.022538,
-          "lon": 7.457403,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Govt. Junior Secondary School",
-          "province": "Unknown",
-          "lat": 9.068432,
-          "lon": 7.428698,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Sarmbridge Academy",
-          "province": "Unknown",
-          "lat": 8.99358,
-          "lon": 7.421978,
-          "v_score": 0.8406
-        },
-        {
-          "name": "ECWA Virtue Academy",
-          "province": "Unknown",
-          "lat": 8.992287,
-          "lon": 7.423129,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Rahinna Model School",
-          "province": "Unknown",
-          "lat": 8.977335,
-          "lon": 7.55845,
-          "v_score": 0.8406
-        },
-        {
           "name": "St. John's Hall",
-          "province": "Unknown",
+          "province": "Kachia",
           "lat": 9.893348,
           "lon": 7.952801,
           "v_score": 0.8209
         },
         {
           "name": "St. John's Primary Kachia",
-          "province": "Unknown",
+          "province": "Kachia",
           "lat": 9.893707,
           "lon": 7.951943,
           "v_score": 0.8209
         },
         {
-          "name": "Glisten Academy",
-          "province": "Unknown",
-          "lat": 9.077921,
-          "lon": 7.402321,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Universal basic dducation junior",
-          "province": "Unknown",
-          "lat": 11.218469,
-          "lon": 13.783517,
-          "v_score": 0.9932
-        },
-        {
-          "name": "Harvase International School",
-          "province": "Unknown",
-          "lat": 8.994816,
-          "lon": 7.424255,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Windsor Locks School, Kingston Estate",
-          "province": "Unknown",
-          "lat": 9.091759,
-          "lon": 7.377686,
-          "v_score": 0.8406
-        },
-        {
           "name": "St. John's Hall",
-          "province": "Unknown",
+          "province": "Kachia",
           "lat": 9.89335,
           "lon": 7.9528,
           "v_score": 0.8209
-        },
-        {
-          "name": "Central Primary School",
-          "province": "Unknown",
-          "lat": 11.2195,
-          "lon": 13.78265,
-          "v_score": 0.9932
-        },
+        }
+      ]
+    },
+    "Bama": {
+      "count": 1,
+      "schools": [
         {
           "name": "Unnamed School",
-          "province": "Unknown",
-          "lat": 8.95016,
-          "lon": 7.44408,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Unnamed School",
-          "province": "Unknown",
-          "lat": 9.01092,
-          "lon": 7.60084,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Unnamed School",
-          "province": "Unknown",
-          "lat": 8.94414,
-          "lon": 7.54993,
-          "v_score": 0.8406
-        },
-        {
-          "name": "Unnamed School",
-          "province": "Unknown",
+          "province": "Bama",
           "lat": 11.52513,
           "lon": 13.90638,
           "v_score": 1.0
-        },
+        }
+      ]
+    },
+    "Marte": {
+      "count": 2,
+      "schools": [
         {
           "name": "Unnamed School",
-          "province": "Unknown",
+          "province": "Marte",
           "lat": 12.42455,
           "lon": 13.9361,
           "v_score": 0.7004
         },
         {
           "name": "Unnamed School",
-          "province": "Unknown",
+          "province": "Marte",
           "lat": 12.43306,
           "lon": 13.69138,
           "v_score": 0.7004
+        }
+      ]
+    }
+  },
+  "2026": {
+    "Birnin Gwari": {
+      "count": 1,
+      "schools": [
+        {
+          "name": "Kuriga Primary School",
+          "province": "Birnin Gwari",
+          "lat": 10.70225,
+          "lon": 6.80968,
+          "v_score": 0.7942
+        }
+      ]
+    },
+    "Abuja Municipal": {
+      "count": 69,
+      "schools": [
+        {
+          "name": "Ancient Intelligence Football Academy",
+          "province": "Abuja Municipal",
+          "lat": 9.08481,
+          "lon": 7.46722,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Page Schools",
+          "province": "Abuja Municipal",
+          "lat": 8.98217,
+          "lon": 7.49215,
+          "v_score": 0.8406
+        },
+        {
+          "name": "The Springhall School",
+          "province": "Abuja Municipal",
+          "lat": 9.08854,
+          "lon": 7.50384,
+          "v_score": 0.8406
+        },
+        {
+          "name": "The Springhall School",
+          "province": "Abuja Municipal",
+          "lat": 9.0888,
+          "lon": 7.50404,
+          "v_score": 0.8406
+        },
+        {
+          "name": "AFDB HALL",
+          "province": "Abuja Municipal",
+          "lat": 8.99908,
+          "lon": 7.41963,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Nigerian Tulip International School",
+          "province": "Abuja Municipal",
+          "lat": 9.07991,
+          "lon": 7.47,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Chinakwe International School Dakibiyu",
+          "province": "Abuja Municipal",
+          "lat": 9.05854,
+          "lon": 7.42667,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Rosy Premium Success Academy Nursery and Primary School Kuchigoro",
+          "province": "Abuja Municipal",
+          "lat": 9.01752,
+          "lon": 7.41963,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Royal Step Academy",
+          "province": "Abuja Municipal",
+          "lat": 9.01868,
+          "lon": 7.42074,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Divine Heritage Nursey and Primary School",
+          "province": "Abuja Municipal",
+          "lat": 9.01887,
+          "lon": 7.42331,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Madaratsul tafuzal quran",
+          "province": "Abuja Municipal",
+          "lat": 9.01687,
+          "lon": 7.42216,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Mighty Mercy International School",
+          "province": "Abuja Municipal",
+          "lat": 8.93953,
+          "lon": 7.42935,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Beacon Height School",
+          "province": "Abuja Municipal",
+          "lat": 9.14009,
+          "lon": 7.38027,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Sleek International School",
+          "province": "Abuja Municipal",
+          "lat": 9.14068,
+          "lon": 7.37779,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Unique Angels Montessori School",
+          "province": "Abuja Municipal",
+          "lat": 9.14086,
+          "lon": 7.37737,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Redeemers Private School",
+          "province": "Abuja Municipal",
+          "lat": 9.14053,
+          "lon": 7.37924,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Degracia Model Secondary School",
+          "province": "Abuja Municipal",
+          "lat": 9.1383,
+          "lon": 7.37057,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Divine Faith Preparatory School",
+          "province": "Abuja Municipal",
+          "lat": 9.13747,
+          "lon": 7.37024,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Degracia Model Primary School",
+          "province": "Abuja Municipal",
+          "lat": 9.13807,
+          "lon": 7.3702,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Star Hope Nursery and Primary School",
+          "province": "Abuja Municipal",
+          "lat": 8.94177,
+          "lon": 7.43329,
+          "v_score": 0.8406
+        },
+        {
+          "name": "LEA Primary School Kabusa",
+          "province": "Abuja Municipal",
+          "lat": 8.95039,
+          "lon": 7.4449,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Government Secondary School Kabusa",
+          "province": "Abuja Municipal",
+          "lat": 8.95044,
+          "lon": 7.44482,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Baze University",
+          "province": "Abuja Municipal",
+          "lat": 9.0062,
+          "lon": 7.4045,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Faithful International Academy, Creche, Nursery & Primary",
+          "province": "Abuja Municipal",
+          "lat": 8.99306,
+          "lon": 7.42787,
+          "v_score": 0.8406
+        },
+        {
+          "name": "LEA Primary School Galadimawa",
+          "province": "Abuja Municipal",
+          "lat": 8.9945,
+          "lon": 7.42558,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Junior Secondary School Galadimawa",
+          "province": "Abuja Municipal",
+          "lat": 8.98608,
+          "lon": 7.42536,
+          "v_score": 0.8406
+        },
+        {
+          "name": "ECWA Bethel School",
+          "province": "Abuja Municipal",
+          "lat": 9.01824,
+          "lon": 7.41967,
+          "v_score": 0.8406
+        },
+        {
+          "name": "MJ Salasi International School",
+          "province": "Abuja Municipal",
+          "lat": 9.0201,
+          "lon": 7.41776,
+          "v_score": 0.8406
+        },
+        {
+          "name": "LEA Primary, Junior and Senior Secondary School Kuchigoro",
+          "province": "Abuja Municipal",
+          "lat": 9.01372,
+          "lon": 7.42002,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Excel Christabel Nursery and Primary School",
+          "province": "Abuja Municipal",
+          "lat": 8.99338,
+          "lon": 7.42774,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Africa University of Science and Technology",
+          "province": "Abuja Municipal",
+          "lat": 8.99786,
+          "lon": 7.42536,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Faith Field Academy",
+          "province": "Abuja Municipal",
+          "lat": 8.98869,
+          "lon": 7.42661,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Nabel International College",
+          "province": "Abuja Municipal",
+          "lat": 8.98697,
+          "lon": 7.42615,
+          "v_score": 0.8406
+        },
+        {
+          "name": "TEENEE TODDS DAY NURSERY",
+          "province": "Abuja Municipal",
+          "lat": 9.10748,
+          "lon": 7.48142,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Destiny Christian Academy",
+          "province": "Abuja Municipal",
+          "lat": 8.99006,
+          "lon": 7.42637,
+          "v_score": 0.8406
+        },
+        {
+          "name": "The Centagon International School",
+          "province": "Abuja Municipal",
+          "lat": 9.09217,
+          "lon": 7.48533,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Christian Community School",
+          "province": "Abuja Municipal",
+          "lat": 9.07397,
+          "lon": 7.47319,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Pyakasa Government Science Secondary School",
+          "province": "Abuja Municipal",
+          "lat": 9.08611,
+          "lon": 7.47937,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Secondary School  Sheretti",
+          "province": "Abuja Municipal",
+          "lat": 8.94188,
+          "lon": 7.43849,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Kabusa Community Secondary School",
+          "province": "Abuja Municipal",
+          "lat": 8.94978,
+          "lon": 7.43948,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Victory Academy",
+          "province": "Abuja Municipal",
+          "lat": 8.94995,
+          "lon": 7.44284,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Eternal Love School",
+          "province": "Abuja Municipal",
+          "lat": 8.95714,
+          "lon": 7.44047,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Awwaliyya Nursery and Primary School Annex 2",
+          "province": "Abuja Municipal",
+          "lat": 9.0094,
+          "lon": 7.60182,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Windsor Locks School",
+          "province": "Abuja Municipal",
+          "lat": 9.07323,
+          "lon": 7.40415,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Almannar Academy Kado",
+          "province": "Abuja Municipal",
+          "lat": 9.08322,
+          "lon": 7.41328,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Government Secondary School",
+          "province": "Abuja Municipal",
+          "lat": 8.97307,
+          "lon": 7.50438,
+          "v_score": 0.8406
+        },
+        {
+          "name": "LEA Primary and Secondary School, Galadinma",
+          "province": "Abuja Municipal",
+          "lat": 9.11715,
+          "lon": 7.38574,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Anglican Girls Grammar School",
+          "province": "Abuja Municipal",
+          "lat": 9.0097,
+          "lon": 7.47412,
+          "v_score": 0.8406
+        },
+        {
+          "name": "All Saints' School",
+          "province": "Abuja Municipal",
+          "lat": 9.05894,
+          "lon": 7.4698,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Premiere Academy (School Number 1)",
+          "province": "Abuja Municipal",
+          "lat": 8.98691,
+          "lon": 7.35491,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Divine Mercy Secondary School",
+          "province": "Abuja Municipal",
+          "lat": 9.04918,
+          "lon": 7.51049,
+          "v_score": 0.8406
+        },
+        {
+          "name": "National Defence College",
+          "province": "Abuja Municipal",
+          "lat": 9.04747,
+          "lon": 7.48736,
+          "v_score": 0.8406
+        },
+        {
+          "name": "African univeristy of science and technology",
+          "province": "Abuja Municipal",
+          "lat": 8.99753,
+          "lon": 7.42604,
+          "v_score": 0.8406
+        },
+        {
+          "name": "International Community School",
+          "province": "Abuja Municipal",
+          "lat": 9.05332,
+          "lon": 7.41613,
+          "v_score": 0.8406
+        },
+        {
+          "name": "National Open University of Nigeria",
+          "province": "Abuja Municipal",
+          "lat": 9.02071,
+          "lon": 7.40833,
+          "v_score": 0.8406
+        },
+        {
+          "name": "American International School Abuja",
+          "province": "Abuja Municipal",
+          "lat": 9.022538,
+          "lon": 7.457403,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Govt. Junior Secondary School",
+          "province": "Abuja Municipal",
+          "lat": 9.068432,
+          "lon": 7.428698,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Sarmbridge Academy",
+          "province": "Abuja Municipal",
+          "lat": 8.99358,
+          "lon": 7.421978,
+          "v_score": 0.8406
+        },
+        {
+          "name": "ECWA Virtue Academy",
+          "province": "Abuja Municipal",
+          "lat": 8.992287,
+          "lon": 7.423129,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Rahinna Model School",
+          "province": "Abuja Municipal",
+          "lat": 8.977335,
+          "lon": 7.55845,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Glisten Academy",
+          "province": "Abuja Municipal",
+          "lat": 9.077921,
+          "lon": 7.402321,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Harvase International School",
+          "province": "Abuja Municipal",
+          "lat": 8.994816,
+          "lon": 7.424255,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Windsor Locks School, Kingston Estate",
+          "province": "Abuja Municipal",
+          "lat": 9.091759,
+          "lon": 7.377686,
+          "v_score": 0.8406
         },
         {
           "name": "Unnamed School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
+          "lat": 8.95016,
+          "lon": 7.44408,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Unnamed School",
+          "province": "Abuja Municipal",
+          "lat": 9.01092,
+          "lon": 7.60084,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Unnamed School",
+          "province": "Abuja Municipal",
+          "lat": 8.94414,
+          "lon": 7.54993,
+          "v_score": 0.8406
+        },
+        {
+          "name": "Unnamed School",
+          "province": "Abuja Municipal",
           "lat": 9.15159,
           "lon": 7.62764,
           "v_score": 0.8406
         },
         {
           "name": "Unnamed School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.02473,
           "lon": 7.45738,
           "v_score": 0.8406
         },
         {
           "name": "Unnamed School",
-          "province": "Unknown",
+          "province": "Abuja Municipal",
           "lat": 9.06618,
           "lon": 7.47608,
           "v_score": 0.8406
+        }
+      ]
+    },
+    "Gwoza": {
+      "count": 3,
+      "schools": [
+        {
+          "name": "Central Primary School",
+          "province": "Gwoza",
+          "lat": 11.219496,
+          "lon": 13.782651,
+          "v_score": 0.9932
+        },
+        {
+          "name": "Universal basic dducation junior",
+          "province": "Gwoza",
+          "lat": 11.218469,
+          "lon": 13.783517,
+          "v_score": 0.9932
+        },
+        {
+          "name": "Central Primary School",
+          "province": "Gwoza",
+          "lat": 11.2195,
+          "lon": 13.78265,
+          "v_score": 0.9932
+        }
+      ]
+    },
+    "Kachia": {
+      "count": 5,
+      "schools": [
+        {
+          "name": "St. John's Secondary Kachia",
+          "province": "Kachia",
+          "lat": 9.894928,
+          "lon": 7.951385,
+          "v_score": 0.8209
+        },
+        {
+          "name": "GSS Kachia",
+          "province": "Kachia",
+          "lat": 9.881398,
+          "lon": 7.957553,
+          "v_score": 0.8209
+        },
+        {
+          "name": "St. John's Hall",
+          "province": "Kachia",
+          "lat": 9.893348,
+          "lon": 7.952801,
+          "v_score": 0.8209
+        },
+        {
+          "name": "St. John's Primary Kachia",
+          "province": "Kachia",
+          "lat": 9.893707,
+          "lon": 7.951943,
+          "v_score": 0.8209
+        },
+        {
+          "name": "St. John's Hall",
+          "province": "Kachia",
+          "lat": 9.89335,
+          "lon": 7.9528,
+          "v_score": 0.8209
+        }
+      ]
+    },
+    "Bama": {
+      "count": 1,
+      "schools": [
+        {
+          "name": "Unnamed School",
+          "province": "Bama",
+          "lat": 11.52513,
+          "lon": 13.90638,
+          "v_score": 1.0
+        }
+      ]
+    },
+    "Marte": {
+      "count": 2,
+      "schools": [
+        {
+          "name": "Unnamed School",
+          "province": "Marte",
+          "lat": 12.42455,
+          "lon": 13.9361,
+          "v_score": 0.7004
+        },
+        {
+          "name": "Unnamed School",
+          "province": "Marte",
+          "lat": 12.43306,
+          "lon": 13.69138,
+          "v_score": 0.7004
         }
       ]
     }
