@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/chart.js"></script>
 
 <style>
 /* ── Reset ───────────────────────────────────────────── */
@@ -135,10 +136,12 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
   overflow: hidden;
 }
 
-/* Year slider panel */
-.panel {
+/* Bottom controls panel */
+.bottom-controls {
   padding: 18px 20px;
-  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
 }
 
 .panel-label {
@@ -149,7 +152,7 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
   color: var(--ink-muted);
   margin-bottom: 10px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -169,6 +172,7 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
   outline: none;
   cursor: pointer;
   margin-top: 8px;
+  margin-bottom: 16px;
 }
 #yearSlider::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -478,11 +482,9 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
   border-top: 1px solid var(--border);
 }
 
-/* ── Trend chart panel (bottom of sidebar) ───────────── */
+/* ── Trend chart panel (inside detail-panel) ─────────── */
 .chart-panel {
-  padding: 14px 20px 16px;
-  border-top: 1px solid var(--border);
-  background: var(--surface);
+  padding: 14px 0px 16px;
   flex-shrink: 0;
 }
 
@@ -497,7 +499,7 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
 
 #trendChart {
   width: 100%;
-  height: 80px;
+  height: 100px;
 }
 
 /* ── Loading overlay ─────────────────────────────────── */
@@ -607,10 +609,12 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
       </p>
     </div>
     <div class="stats" style="justify-content: center; gap: 40px;">
-      <a href="./schools/index.html" id="schoolsLink" class="stat" style="text-decoration:none; cursor:pointer; text-align: center;">
-        <div class="stat-num" id="statSchoolsAtRisk">—</div>
-        <div class="stat-label" style="text-decoration:underline;">Schools at risk</div>
-      </a>
+      <div class="stat" style="text-align: center;">
+        <a href="./schools/at_risk_summary.html" id="nationalAtRiskLink" style="text-decoration:none; cursor:pointer;">
+          <div class="stat-num" id="statSchoolsAtRisk">—</div>
+          <div class="stat-label" style="text-decoration:underline; color: var(--ink-muted);">Schools at risk</div>
+        </a>
+      </div>
       <div class="stat" style="text-align: center;">
         <div class="stat-num" id="statCritical">—</div>
         <div class="stat-label">Critical provinces</div>
@@ -634,8 +638,28 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
     <!-- Sidebar -->
     <aside class="sidebar">
 
-      <!-- Year slider -->
-      <div class="panel">
+      <!-- Province detail -->
+      <div class="detail-panel" id="detailPanel">
+        <div class="panel-label">Province detail</div>
+        <p class="detail-empty">
+          Select a province on the map to see its vulnerability score and school infrastructure.
+        </p>
+        <div class="chart-panel">
+          <div class="chart-title" id="chartTitle">National conflict events · 2015–2026</div>
+          <canvas id="trendChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Bottom Controls -->
+      <div class="bottom-controls">
+        <!-- Layer Toggles -->
+        <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:16px;">
+           <label style="display:flex; align-items:center; gap:8px; font-size:11px; color:var(--ink-muted); cursor:pointer;">
+             <input type="checkbox" id="toggleConflicts"> <span>Conflict Incident Pins</span>
+           </label>
+        </div>
+
+        <!-- Year slider -->
         <div class="panel-label">
           <span>Year</span>
           <span class="year-display" id="yearDisplay">2023</span>
@@ -643,33 +667,13 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
         <input type="range" id="yearSlider" min="2015" max="2026" value="2023" step="1"/>
 
         <!-- Legend -->
-        <div class="panel-label" style="margin-top:14px;margin-bottom:6px">Priority tier</div>
+        <div class="panel-label" style="margin-top:4px;margin-bottom:6px">Priority tier</div>
         <div class="legend-grid">
           <div class="legend-item"><div class="legend-dot" style="background:var(--tier-critical)"></div>Critical</div>
           <div class="legend-item"><div class="legend-dot" style="background:var(--tier-high)"></div>High</div>
           <div class="legend-item"><div class="legend-dot" style="background:var(--tier-medium)"></div>Medium</div>
           <div class="legend-item"><div class="legend-dot" style="background:var(--tier-low)"></div>Low</div>
         </div>
-        <!-- Layer Toggles -->
-        <div style="display:flex; flex-direction:column; gap:8px; margin-top:16px;">
-           <label style="display:flex; align-items:center; gap:8px; font-size:11px; color:var(--ink-muted); cursor:pointer;">
-             <input type="checkbox" id="toggleConflicts"> <span>Conflict Incident Pins</span>
-           </label>
-        </div>
-      </div>
-
-      <!-- Province detail -->
-      <div class="detail-panel" id="detailPanel">
-        <div class="panel-label">Province detail</div>
-        <p class="detail-empty">
-          Select a province on the map to see its vulnerability score and school infrastructure.
-        </p>
-      </div>
-
-      <!-- Trend sparkline -->
-      <div class="chart-panel">
-        <div class="chart-title" id="chartTitle">National conflict events · 2015–2026</div>
-        <canvas id="trendChart"></canvas>
       </div>
 
     </aside>
@@ -697,6 +701,7 @@ const INSIGHTS_URL = `${ARTIFACTS_PATH}/insights.json`;
 const CONFLICTS_URL = `${ARTIFACTS_PATH}/conflicts.geojson`;
 const SCHOOLS_URL = `${ARTIFACTS_PATH}/schools.geojson`;
 const ADMIN_MAPPING_URL = `${ARTIFACTS_PATH}/admin_mapping.json`;
+const PROV_STATS_URL = `${ARTIFACTS_PATH}/province_at_risk_stats.json`;
 
 const TIER_COLORS = {
   critical:       "#8B1A1A",
@@ -737,12 +742,36 @@ let trendsData   = [];
 let conflictsData = null;
 let schoolsData = null;
 let adminMapping = null;
+let provinceStats = null;
 let currentYear  = 2023;
 let currentProvince = null;
 let choropleth   = null;
 let conflictsLayer = null;
 let schoolsLayer = null;
 let selectedLayer = null;
+let trendChartObj = null;
+
+const verticalLinePlugin = {
+  id: 'verticalLine',
+  afterDraw: (chart) => {
+    if (chart.tooltip?._active?.length) return;
+    const ctx = chart.ctx;
+    const x = chart.scales.x.getPixelForValue(currentYear.toString());
+    const top = chart.scales.y.top;
+    const bottom = chart.scales.y.bottom;
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(x, top);
+    ctx.lineTo(x, bottom);
+    ctx.lineWidth = 1;
+    ctx.setLineDash([5, 5]);
+    ctx.strokeStyle = '#1A141088';
+    ctx.stroke();
+    ctx.restore();
+  }
+};
+
 let aiCache = (() => {
   try { return JSON.parse(localStorage.getItem(LS_CACHE_KEY) || "{}"); }
   catch { return {}; }
@@ -757,6 +786,10 @@ function updateNavLinks() {
   let url = `./schools/index.html?year=${currentYear}&iso3=${ISO3}`;
   if (currentProvince) url += `&province=${encodeURIComponent(currentProvince)}`;
   document.getElementById("schoolsLink").href = url;
+
+  // National Summary Link
+  const nationalUrl = `./schools/at_risk_summary.html?year=${currentYear}&iso3=${ISO3}`;
+  document.getElementById("nationalAtRiskLink").href = nationalUrl;
 }
 
 // ═══════════════════════════════════════════════════════
@@ -775,19 +808,21 @@ async function loadAll() {
   }
 
   try {
-    const [geojson, trends, insights, conflicts, schools, mapping] = await Promise.all([
+    const [geojson, trends, insights, conflicts, schools, mapping, stats] = await Promise.all([
       fetch(GEOJSON_URL).then(r => r.json()),
       fetch(TRENDS_URL).then(r => r.json()),
       fetch(INSIGHTS_URL).then(r => r.json()),
       fetch(CONFLICTS_URL).then(r => r.json()),
       fetch(SCHOOLS_URL).then(r => r.json()).catch(() => ({ type: "FeatureCollection", features: [] })),
       fetch(ADMIN_MAPPING_URL).then(r => r.json()).catch(() => null),
+      fetch(PROV_STATS_URL).then(r => r.json()).catch(() => ({})),
     ]);
 
     trendsData = trends;
     conflictsData = conflicts;
     schoolsData = schools;
     adminMapping = mapping;
+    provinceStats = stats;
 
     // Update CONFIG from insights
     if (insights.country_name) CONFIG.name = insights.country_name;
@@ -795,7 +830,7 @@ async function loadAll() {
 
     // Update dynamic text
     document.getElementById("headerKicker").textContent = `${CONFIG.name} · ${CONFIG.subhead} · 2015–2026`;
-    document.getElementById("chartTitle").textContent = `National conflict events · ${CONFIG.name} · 2015–2026`;
+    document.getElementById("headerHeadline").innerHTML = `Conflict is closing schools faster than<br><em>they can be rebuilt</em>`;
 
     geojson.features.forEach(f => {
       const yr = f.properties.year || currentYear;
@@ -812,7 +847,7 @@ async function loadAll() {
     }
 
     populateStats(insights);
-    drawTrend(trends);
+    drawTrend(trends, `National conflict events · ${CONFIG.name} · 2015–2026`);
     renderChoropleth(currentYear);
     renderConflicts();
 
@@ -836,22 +871,14 @@ async function loadAll() {
 
     // Auto-select province if in URL
     if (currentProvince) {
-      // Find the specific feature for THIS year for this province from the raw geojson
-      const match = geojson.features.find(f => 
-        f.properties.admin2 === currentProvince && 
-        (f.properties.year === currentYear || !f.properties.year)
-      );
-      
+      const layers = choropleth.getLayers();
+      const match = layers.find(l => l.feature.properties.admin2 === currentProvince);
       if (match) {
-        showProvinceDetail(match.properties);
-        
-        // Also highlight it on the map once layers are ready
-        const layers = choropleth.getLayers();
-        const layerMatch = layers.find(l => l.feature.properties.admin2 === currentProvince);
-        if (layerMatch) {
-            selectedLayer = layerMatch;
-            layerMatch.setStyle({ weight: 3, color: "#1A1410", fillOpacity: 1.0 });
-        }
+        // Find the specific properties for THIS year for this province
+        const yrProps = allFeatures[currentYear]?.find(f => f.properties.admin2 === currentProvince);
+        showProvinceDetail(yrProps ? yrProps.properties : match.feature.properties);
+        selectedLayer = match;
+        match.setStyle({ weight: 3, color: "#1A1410", fillOpacity: 1.0 });
       }
     }
 
@@ -1109,6 +1136,10 @@ document.getElementById("yearSlider").addEventListener("input", e => {
   renderChoropleth(currentYear);
   renderConflicts();
 
+  if (trendChartObj) {
+    trendChartObj.update();
+  }
+
   if (currentProvince) {
     const layers = choropleth.getLayers();
     const match = layers.find(l => l.feature.properties.admin2 === currentProvince);
@@ -1149,9 +1180,17 @@ function updateHeaderStats(year, features) {
       fatalities = features.reduce((s, f) => s + (f.properties.fatalities || 0), 0);
   }
   
-  // Schools at Risk (v_score > 0.7)
-  const yearData = (trendsData || []).find(d => d.year === year);
-  const schoolsAtRisk = yearData ? (yearData.high_risk_schools || 0) : 0;
+  // Schools at Risk (calculated dynamically)
+  let schoolsAtRisk = 0;
+  if (provinceStats && provinceStats[year]) {
+    for (const p in provinceStats[year]) {
+      schoolsAtRisk += provinceStats[year][p].count || 0;
+    }
+  } else {
+    // Fallback to trendsData if provinceStats is missing for this year
+    const yearData = (trendsData || []).find(d => d.year === year);
+    schoolsAtRisk = yearData ? (yearData.high_risk_schools || 0) : 0;
+  }
 
   document.getElementById("statCritical").textContent = critical;
   document.getElementById("statSchoolsAtRisk").textContent = schoolsAtRisk.toLocaleString();
@@ -1163,9 +1202,13 @@ function resetDetailPanel() {
   document.getElementById("detailPanel").innerHTML = `
     <div class="panel-label">Province detail</div>
     <p class="detail-empty">Select a province on the map to see its vulnerability score and school infrastructure.</p>
+    <div class="chart-panel">
+      <div class="chart-title" id="chartTitle">National conflict events · 2015–2026</div>
+      <canvas id="trendChart"></canvas>
+    </div>
   `;
   if (trendsData && trendsData.length) {
-    drawTrend(trendsData, "National conflict events · 2015–2026");
+    drawTrend(trendsData, `National conflict events · ${CONFIG.name} · 2015–2026`);
   }
 }
 
@@ -1181,16 +1224,6 @@ function showProvinceDetail(props) {
   const securityExposure = (props.conflict_score || 0) * 100;
   const densityFragility = (props.density_fragility || 0.5) * 100;
 
-  // Calculate true markers count for this province in this year
-  const yearConflicts = (conflictsData?.features || []).filter(c => c.properties.year === currentYear);
-  const acledToOfficial = adminMapping ? adminMapping.acled_to_official : {};
-  const provConflicts = yearConflicts.filter(c => {
-    const acledName = c.properties.admin2;
-    const officialName = acledToOfficial[acledName] || acledName;
-    return officialName === props.admin2;
-  });
-  const markerCount = provConflicts.length;
-
   document.getElementById("detailPanel").innerHTML = `
     <div class="panel-label">Province detail</div>
     <div class="detail-name">${name}</div>
@@ -1199,17 +1232,21 @@ function showProvinceDetail(props) {
       <span class="risk-badge">${riskType}</span>
     </div>
 
+    <!-- Conflict Pulse -->
+    <div class="chart-panel">
+      <div class="chart-title" id="chartTitle">Conflict Pulse</div>
+      <canvas id="trendChart"></canvas>
+    </div>
+
     <div class="detail-metrics">
       <div class="metric-split">
         <div class="split-nums">
-          <div style="display:flex; flex-direction:column; align-items:center; width:50%;">
-            <div class="split-num">${events.toLocaleString()}</div>
-            <div class="split-source">ACLED</div>
-          </div>
-          <div style="display:flex; flex-direction:column; align-items:center; width:50%;">
-            <div class="split-num" style="color:#B8860B">${Math.round(events * 0.7).toLocaleString()}</div>
-            <div class="split-source">UCDP</div>
-          </div>
+          <div class="split-num">${events.toLocaleString()}</div>
+          <div class="split-num" style="color:#B8860B">${Math.round(events * 0.7).toLocaleString()}</div>
+        </div>
+        <div class="split-sources">
+          <div class="split-source">ACLED</div>
+          <div class="split-source">UCDP</div>
         </div>
         <div class="metric-label-integrated">Total Events</div>
       </div>
@@ -1378,68 +1415,81 @@ function drawTrend(data, title) {
   }
   
   const ctx = canvas.getContext("2d");
-  const W   = canvas.width  = canvas.offsetWidth;
-  const H   = canvas.height = 80;
-
+  const years = data.map(d => d.year.toString());
   const vals = data.map(d => d.total_events || 0);
-  if (!vals.length) return;
 
-  const maxV = Math.max(...vals, 1);
-  const pad  = { l: 35, r: 10, t: 10, b: 20 };
-  const iW   = W - pad.l - pad.r;
-  const iH   = H - pad.t - pad.b;
+  if (trendChartObj) {
+    trendChartObj.destroy();
+  }
 
-  const x = (i) => pad.l + (i / (data.length - 1)) * iW;
-  const y = (v) => pad.t + (1 - (v / maxV)) * iH;
-
-  ctx.strokeStyle = "rgba(26,20,16,0.06)";
-  ctx.setLineDash([2, 2]);
-  ctx.font = "9px IBM Plex Mono, monospace";
-  ctx.fillStyle = "rgba(107,98,89,0.7)";
-  ctx.textAlign = "right";
-
-  [0, 0.5, 1].forEach(pct => {
-    const valY = pad.t + pct * iH;
-    ctx.beginPath();
-    ctx.moveTo(pad.l, valY);
-    ctx.lineTo(W - pad.r, valY);
-    ctx.stroke();
-
-    const val = Math.round(maxV * (1 - pct));
-    ctx.fillText(val.toLocaleString(), pad.l - 6, valY + 3);
-  });
-  ctx.setLineDash([]);
-
-  ctx.beginPath();
-  ctx.moveTo(x(0), y(vals[0]));
-  data.forEach((d, i) => ctx.lineTo(x(i), y(d.total_events || 0)));
-  ctx.lineTo(x(data.length - 1), H - pad.b);
-  ctx.lineTo(x(0), H - pad.b);
-  ctx.closePath();
-  ctx.fillStyle = "rgba(192,57,43,0.12)";
-  ctx.fill();
-
-  ctx.beginPath();
-  ctx.moveTo(x(0), y(vals[0]));
-  data.forEach((d, i) => ctx.lineTo(x(i), y(d.total_events || 0)));
-  ctx.strokeStyle = "#C0392B";
-  ctx.lineWidth   = 1.5;
-  ctx.stroke();
-
-  ctx.fillStyle  = "rgba(107,98,89,0.7)";
-  const font       = "9px IBM Plex Mono, monospace";
-  ctx.font = font;
-  ctx.textAlign  = "center";
-  [0, Math.floor(data.length/2), data.length-1].forEach(i => {
-    if (data[i]) ctx.fillText(data[i].year, x(i), H - 4);
+  trendChartObj = new Chart(ctx, {
+    type: 'line',
+    plugins: [verticalLinePlugin],
+    data: {
+      labels: years,
+      datasets: [{
+        label: 'Events',
+        data: vals,
+        borderColor: '#C0392B',
+        backgroundColor: 'rgba(192,57,43,0.1)',
+        borderWidth: 2,
+        fill: true,
+        tension: 0.3,
+        pointRadius: 0
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          intersect: false,
+          mode: 'index',
+          titleFont: { family: 'IBM Plex Mono', size: 10 },
+          bodyFont: { family: 'IBM Plex Sans', size: 11 }
+        }
+      },
+      scales: {
+        x: {
+          display: true,
+          ticks: { font: { size: 8, family: 'IBM Plex Mono' }, maxRotation: 0 },
+          grid: { display: false }
+        },
+        y: {
+          beginAtZero: true,
+          ticks: { font: { size: 8, family: 'IBM Plex Mono' }, maxTicksLimit: 5 },
+          grid: { color: 'rgba(26,20,16,0.05)' }
+        }
+      }
+    }
   });
 }
 
+function renderSchools(geo) {
+  if (schoolsLayer) map.removeLayer(schoolsLayer);
+  const toggle = document.getElementById("toggleSchools");
+  if (!toggle || !toggle.checked) return;
+
+  const currentZoom = map.getZoom();
+  
+  schoolsLayer = L.geoJSON(geo, {
+    pointToLayer: (f, latlng) => {
+      const size = currentZoom < 8 ? 2 : 4;
+      return L.circleMarker(latlng, {
+        radius: size,
+        fillColor: "#1A1410",
+        color: "#fff",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.8
+      });
+    }
+  });
+  schoolsLayer.addTo(map);
+}
+
 loadAll();
-</script>
-</body>
-</html>
-All();
 </script>
 </body>
 </html>

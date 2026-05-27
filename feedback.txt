@@ -1,0 +1,6 @@
+The Activities and Methodology read as a recipe of what was done with the data rather than as a strategy for EBI. The analysis focus is good (Burkina Faso, schools within 10km of conflict hotspots), but the document positions itself as documentation of completed work rather than a strategy proposal.
+
+Priorities for the retake:
+
+- Rewrite the document as an actual strategy proposal. Activities should describe what EBI would be able to do with the support of your data strategy. Don't forget to mention AI's role (specific tasks, which complementary with human decisions), and how EBI's field teams expertise fit into the picture.
+- The artifact should tell a clear story as soon as the visitor opens the page. Right now it sees a six-card navigation menu instead of the headline finding.

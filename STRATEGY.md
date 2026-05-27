@@ -21,7 +21,11 @@ The platform provides a suite of features designed for strategic planning:
 *   **Time-Series Trajectories (2015–2026):** Visualising 12-year trends allows EBI to identify regions where risk is escalating versus those where it is chronic.
 *   **Hybrid Scoring Methodology:** A weighted composite (50% Security, 25% Infrastructure, 25% National Education Baseline) that normalises disparate data into actionable priority tiers (Critical, High, Medium, Low).
 
-To assist non-technical users, we have integrated **AI-generated situation briefings**, flagged as AI-assisted and reviewed by a focal point before operational use. These tools provide a starting point for analysis by synthesising numerical metrics into natural language narratives, ensuring that technical innovation serves, rather than replaces, local expertise.
+**Technical Differentiators:**
+*   **"Double Jeopardy" Risk Typology:** Beyond a single score, we classify regions into actionable risk profiles: *Double Jeopardy* (High conflict/Low infrastructure), *Flashpoints* (Acute security spikes), and *Structural Fragility* (Long-term neglect).
+*   **Multi-Source "Resilience" Fetching:** Our pipeline implements a fail-safe engine that prioritises official **HDX** (UNICEF/OCHA) data, with an automated fallback to **OpenStreetMap (OSM)** via the Overpass API, ensuring data reliability across diverse geographies.
+*   **Historical "Trauma" Scoring:** The system tracks multi-year conflict exposure at the site level, distinguishing between new incident clusters and chronic institutional trauma.
+*   **Contextual Zoom Scaling:** The map interface dynamically transitions from provincial-level hotspots to site-level incident pins, providing both strategic overview and operational detail in a single view.
 
 **Explore the Full Prototype:** [Central Analysis Hub](https://rsnl42.github.io/CC1_exam/)
 
