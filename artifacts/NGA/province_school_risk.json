@@ -1,0 +1,5609 @@
+{
+  "National": {
+    "2024": {
+      "stable": 3703,
+      "high": 246,
+      "critical": 81
+    },
+    "2025": {
+      "stable": 3703,
+      "high": 246,
+      "critical": 81
+    },
+    "2026": {
+      "stable": 3703,
+      "high": 246,
+      "critical": 81
+    }
+  },
+  "Enugu East": {
+    "2024": {
+      "stable": 21,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 21,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 21,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Oredo": {
+    "2024": {
+      "stable": 180,
+      "high": 1,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 180,
+      "high": 1,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 180,
+      "high": 1,
+      "critical": 0
+    }
+  },
+  "Ifelodun": {
+    "2024": {
+      "stable": 10,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 10,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 10,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ungogo": {
+    "2024": {
+      "stable": 133,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 133,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 133,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Alimosho": {
+    "2024": {
+      "stable": 49,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 49,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 49,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Orumba North": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Bauchi": {
+    "2024": {
+      "stable": 52,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 52,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 52,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ejigbo": {
+    "2024": {
+      "stable": 18,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 18,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 18,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Kumbotso": {
+    "2024": {
+      "stable": 34,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 34,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 34,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Gwale": {
+    "2024": {
+      "stable": 55,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 55,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 55,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Jos North": {
+    "2024": {
+      "stable": 76,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 76,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 76,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Gombe": {
+    "2024": {
+      "stable": 100,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 100,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 100,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Kaltungo": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Jos South": {
+    "2024": {
+      "stable": 21,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 21,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 21,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Warri South": {
+    "2024": {
+      "stable": 60,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 60,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 60,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Esan North East": {
+    "2024": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Yamaltu": {
+    "2024": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ndokwa West": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Maiduguri": {
+    "2024": {
+      "stable": 41,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 41,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 41,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ikenne": {
+    "2024": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Kiri-Kasamma": {},
+  "Enugu North": {
+    "2024": {
+      "stable": 46,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 46,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 46,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Chikun": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 1
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 1
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 1
+    }
+  },
+  "Akure South": {
+    "2024": {
+      "stable": 42,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 42,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 42,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ughelli North": {
+    "2024": {
+      "stable": 4,
+      "high": 4,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 4,
+      "high": 4,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 4,
+      "high": 4,
+      "critical": 0
+    }
+  },
+  "Badagry": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Burutu": {
+    "2024": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Egbeda": {
+    "2024": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Abuja Municipal": {
+    "2024": {
+      "stable": 14,
+      "high": 0,
+      "critical": 59
+    },
+    "2025": {
+      "stable": 14,
+      "high": 0,
+      "critical": 59
+    },
+    "2026": {
+      "stable": 14,
+      "high": 0,
+      "critical": 59
+    }
+  },
+  "Calabar South": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ibadan North East": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Iwo": {
+    "2024": {
+      "stable": 18,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 18,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 18,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ikorodu": {
+    "2024": {
+      "stable": 75,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 75,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 75,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Abakaliki": {
+    "2024": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Kagarko": {
+    "2024": {
+      "stable": 0,
+      "high": 1,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 0,
+      "high": 1,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 0,
+      "high": 1,
+      "critical": 0
+    }
+  },
+  "Lagelu": {
+    "2024": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ilorin South": {
+    "2024": {
+      "stable": 36,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 36,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 36,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ilorin East": {
+    "2024": {
+      "stable": 7,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 7,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 7,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Igabi": {
+    "2024": {
+      "stable": 40,
+      "high": 4,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 40,
+      "high": 4,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 40,
+      "high": 4,
+      "critical": 0
+    }
+  },
+  "Bukkuyum": {
+    "2024": {
+      "stable": 0,
+      "high": 3,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 0,
+      "high": 3,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 0,
+      "high": 3,
+      "critical": 0
+    }
+  },
+  "Hawul": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Nkanu West": {
+    "2024": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ogbia": {
+    "2024": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Lagos Mainland": {
+    "2024": {
+      "stable": 30,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 30,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 30,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Oriade": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Kukawa": {
+    "2024": {
+      "stable": 0,
+      "high": 4,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 0,
+      "high": 4,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 0,
+      "high": 4,
+      "critical": 0
+    }
+  },
+  "Osin": {
+    "2024": {
+      "stable": 20,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 20,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 20,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ovia North East": {
+    "2024": {
+      "stable": 17,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 17,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 17,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Awka South": {
+    "2024": {
+      "stable": 0,
+      "high": 16,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 0,
+      "high": 16,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 0,
+      "high": 16,
+      "critical": 0
+    }
+  },
+  "Egor": {
+    "2024": {
+      "stable": 67,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 67,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 67,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Dala": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Sabon Gari": {
+    "2024": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Kano Municipal": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Eti-Osa": {
+    "2024": {
+      "stable": 56,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 56,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 56,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ibadan North": {
+    "2024": {
+      "stable": 29,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 29,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 29,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Kaduna North": {
+    "2024": {
+      "stable": 26,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 26,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 26,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Kanke": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Kaduna South": {
+    "2024": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Obio": {
+    "2024": {
+      "stable": 68,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 68,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 68,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Langtang North": {},
+  "Ifo": {
+    "2024": {
+      "stable": 256,
+      "high": 21,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 256,
+      "high": 21,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 256,
+      "high": 21,
+      "critical": 0
+    }
+  },
+  "Kosofe": {
+    "2024": {
+      "stable": 51,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 51,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 51,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ise": {},
+  "Nnewi North": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Bassa": {
+    "2024": {
+      "stable": 3,
+      "high": 7,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 7,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 7,
+      "critical": 0
+    }
+  },
+  "Calabar Municipal": {
+    "2024": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Yenagoa": {
+    "2024": {
+      "stable": 55,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 55,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 55,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Oshimili South": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Onitsha North": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ikwerre": {
+    "2024": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Bwari": {
+    "2024": {
+      "stable": 0,
+      "high": 8,
+      "critical": 7
+    },
+    "2025": {
+      "stable": 0,
+      "high": 8,
+      "critical": 7
+    },
+    "2026": {
+      "stable": 0,
+      "high": 8,
+      "critical": 7
+    }
+  },
+  "Yola-North": {
+    "2024": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Barkin Ladi": {
+    "2024": {
+      "stable": 0,
+      "high": 20,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 0,
+      "high": 20,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 0,
+      "high": 20,
+      "critical": 0
+    }
+  },
+  "Oyun": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Owerri West": {
+    "2024": {
+      "stable": 8,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 8,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 8,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Bosso": {
+    "2024": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ughelli South": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Kubau": {},
+  "Owan West": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Nsukka": {
+    "2024": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ibadan South West": {
+    "2024": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Umuahia North": {
+    "2024": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ikot Abasi": {},
+  "Ahoada": {
+    "2024": {
+      "stable": 12,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 12,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 12,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Damaturu": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Abeokuta South": {
+    "2024": {
+      "stable": 8,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 8,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 8,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Akure North": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ogba": {
+    "2024": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ogbomosho North": {
+    "2024": {
+      "stable": 22,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 22,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 22,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ibadan North West": {
+    "2024": {
+      "stable": 8,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 8,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 8,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Shagamu": {
+    "2024": {
+      "stable": 67,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 67,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 67,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Biu": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Oyo East": {},
+  "Warri North": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ohaji": {
+    "2024": {
+      "stable": 18,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 18,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 18,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Atakumosa West": {
+    "2024": {
+      "stable": 8,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 8,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 8,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Irepodun": {
+    "2024": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Tai": {
+    "2024": {
+      "stable": 15,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 15,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 15,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Obafemi": {
+    "2024": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Etsako West": {
+    "2024": {
+      "stable": 29,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 29,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 29,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Katsina": {
+    "2024": {
+      "stable": 12,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 12,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 12,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Aniocha South": {
+    "2024": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ijebu Ode": {
+    "2024": {
+      "stable": 44,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 44,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 44,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Atiba": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ikeja": {
+    "2024": {
+      "stable": 18,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 18,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 18,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Owerri Municipal": {
+    "2024": {
+      "stable": 11,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 11,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 11,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Surulere": {
+    "2024": {
+      "stable": 15,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 15,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 15,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Somolu": {
+    "2024": {
+      "stable": 12,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 12,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 12,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Oshodi": {
+    "2024": {
+      "stable": 36,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 36,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 36,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ifako": {
+    "2024": {
+      "stable": 8,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 8,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 8,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ijebu North": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ojo": {
+    "2024": {
+      "stable": 0,
+      "high": 20,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 0,
+      "high": 20,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 0,
+      "high": 20,
+      "critical": 0
+    }
+  },
+  "Lafia": {
+    "2024": {
+      "stable": 25,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 25,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 25,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Bodinga": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Chibok": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Sandamu": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ekermor": {
+    "2024": {
+      "stable": 56,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 56,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 56,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Akinyele": {
+    "2024": {
+      "stable": 10,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 10,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 10,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Birnin-Kebbi": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Uyo": {
+    "2024": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Enugu South": {
+    "2024": {
+      "stable": 16,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 16,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 16,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Jere": {
+    "2024": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Igbo Eze North": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Port Harcourt": {
+    "2024": {
+      "stable": 8,
+      "high": 18,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 8,
+      "high": 18,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 8,
+      "high": 18,
+      "critical": 0
+    }
+  },
+  "Konduga": {
+    "2024": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Afikpo North": {
+    "2024": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Owerri North": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Isoko North": {
+    "2024": {
+      "stable": 14,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 14,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 14,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ethiope East": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Makurdi": {
+    "2024": {
+      "stable": 0,
+      "high": 1,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 0,
+      "high": 1,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 0,
+      "high": 1,
+      "critical": 0
+    }
+  },
+  "Minna": {
+    "2024": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Konshisha": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Nkanu East": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Karu": {
+    "2024": {
+      "stable": 23,
+      "high": 4,
+      "critical": 3
+    },
+    "2025": {
+      "stable": 23,
+      "high": 4,
+      "critical": 3
+    },
+    "2026": {
+      "stable": 23,
+      "high": 4,
+      "critical": 3
+    }
+  },
+  "Yorro": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Akoko South West": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Egbedore": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Uvwie": {
+    "2024": {
+      "stable": 142,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 142,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 142,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Jega": {
+    "2024": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Bonny": {
+    "2024": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Kirfi": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ede North": {},
+  "Ahiazu Mbaise": {
+    "2024": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Njaba": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Kajola": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Amuwo-Odofin": {
+    "2024": {
+      "stable": 15,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 15,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 15,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Wamakko": {
+    "2024": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Batagarawa": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Uhunmwode": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Idemili South": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Yagba East": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ihiala": {
+    "2024": {
+      "stable": 1,
+      "high": 1,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 1,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 1,
+      "critical": 0
+    }
+  },
+  "Nguru": {},
+  "Obua": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Asari-Toru": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ikwo": {
+    "2024": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Aba South": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Epe": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Egbado South": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Kai Ama": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Fagge": {
+    "2024": {
+      "stable": 15,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 15,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 15,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Nassarawa": {
+    "2024": {
+      "stable": 21,
+      "high": 2,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 21,
+      "high": 2,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 21,
+      "high": 2,
+      "critical": 0
+    }
+  },
+  "Obudu": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Katagum": {
+    "2024": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ibadan South East": {
+    "2024": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Pankshin": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ikpoba Okha": {
+    "2024": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Tarauni": {
+    "2024": {
+      "stable": 20,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 20,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 20,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ijumu": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ibeju-Lekki": {
+    "2024": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Osogbo": {
+    "2024": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Dutsinma": {
+    "2024": {
+      "stable": 0,
+      "high": 1,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 0,
+      "high": 1,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 0,
+      "high": 1,
+      "critical": 0
+    }
+  },
+  "Wudil": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ideato North": {
+    "2024": {
+      "stable": 7,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 7,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 7,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ngala": {
+    "2024": {
+      "stable": 0,
+      "high": 5,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 0,
+      "high": 5,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 0,
+      "high": 5,
+      "critical": 0
+    }
+  },
+  "Lagos Island": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Degema": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Oluyole": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Baruten": {
+    "2024": {
+      "stable": 48,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 48,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 48,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Agege": {
+    "2024": {
+      "stable": 14,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 14,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 14,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ogu": {},
+  "Oron": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ido-Osi": {},
+  "Mushin": {
+    "2024": {
+      "stable": 10,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 10,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 10,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Dawakin Tofa": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Isuikwuato": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Odedah": {
+    "2024": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Yola-South": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Girei": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Jema'A": {
+    "2024": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ido": {
+    "2024": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Aboh Mbaise": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Etche": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Billiri": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Aba North": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Esan South East": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Olorunsogo": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Zaria": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Odogbolu": {
+    "2024": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Okpe": {
+    "2024": {
+      "stable": 10,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 10,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 10,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ajaokuta": {
+    "2024": {
+      "stable": 11,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 11,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 11,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Tangaza": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Idemili North": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Unknown": {
+    "2024": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Gwoza": {
+    "2024": {
+      "stable": 0,
+      "high": 0,
+      "critical": 3
+    },
+    "2025": {
+      "stable": 0,
+      "high": 0,
+      "critical": 3
+    },
+    "2026": {
+      "stable": 0,
+      "high": 0,
+      "critical": 3
+    }
+  },
+  "Sagbama": {
+    "2024": {
+      "stable": 13,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 13,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 13,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Hong": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Gujba": {
+    "2024": {
+      "stable": 0,
+      "high": 1,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 0,
+      "high": 1,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 0,
+      "high": 1,
+      "critical": 0
+    }
+  },
+  "Obubra": {
+    "2024": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ife North": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Kankia": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Akko": {
+    "2024": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Udu": {
+    "2024": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Aleiro": {},
+  "Otukpo": {
+    "2024": {
+      "stable": 1,
+      "high": 2,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 2,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 2,
+      "critical": 0
+    }
+  },
+  "Ede South": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ondo West": {
+    "2024": {
+      "stable": 11,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 11,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 11,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ile-Oluji-Okeigbo": {
+    "2024": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Kachia": {
+    "2024": {
+      "stable": 0,
+      "high": 0,
+      "critical": 5
+    },
+    "2025": {
+      "stable": 0,
+      "high": 0,
+      "critical": 5
+    },
+    "2026": {
+      "stable": 0,
+      "high": 0,
+      "critical": 5
+    }
+  },
+  "Oru West": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Anaocha": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Funakaye": {},
+  "Eleme": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Gwagwalada": {
+    "2024": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Mariga": {
+    "2024": {
+      "stable": 0,
+      "high": 2,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 0,
+      "high": 2,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 0,
+      "high": 2,
+      "critical": 0
+    }
+  },
+  "Akoko Edo": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Keffi": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Akoko North East": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Iseyin": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Dutse": {
+    "2024": {
+      "stable": 1,
+      "high": 5,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 5,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 5,
+      "critical": 0
+    }
+  },
+  "Okehi": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Adavi": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Yala": {
+    "2024": {
+      "stable": 22,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 22,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 22,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ikot Ekpene": {
+    "2024": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Etsako Central": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Asa": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ogbomosho South": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Gwandu": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Lokoja": {
+    "2024": {
+      "stable": 14,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 14,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 14,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Kwande": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Oyigbo": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ihitte Uboma": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ogoja": {
+    "2024": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Akamkpa": {
+    "2024": {
+      "stable": 10,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 10,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 10,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ethiope West": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ogbaru": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Sapele": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ukwuani": {
+    "2024": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Gokana": {},
+  "Boripe": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ife East": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Kware": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Talata Mafara": {
+    "2024": {
+      "stable": 0,
+      "high": 2,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 0,
+      "high": 2,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 0,
+      "high": 2,
+      "critical": 0
+    }
+  },
+  "Ipokia": {
+    "2024": {
+      "stable": 7,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 7,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 7,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Tafa": {
+    "2024": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Owan East": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ajeromi": {
+    "2024": {
+      "stable": 11,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 11,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 11,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Rimi": {},
+  "Okrika": {
+    "2024": {
+      "stable": 5,
+      "high": 3,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 5,
+      "high": 3,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 5,
+      "high": 3,
+      "critical": 0
+    }
+  },
+  "Danbatta": {
+    "2024": {
+      "stable": 14,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 14,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 14,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Sumaila": {
+    "2024": {
+      "stable": 20,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 20,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 20,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Andoni": {},
+  "Opobo": {
+    "2024": {
+      "stable": 7,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 7,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 7,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Borgu": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ijebu East": {
+    "2024": {
+      "stable": 24,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 24,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 24,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Lapai": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Babura": {
+    "2024": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Oyi": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Potiskum": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Dandi Kamba": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Bida": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Katcha": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Gudu": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Bama": {
+    "2024": {
+      "stable": 0,
+      "high": 0,
+      "critical": 1
+    },
+    "2025": {
+      "stable": 0,
+      "high": 0,
+      "critical": 1
+    },
+    "2026": {
+      "stable": 0,
+      "high": 0,
+      "critical": 1
+    }
+  },
+  "Mubi South": {
+    "2024": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Sanga": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Agwara": {},
+  "Isokan": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Boluwaduro": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Odo-Otin": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Marte": {
+    "2024": {
+      "stable": 0,
+      "high": 0,
+      "critical": 1
+    },
+    "2025": {
+      "stable": 0,
+      "high": 0,
+      "critical": 1
+    },
+    "2026": {
+      "stable": 0,
+      "high": 0,
+      "critical": 1
+    }
+  },
+  "Yunusari": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Monguno": {
+    "2024": {
+      "stable": 0,
+      "high": 2,
+      "critical": 1
+    },
+    "2025": {
+      "stable": 0,
+      "high": 2,
+      "critical": 1
+    },
+    "2026": {
+      "stable": 0,
+      "high": 2,
+      "critical": 1
+    }
+  },
+  "Anka": {
+    "2024": {
+      "stable": 0,
+      "high": 1,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 0,
+      "high": 1,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 0,
+      "high": 1,
+      "critical": 0
+    }
+  },
+  "Alkaleri": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Maiyama": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Michika": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Abadam": {
+    "2024": {
+      "stable": 0,
+      "high": 1,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 0,
+      "high": 1,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 0,
+      "high": 1,
+      "critical": 0
+    }
+  },
+  "Nasarawa Eggon": {
+    "2024": {
+      "stable": 8,
+      "high": 12,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 8,
+      "high": 12,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 8,
+      "high": 12,
+      "critical": 0
+    }
+  },
+  "Sule-Tankarkar": {},
+  "Wurno": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Kiyawa": {
+    "2024": {
+      "stable": 6,
+      "high": 3,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 6,
+      "high": 3,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 6,
+      "high": 3,
+      "critical": 0
+    }
+  },
+  "Rano": {
+    "2024": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Tudun Wada": {
+    "2024": {
+      "stable": 18,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 18,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 18,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Kibiya": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Kiru": {},
+  "Jahun": {
+    "2024": {
+      "stable": 10,
+      "high": 3,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 10,
+      "high": 3,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 10,
+      "high": 3,
+      "critical": 0
+    }
+  },
+  "Garki": {},
+  "Ringim": {},
+  "Guri": {},
+  "Kafin Hausa": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Awe": {
+    "2024": {
+      "stable": 8,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 8,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 8,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Atisbo": {
+    "2024": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Saki East": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Saki West": {
+    "2024": {
+      "stable": 11,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 11,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 11,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Itesiwaju": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Bokkos": {
+    "2024": {
+      "stable": 0,
+      "high": 4,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 0,
+      "high": 4,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 0,
+      "high": 4,
+      "critical": 0
+    }
+  },
+  "Qua'An Pan": {
+    "2024": {
+      "stable": 8,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 8,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 8,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Mangu": {
+    "2024": {
+      "stable": 3,
+      "high": 12,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 12,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 12,
+      "critical": 0
+    }
+  },
+  "Kanam": {
+    "2024": {
+      "stable": 16,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 16,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 16,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Sule Takarkar": {},
+  "Birnin Kudu": {
+    "2024": {
+      "stable": 23,
+      "high": 2,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 23,
+      "high": 2,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 23,
+      "high": 2,
+      "critical": 0
+    }
+  },
+  "Ukum": {
+    "2024": {
+      "stable": 0,
+      "high": 8,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 0,
+      "high": 8,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 0,
+      "high": 8,
+      "critical": 0
+    }
+  },
+  "Gwer East": {
+    "2024": {
+      "stable": 10,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 10,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 10,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Oju": {
+    "2024": {
+      "stable": 24,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 24,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 24,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Okpokwu": {
+    "2024": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 9,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ado": {
+    "2024": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Agatu": {
+    "2024": {
+      "stable": 0,
+      "high": 17,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 0,
+      "high": 17,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 0,
+      "high": 17,
+      "critical": 0
+    }
+  },
+  "Apa": {
+    "2024": {
+      "stable": 2,
+      "high": 16,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 16,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 16,
+      "critical": 0
+    }
+  },
+  "Ankpa": {
+    "2024": {
+      "stable": 3,
+      "high": 1,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 1,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 1,
+      "critical": 0
+    }
+  },
+  "Ohimini": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Edu": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Olamaboro": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Dekina": {
+    "2024": {
+      "stable": 11,
+      "high": 7,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 11,
+      "high": 7,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 11,
+      "high": 7,
+      "critical": 0
+    }
+  },
+  "Ofu": {
+    "2024": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Igalamela": {
+    "2024": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 2,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ibaji": {
+    "2024": {
+      "stable": 10,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 10,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 10,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Omala": {
+    "2024": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 3,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Kuje": {
+    "2024": {
+      "stable": 17,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 17,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 17,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Kwali": {
+    "2024": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 6,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Kokona": {
+    "2024": {
+      "stable": 16,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 16,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 16,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Toto": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Khana": {
+    "2024": {
+      "stable": 19,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 19,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 19,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Abua/Odual": {
+    "2024": {
+      "stable": 12,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 12,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 12,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ovia South West": {
+    "2024": {
+      "stable": 21,
+      "high": 1,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 21,
+      "high": 1,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 21,
+      "high": 1,
+      "critical": 0
+    }
+  },
+  "Boki": {},
+  "Ogaja": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ndokwa East": {
+    "2024": {
+      "stable": 11,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 11,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 11,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Oruk Anam": {
+    "2024": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ini": {
+    "2024": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Gabasawa": {},
+  "Minjibir": {},
+  "Ikara": {},
+  "Rogo": {},
+  "Iwajowa": {
+    "2024": {
+      "stable": 11,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 11,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 11,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ibarapa North": {
+    "2024": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ori Ire": {
+    "2024": {
+      "stable": 39,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 39,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 39,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Odigbo": {
+    "2024": {
+      "stable": 23,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 23,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 23,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Irele": {
+    "2024": {
+      "stable": 8,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 8,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 8,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Ese-Edo": {
+    "2024": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 5,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Oyo West": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Gwaram": {},
+  "Machina": {},
+  "Birniwa": {},
+  "Okigwe": {
+    "2024": {
+      "stable": 10,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 10,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 10,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Suleja": {
+    "2024": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 1,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "Kura": {},
+  "Magama": {
+    "2024": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2025": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "2026": {
+      "stable": 4,
+      "high": 0,
+      "critical": 0
+    }
+  }
+}

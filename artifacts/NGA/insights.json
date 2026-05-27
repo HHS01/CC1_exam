@@ -1,0 +1,16 @@
+{
+  "country": "NGA",
+  "analysis_year": 2026,
+  "critical_regions": 7,
+  "high_risk_regions": 60,
+  "total_regions": 772,
+  "conflict_trend_pct": 16.0,
+  "top_3_critical": [
+    "Gwoza",
+    "Konduga",
+    "Damboa"
+  ],
+  "total_events": 2608,
+  "total_fatalities": 6462,
+  "schools_at_risk": 81
+}
