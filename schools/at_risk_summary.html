@@ -49,11 +49,15 @@ async function load() {
   const params = new URLSearchParams(window.location.search);
   const year = params.get('year') || '2024';
   const province = params.get('province');
+  const iso3 = (params.get('iso3') || 'BFA').toUpperCase();
+  
   document.getElementById('yearVal').textContent = year + (province ? ` (${province})` : '');
   
+  const ARTIFACTS_PATH = `../artifacts/${iso3}`;
+  
   const [provStats, vulnerabilityRaw] = await Promise.all([
-    fetch("../artifacts/province_at_risk_stats.json").then(r => r.json()),
-    fetch("../artifacts/schools/BFA_school_vulnerability.csv").then(r => r.text())
+    fetch(`${ARTIFACTS_PATH}/province_at_risk_stats.json`).then(r => r.json()),
+    fetch(`${ARTIFACTS_PATH}/schools/${iso3}_school_vulnerability.csv`).then(r => r.text())
   ]);
 
   function parseCSVLine(text) {
@@ -136,6 +140,13 @@ async function load() {
       });
   }
   document.getElementById('loading').style.display = 'none';
+  document.getElementById('schoolTable').style.display = 'table';
+}
+load();
+</script>
+</body>
+</html>
+e.display = 'none';
   document.getElementById('schoolTable').style.display = 'table';
 }
 load();
