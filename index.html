@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Education Under Threat — Nigeria</title>
+<title>Education Under Threat — Burkina Faso</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -374,6 +374,32 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
   margin-top: 8px;
 }
 
+/* Disclaimers & Transparency */
+.disclaimer-tag {
+  font-family: var(--mono);
+  font-size: 8px;
+  background: var(--surface2);
+  color: var(--ink-muted);
+  padding: 1px 4px;
+  border-radius: 2px;
+  margin-left: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+  vertical-align: middle;
+}
+
+.transparency-note {
+  margin-top: 16px;
+  padding: 10px;
+  background: rgba(0,0,0,0.03);
+  border-radius: 4px;
+  font-size: 9px;
+  color: var(--ink-muted);
+  line-height: 1.4;
+}
+.transparency-note strong { color: var(--ink); }
+
 /* Faint Province Labels */
 .faint-province-label {
   background: transparent !important;
@@ -521,10 +547,10 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
   <!-- Header -->
   <header class="header">
     <div class="header-left">
-      <div class="kicker">
-        Nigeria · Structural & Conflict Risk · 2015–2026
+      <div class="kicker" id="headerKicker">
+        ${CONFIG.name} · ${CONFIG.subhead} · 2015–2026
       </div>
-      <h1 class="headline">
+      <h1 class="headline" id="headerHeadline">
         Conflict is closing schools faster than<br>
         <em>they can be rebuilt</em>
       </h1>
@@ -576,18 +602,10 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
           <div class="legend-item"><div class="legend-dot" style="background:var(--tier-medium)"></div>Medium</div>
           <div class="legend-item"><div class="legend-dot" style="background:var(--tier-low)"></div>Low</div>
         </div>
-        <div style="font-size: 10px; color: var(--ink-muted); margin-top: 14px; font-style: italic; line-height: 1.4; border-top: 1px solid var(--border); padding-top: 10px;">
-          EVI (0-100) measures the risk of school closure due to conflict, where higher scores indicate greater threat.
-        </div>
-
         <!-- Layer Toggles -->
-        <div class="panel-label" style="margin-top:16px;margin-bottom:8px">Map Layers</div>
-        <div style="display:flex; flex-direction:column; gap:8px;">
+        <div style="display:flex; flex-direction:column; gap:8px; margin-top:16px;">
            <label style="display:flex; align-items:center; gap:8px; font-size:11px; color:var(--ink-muted); cursor:pointer;">
              <input type="checkbox" id="toggleConflicts"> <span>Conflict Incident Pins</span>
-           </label>
-           <label style="display:flex; align-items:center; gap:8px; font-size:11px; color:var(--ink-muted); cursor:pointer;">
-             <input type="checkbox" id="toggleSchools"> <span>School Locations</span>
            </label>
         </div>
       </div>
@@ -618,12 +636,23 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
 const GEMINI_MODEL   = "gemini-1.5-flash";
 const LS_CACHE_KEY   = "evi_briefings_bfa";
 
-const GEOJSON_URL  = "./artifacts/data.geojson";
-const TRENDS_URL   = "./artifacts/trends.json";
-const INSIGHTS_URL = "./artifacts/insights.json";
-const CONFLICTS_URL = "./artifacts/conflicts.geojson";
-const SCHOOLS_URL = "./artifacts/schools.geojson";
-const ADMIN_MAPPING_URL = "./artifacts/admin_mapping.json";
+// Multi-country support
+const COUNTRY_CONFIG = {
+  "NGA": { name: "Nigeria", center: [9.08, 8.68], zoom: 6, subhead: "Structural & Conflict Risk" },
+  "BFA": { name: "Burkina Faso", center: [12.23, -1.56], zoom: 7, subhead: "Conflict & Education Resilience" }
+};
+
+const urlParams = new URLSearchParams(window.location.search);
+const ISO3 = (urlParams.get('iso3') || 'NGA').toUpperCase();
+const CONFIG = COUNTRY_CONFIG[ISO3] || COUNTRY_CONFIG["NGA"];
+
+const ARTIFACTS_PATH = `./artifacts/${ISO3}`;
+const GEOJSON_URL  = `${ARTIFACTS_PATH}/data.geojson`;
+const TRENDS_URL   = `${ARTIFACTS_PATH}/trends.json`;
+const INSIGHTS_URL = `${ARTIFACTS_PATH}/insights.json`;
+const CONFLICTS_URL = `${ARTIFACTS_PATH}/conflicts.geojson`;
+const SCHOOLS_URL = `${ARTIFACTS_PATH}/schools.geojson`;
+const ADMIN_MAPPING_URL = `${ARTIFACTS_PATH}/admin_mapping.json`;
 
 const TIER_COLORS = {
   critical:       "#8B1A1A",
@@ -641,11 +670,16 @@ const TIER_COLORS = {
 // ═══════════════════════════════════════════════════════
 
 const map = L.map("map", {
-  center: [9.08, 8.68],
-  zoom: 6,
+  center: CONFIG.center,
+  zoom: CONFIG.zoom,
   zoomControl: true,
   attributionControl: true,
 });
+
+// Update dynamic text
+document.getElementById("headerKicker").textContent = `${CONFIG.name} · ${CONFIG.subhead} · 2015–2026`;
+document.getElementById("headerHeadline").innerHTML = `Conflict is closing schools faster than<br><em>they can be rebuilt</em>`;
+document.getElementById("chartTitle").textContent = `National conflict events · ${CONFIG.name} · 2015–2026`;
 
 L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", {
   attribution: "© OpenStreetMap © CARTO",
@@ -731,13 +765,11 @@ async function loadAll() {
     drawTrend(trends);
     renderChoropleth(currentYear);
     renderConflicts();
-    renderSchools();
-    
-    // GENERIC FRAMING: Fit map to the loaded data (either choropleth or national center)
-    if (choropleth && choropleth.getLayers().length > 0) {
+
+    // GENERIC FRAMING: Fit map to the loaded data (either choropleth or national center)    if (choropleth && choropleth.getLayers().length > 0) {
         map.fitBounds(choropleth.getBounds(), { padding: [30, 30] });
     } else {
-        map.setView([9.08, 8.68], 6);
+        map.setView(CONFIG.center, CONFIG.zoom);
     }
 
     updateNavLinks();
@@ -756,7 +788,7 @@ async function loadAll() {
       const layers = choropleth.getLayers();
       const match = layers.find(l => l.feature.properties.admin2 === currentProvince);
       if (match) {
-        match.fire('click');
+        match.fire('click', { target: match });
       }
     }
 
@@ -784,8 +816,6 @@ function resetSelection() {
   // Restore national view generically
   if (choropleth && choropleth.getLayers().length > 0) {
       map.fitBounds(choropleth.getBounds(), { padding: [30, 30] });
-  } else {
-      map.setView([9.08, 8.68], 6);
   }
 
   const newUrl = new URL(window.location);
@@ -887,36 +917,6 @@ function renderConflicts() {
 }
 
 // ═══════════════════════════════════════════════════════
-// SCHOOL PINS
-// ═══════════════════════════════════════════════════════
-
-function renderSchools() {
-  if (schoolsLayer) map.removeLayer(schoolsLayer);
-  if (!document.getElementById("toggleSchools").checked) return;
-  if (!schoolsData) return;
-
-  const currentZoom = map.getZoom();
-  // Generic solution: Only show schools when zoomed in sufficiently to avoid overwhelming the map
-  if (currentZoom < 8 && !currentProvince) return;
-
-  schoolsLayer = L.geoJSON(schoolsData, {
-    pointToLayer: (f, latlng) => {
-      const name = f.properties.name || "School";
-      return L.circleMarker(latlng, {
-        radius: 4,
-        fillColor: "#1A1410",
-        color: "#fff",
-        weight: 1,
-        opacity: 1,
-        fillOpacity: 0.8
-      }).bindPopup(`<strong>${name}</strong>`, { closeButton: false });
-    }
-  });
-
-  schoolsLayer.addTo(map);
-}
-
-// ═══════════════════════════════════════════════════════
 // CHOROPLETH
 // ═══════════════════════════════════════════════════════
 
@@ -987,7 +987,7 @@ function renderChoropleth(year) {
         mouseover: e => { if (layer !== selectedLayer) e.target.setStyle({ weight: 2, fillOpacity: 0.95 }); },
         mouseout: e => { if (layer !== selectedLayer) choropleth.resetStyle(e.target); },
         click: e => {
-          L.DomEvent.stopPropagation(e);
+          if (e.originalEvent) L.DomEvent.stopPropagation(e);
           
           const featureName = f.properties.admin2;
           
@@ -1157,7 +1157,7 @@ function showProvinceDetail(props) {
         <div class="primary-track">
           <div class="primary-fill" style="width:${Math.round(score*100)}%;background:${TIER_COLORS[tier]}"></div>
         </div>
-        <p class="bar-desc">Composite risk to school continuity.</p>
+        <p class="bar-desc">EVI (0-100) measures the risk of school closure due to conflict, where higher scores indicate greater threat.</p>
       </div>
 
       <div class="drivers-header">Vulnerability Drivers</div>
@@ -1175,14 +1175,18 @@ function showProvinceDetail(props) {
 
       <div class="driver-bar-wrap">
         <div class="driver-label">
-          <span>Structural Fragility</span>
+          <span>Structural Fragility <span class="disclaimer-tag">Extrapolated</span></span>
           <span>${densityFragility.toFixed(0)}/100</span>
         </div>
         <div class="driver-track">
           <div class="driver-fill fill-structural" style="width:${Math.round(densityFragility)}%;"></div>
         </div>
-        <p class="bar-desc">Infrastructure gap (Schools per 1k children).</p>
+        <p class="bar-desc">Relative infrastructure gap compared to national standards.</p>
       </div>
+    </div>
+
+    <div class="transparency-note">
+      <strong>Data Methodology:</strong> Structural Fragility is a relative score comparing local school density against the <strong>National 80th Percentile</strong> (top-performing regions). Higher scores indicate a significant gap relative to the country's best-served provinces. Population counts are estimated using WorldPop 2020 grids.
     </div>
 
     <div class="ai-box" id="aiBox">
@@ -1251,7 +1255,7 @@ async function generateSituationBriefing(props) {
   const densityFragility = ((props.density_fragility || 0.5) * 100).toFixed(0);
 
   const prompt = `You are a humanitarian analyst providing a rationale for the Education Vulnerability Index (EVI).
-Province: ${name}, Nigeria
+Province: ${name}, Burkina Faso
 EVI Score: ${score}/100. Priority Classification: ${tier}.
 
 Risk Driver Breakdown:
@@ -1364,6 +1368,10 @@ function drawTrend(data, title) {
 }
 
 loadAll();
+</script>
+</body>
+</html>
+All();
 </script>
 </body>
 </html>

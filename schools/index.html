@@ -400,13 +400,13 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
   <header class="header">
     <div class="header-left">
       <div class="kicker">
-        Nigeria · Education Infrastructure · 2015–2026
+        Burkina Faso · Education Infrastructure · 2015–2026
       </div>
       <h1 class="headline">
         Schools at the Frontline: <em>Infrastructure Risk</em>
       </h1>
       <p class="subhead">
-        Detailed analysis of Nigeria schools against conflict proximity and historical trauma.
+        Detailed analysis of Burkina Faso schools against conflict proximity and historical trauma.
       </p>
     </div>
     <div class="stats" style="justify-content: center; gap: 40px;">
@@ -457,10 +457,9 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
         </div>
 
         <!-- Layer Toggles -->
-        <div class="panel-label" style="margin-top:16px;margin-bottom:8px">Infrastructure Layers</div>
-        <div style="display:flex; flex-direction:column; gap:8px;">
+        <div style="display:flex; flex-direction:column; gap:8px; margin-top:16px;">
            <label style="display:flex; align-items:center; gap:8px; font-size:11px; color:var(--ink-muted); cursor:pointer;">
-             <input type="checkbox" id="toggleSchools"> <span>Individual School Points</span>
+             <input type="checkbox" id="toggleSchools"> <span>School Locations</span>
            </label>
         </div>
       </div>
@@ -493,7 +492,7 @@ const GEOJSON_URL  = "../artifacts/data.geojson";
 const SCHOOLS_URL  = "../artifacts/schools.geojson";
 const SCORE_URL    = "../artifacts/school_vulnerability_scores.json";
 const PROV_STATS_URL = "../artifacts/province_at_risk_stats.json";
-const VULN_CSV_URL   = "../artifacts/schools/NGA_school_vulnerability.csv";
+const VULN_CSV_URL   = "../artifacts/schools/BFA_school_vulnerability.csv";
 const RISK_TRAJECTORY_URL = "../artifacts/province_school_risk.json";
 
 const TIER_COLORS = {
@@ -515,7 +514,7 @@ const BFA_NAME_MAP = {
   "Yagha": "Yagha"
 };
 
-const map = L.map("map", { center: [9.08, 8.68], zoom: 6 });
+const map = L.map("map");
 
 L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", {
   attribution: "© OpenStreetMap © CARTO",
@@ -601,11 +600,12 @@ async function init() {
         const priority = f.properties.priority || 'unknown';
         const mappedPriority = (priority === 'lower_priority') ? 'low' : priority.replace('_priority', '');
         const color = TIER_COLORS[mappedPriority] || TIER_COLORS.unknown;
-        const style = { color: "#1A1410", weight: 0.5, fillColor: color, fillOpacity: 0.6 };
+        const style = { color: "#F5F0E8", weight: 0.5, fillColor: color, fillOpacity: 0.6 };
         
         // Preserve selection highlight
         if (currentProvince && f.properties.admin2 === currentProvince) {
           style.weight = 3;
+          style.color = "#1A1410";
           style.fillOpacity = 0.8;
         }
         return style;
@@ -621,7 +621,7 @@ async function init() {
 
         layer.on({
           click: e => {
-            L.DomEvent.stopPropagation(e); // Prevent map background click from resetting selection
+            if (e.originalEvent) L.DomEvent.stopPropagation(e); // Prevent map background click from resetting selection
             
             const featureName = f.properties.admin2;
             
@@ -705,7 +705,7 @@ async function init() {
       const layers = choroplethLayer.getLayers();
       const match = layers.find(l => l.feature.properties.admin2 === currentProvince);
       if (match) {
-        match.fire('click');
+        match.fire('click', { target: match });
       }
     }
 
@@ -809,7 +809,7 @@ function resetSelection() {
   if (choroplethLayer && choroplethLayer.getLayers().length > 0) {
       map.fitBounds(choroplethLayer.getBounds(), { padding: [30, 30] });
   } else {
-      map.setView([9.08, 8.68], 6);
+      map.setView([12.3, -1.9], 7);
   }
 
   document.getElementById("detailPanel").innerHTML = `
