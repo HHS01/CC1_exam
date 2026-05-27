@@ -53,7 +53,7 @@ async function load() {
   
   const [provStats, vulnerabilityRaw] = await Promise.all([
     fetch("../artifacts/province_at_risk_stats.json").then(r => r.json()),
-    fetch("../artifacts/schools/NGA_school_vulnerability.csv").then(r => r.text())
+    fetch("../artifacts/schools/BFA_school_vulnerability.csv").then(r => r.text())
   ]);
 
   function parseCSVLine(text) {
