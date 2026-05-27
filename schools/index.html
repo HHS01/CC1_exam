@@ -515,7 +515,7 @@ const BFA_NAME_MAP = {
   "Yagha": "Yagha"
 };
 
-const map = L.map("map", { center: [12.3, -1.9], zoom: 7 });
+const map = L.map("map", { center: [9.08, 8.68], zoom: 6 });
 
 L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", {
   attribution: "© OpenStreetMap © CARTO",
@@ -611,12 +611,12 @@ async function init() {
         return style;
       },
       onEachFeature: (f, layer) => {
-        // Province labels
+        // Province labels (hover only)
         layer.bindTooltip(f.properties.admin2, {
-          permanent: true,
-          direction: 'center',
+          permanent: false,
+          direction: 'top',
           className: 'faint-province-label',
-          opacity: 0.3
+          opacity: 0.9
         });
 
         layer.on({
@@ -631,12 +631,14 @@ async function init() {
                 return;
             }
 
-            if (selectedLayer && choroplethLayer.hasLayer(selectedLayer)) {
-              choroplethLayer.resetStyle(selectedLayer);
-            }
-            
+            const oldLayer = selectedLayer;
             currentProvince = featureName;
             selectedLayer = e.target;
+
+            if (oldLayer && choroplethLayer.hasLayer(oldLayer)) {
+              choroplethLayer.resetStyle(oldLayer);
+            }
+            
             e.target.setStyle({ weight: 3, color: "#1A1410", fillOpacity: 0.8 });
             
             // Zoom to province
@@ -681,6 +683,11 @@ async function init() {
         });
       }
     }).addTo(map);
+
+    // GENERIC FRAMING: Fit map to the loaded data
+    if (choroplethLayer && choroplethLayer.getLayers().length > 0) {
+        map.fitBounds(choroplethLayer.getBounds(), { padding: [30, 30] });
+    }
 
     document.getElementById("toggleSchools").checked = false;
 
@@ -787,16 +794,23 @@ function updateGlobalStats() {
 }
 
 function resetSelection() {
-  if (selectedLayer) {
-    choroplethLayer.resetStyle(selectedLayer);
-    selectedLayer = null;
-  }
+  const oldLayer = selectedLayer;
   currentProvince = null;
+  selectedLayer = null;
+
+  if (oldLayer && choroplethLayer.hasLayer(oldLayer)) {
+    choroplethLayer.resetStyle(oldLayer);
+  }
+
   updateNavLinks();
   updateRiskChart("National");
   
-  // Restore national view
-  map.setView([9.08, 8.68], 6);
+  // Restore national view generically
+  if (choroplethLayer && choroplethLayer.getLayers().length > 0) {
+      map.fitBounds(choroplethLayer.getBounds(), { padding: [30, 30] });
+  } else {
+      map.setView([9.08, 8.68], 6);
+  }
 
   document.getElementById("detailPanel").innerHTML = `
     <div class="panel-label">School detail</div>
@@ -906,7 +920,11 @@ function renderSchools(geo) {
       // Coords matching
       const lat = f.geometry.coordinates[1];
       const lon = f.geometry.coordinates[0];
-      const s = scoreData.find(s => Math.abs(s.lat - lat) < 0.0001 && Math.abs(s.lon - lon) < 0.0001);
+      const s = scoreData.find(s => {
+        const sLat = s.lat || s.latitude;
+        const sLon = s.lon || s.longitude;
+        return Math.abs(sLat - lat) < 0.0001 && Math.abs(sLon - lon) < 0.0001;
+      });
       if (!s) return;
       
       const prov = s.province || "Unknown";
@@ -925,7 +943,11 @@ function renderSchools(geo) {
 
   schoolsLayer = L.geoJSON({ type: "FeatureCollection", features: displayFeatures }, {
     pointToLayer: (f, latlng) => {
-      const schoolScore = scoreData.find(s => Math.abs(s.lat - latlng.lat) < 0.0001 && Math.abs(s.lon - latlng.lng) < 0.0001);
+      const schoolScore = scoreData.find(s => {
+        const sLat = s.lat || s.latitude;
+        const sLon = s.lon || s.longitude;
+        return Math.abs(sLat - latlng.lat) < 0.0001 && Math.abs(sLon - latlng.lng) < 0.0001;
+      });
       
       let color = "#D2B4DE", radius = 3, isAtRisk = false, tier = "Stable", trauma = 0;
       
@@ -982,7 +1004,11 @@ function renderSchools(geo) {
 }
 
 function showSchoolDetail(props, latlng) {
-  const score = scoreData.find(s => Math.abs(s.lat - latlng.lat) < 0.0001 && Math.abs(s.lon - latlng.lng) < 0.0001);
+  const score = scoreData.find(s => {
+    const sLat = s.lat || s.latitude;
+    const sLon = s.lon || s.longitude;
+    return Math.abs(sLat - latlng.lat) < 0.0001 && Math.abs(sLon - latlng.lng) < 0.0001;
+  });
   if (!score) return;
 
   const latKey = latlng.lat.toFixed(4);

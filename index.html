@@ -389,6 +389,11 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
   text-align: center;
 }
 
+.conflict-marker, .school-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
 /* Score basis tag */
 .basis-tag {
   font-family: var(--mono);
@@ -581,6 +586,9 @@ html, body { height: 100%; background: var(--bg); color: var(--ink); font-family
            <label style="display:flex; align-items:center; gap:8px; font-size:11px; color:var(--ink-muted); cursor:pointer;">
              <input type="checkbox" id="toggleConflicts"> <span>Conflict Incident Pins</span>
            </label>
+           <label style="display:flex; align-items:center; gap:8px; font-size:11px; color:var(--ink-muted); cursor:pointer;">
+             <input type="checkbox" id="toggleSchools"> <span>School Locations</span>
+           </label>
         </div>
       </div>
 
@@ -614,6 +622,7 @@ const GEOJSON_URL  = "./artifacts/data.geojson";
 const TRENDS_URL   = "./artifacts/trends.json";
 const INSIGHTS_URL = "./artifacts/insights.json";
 const CONFLICTS_URL = "./artifacts/conflicts.geojson";
+const SCHOOLS_URL = "./artifacts/schools.geojson";
 const ADMIN_MAPPING_URL = "./artifacts/admin_mapping.json";
 
 const TIER_COLORS = {
@@ -632,8 +641,8 @@ const TIER_COLORS = {
 // ═══════════════════════════════════════════════════════
 
 const map = L.map("map", {
-  center: [12.3, -1.9],
-  zoom: 7,
+  center: [9.08, 8.68],
+  zoom: 6,
   zoomControl: true,
   attributionControl: true,
 });
@@ -650,11 +659,13 @@ L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png
 let allFeatures  = {};
 let trendsData   = [];
 let conflictsData = null;
+let schoolsData = null;
 let adminMapping = null;
 let currentYear  = 2023;
 let currentProvince = null;
 let choropleth   = null;
 let conflictsLayer = null;
+let schoolsLayer = null;
 let selectedLayer = null;
 let aiCache = (() => {
   try { return JSON.parse(localStorage.getItem(LS_CACHE_KEY) || "{}"); }
@@ -688,16 +699,18 @@ async function loadAll() {
   }
 
   try {
-    const [geojson, trends, insights, conflicts, mapping] = await Promise.all([
+    const [geojson, trends, insights, conflicts, schools, mapping] = await Promise.all([
       fetch(GEOJSON_URL).then(r => r.json()),
       fetch(TRENDS_URL).then(r => r.json()),
       fetch(INSIGHTS_URL).then(r => r.json()),
       fetch(CONFLICTS_URL).then(r => r.json()),
+      fetch(SCHOOLS_URL).then(r => r.json()).catch(() => ({ type: "FeatureCollection", features: [] })),
       fetch(ADMIN_MAPPING_URL).then(r => r.json()).catch(() => null),
     ]);
 
     trendsData = trends;
     conflictsData = conflicts;
+    schoolsData = schools;
     adminMapping = mapping;
 
     geojson.features.forEach(f => {
@@ -718,13 +731,24 @@ async function loadAll() {
     drawTrend(trends);
     renderChoropleth(currentYear);
     renderConflicts();
+    renderSchools();
     
+    // GENERIC FRAMING: Fit map to the loaded data (either choropleth or national center)
+    if (choropleth && choropleth.getLayers().length > 0) {
+        map.fitBounds(choropleth.getBounds(), { padding: [30, 30] });
+    } else {
+        map.setView([9.08, 8.68], 6);
+    }
+
     updateNavLinks();
 
     document.getElementById("toggleConflicts").addEventListener("change", renderConflicts);
+    document.getElementById("toggleSchools").addEventListener("change", renderSchools);
+
     map.on('zoomend', () => {
       renderChoropleth(currentYear); // Refresh labels on zoom
       if (document.getElementById("toggleConflicts").checked) renderConflicts();
+      if (document.getElementById("toggleSchools").checked) renderSchools();
     });
 
     // Auto-select province if in URL
@@ -744,17 +768,25 @@ async function loadAll() {
 }
 
 function resetSelection() {
-  if (selectedLayer) {
-    choropleth.resetStyle(selectedLayer);
-    selectedLayer = null;
-  }
+  const oldLayer = selectedLayer;
   currentProvince = null;
+  selectedLayer = null;
+
+  if (oldLayer && choropleth.hasLayer(oldLayer)) {
+    choropleth.resetStyle(oldLayer);
+  }
+
   updateNavLinks();
   resetDetailPanel();
-  renderConflicts(); // Back to province hotspots
+  renderConflicts(); 
+  renderSchools();
   
-  // Restore national view
-  map.setView([9.08, 8.68], 6);
+  // Restore national view generically
+  if (choropleth && choropleth.getLayers().length > 0) {
+      map.fitBounds(choropleth.getBounds(), { padding: [30, 30] });
+  } else {
+      map.setView([9.08, 8.68], 6);
+  }
 
   const newUrl = new URL(window.location);
   newUrl.searchParams.delete('province');
@@ -855,6 +887,36 @@ function renderConflicts() {
 }
 
 // ═══════════════════════════════════════════════════════
+// SCHOOL PINS
+// ═══════════════════════════════════════════════════════
+
+function renderSchools() {
+  if (schoolsLayer) map.removeLayer(schoolsLayer);
+  if (!document.getElementById("toggleSchools").checked) return;
+  if (!schoolsData) return;
+
+  const currentZoom = map.getZoom();
+  // Generic solution: Only show schools when zoomed in sufficiently to avoid overwhelming the map
+  if (currentZoom < 8 && !currentProvince) return;
+
+  schoolsLayer = L.geoJSON(schoolsData, {
+    pointToLayer: (f, latlng) => {
+      const name = f.properties.name || "School";
+      return L.circleMarker(latlng, {
+        radius: 4,
+        fillColor: "#1A1410",
+        color: "#fff",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.8
+      }).bindPopup(`<strong>${name}</strong>`, { closeButton: false });
+    }
+  });
+
+  schoolsLayer.addTo(map);
+}
+
+// ═══════════════════════════════════════════════════════
 // CHOROPLETH
 // ═══════════════════════════════════════════════════════
 
@@ -866,7 +928,6 @@ function renderChoropleth(year) {
   if (!features.length) return;
 
   const currentZoom = map.getZoom();
-  const showLabels = currentZoom >= 8;
 
   // If before 2015, force all provinces to 'neutral/low' priority visually
   const isHistorical = year < 2015;
@@ -891,15 +952,14 @@ function renderChoropleth(year) {
       if (currentProvince && f.properties.admin2 === currentProvince) {
           selectedLayer = layer;
       }
-      // Province labels (only visible when zoomed in)
-      if (showLabels) {
-          layer.bindTooltip(f.properties.admin2, {
-            permanent: true,
-            direction: 'center',
-            className: 'faint-province-label',
-            opacity: 0.3
-          });
-      }
+      
+      // BFA Style: Hover-only labels to avoid messy clutter
+      layer.bindTooltip(f.properties.admin2, {
+        permanent: false,
+        direction: 'top',
+        className: 'faint-province-label',
+        opacity: 0.9
+      });
 
       // For historical years, calculate events dynamically from granular data
       let displayProps = { ...f.properties };
@@ -937,12 +997,14 @@ function renderChoropleth(year) {
             return;
           }
 
-          if (selectedLayer && choropleth.hasLayer(selectedLayer)) {
-            choropleth.resetStyle(selectedLayer);
-          }
-          
+          const oldLayer = selectedLayer;
           currentProvince = featureName;
           selectedLayer = e.target;
+
+          if (oldLayer && choropleth.hasLayer(oldLayer)) {
+            choropleth.resetStyle(oldLayer);
+          }
+          
           e.target.setStyle({ weight: 3, color: "#1A1410", fillOpacity: 1.0 });
           
           map.fitBounds(e.target.getBounds(), { padding: [20, 20], maxZoom: 10 });
@@ -950,6 +1012,7 @@ function renderChoropleth(year) {
           updateNavLinks();
           showProvinceDetail(displayProps);
           renderConflicts();
+          renderSchools();
           
           const newUrl = new URL(window.location);
           newUrl.searchParams.set('province', currentProvince);
